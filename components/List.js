@@ -1,18 +1,7 @@
 import Push from './Push';
 
 const List = props => {
-    let {
-        pushes = [
-            {
-                title: 'sample',
-                body: 'huat ah',
-            },
-            {
-                title: 'sample 2',
-                body: 'huat ah 2',
-            },
-        ],
-    } = props;
+    let { pushes } = props;
 
     return (
         <div>

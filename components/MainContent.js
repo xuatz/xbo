@@ -5,6 +5,9 @@ import GroupCards from './GroupCards';
 
 import { Container, Item } from './FlexContainer';
 
+import { initStore, fetchPushes } from '../store';
+import withRedux from 'next-redux-wrapper';
+
 const styles = {
     latestPushes: {
         flex: '3',
@@ -16,19 +19,27 @@ const styles = {
     },
 };
 
+const mapStateToProps = state => {
+    return {
+        pushes: state.pushes,
+    };
+};
+
 class MainContent extends Component {
     state = {};
 
     componentDidMount() {
-        // Actions.fetchPushes();
+        // this.props.dispatch(fetchPushes());
     }
 
     render() {
+        // console.log('this.state', this.state);
+        // console.log('this.props', this.props);
         return (
             <Container>
                 <Item style={styles.latestPushes}>
                     <h1>Latest Pushes</h1>
-                    <List pushes={this.props.pushes} />
+                    <List pushes={this.props.pushes || []} />
                 </Item>
                 <Item style={styles.autoCategories}>
                     <h1>Auto Categories</h1>
@@ -39,4 +50,4 @@ class MainContent extends Component {
     }
 }
 
-export default MainContent;
+export default withRedux(initStore, mapStateToProps)(MainContent);
