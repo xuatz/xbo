@@ -40,7 +40,7 @@ let API = axios.create({
 });
 
 export const fetchPushes = () => {
-    dispatch => {
+    return dispatch => {
         //'api.xbo.xuatz.com'
         return API.get('/pushes', {
             timeout: 0,
@@ -65,9 +65,13 @@ export const startClock = () =>
         );
     };
 
-const composeEnhancers = window
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-    : compose; // add support for Redux dev tools
+// add support for Redux dev tools
+let composeEnhancers = compose;
+console.log(window);
+if (window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+    console.log(window);
+    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+}
 
 export const initStore = initialState => {
     return createStore(

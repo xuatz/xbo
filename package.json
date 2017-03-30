@@ -15,9 +15,18 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.15.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2",
     "jumpsuit": "^2.1.2",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.2",
     "next": "^2.0.0",
     "next-redux-wrapper": "^1.0.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "redux-thunk": "^2.2.0"

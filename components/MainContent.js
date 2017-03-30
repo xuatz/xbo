@@ -29,7 +29,7 @@ class MainContent extends Component {
     state = {};
 
     componentDidMount() {
-        // this.props.dispatch(fetchPushes());
+        this.props.dispatch(fetchPushes());
     }
 
     render() {
