@@ -6,26 +6,15 @@ import axios from 'axios';
 
 export const reducer = (
     state = {
-        pushes: [
-            {
-                title: 'sample',
-                body: 'huat ah',
-            },
-            {
-                title: 'sample 2',
-                body: 'huat ah 2',
-            },
-        ],
-        lastUpdate: 0,
-        light: false,
+        bookmarks: []
     },
     action
 ) => {
     switch (action.type) {
-        case 'FETCH_PUSHES':
+        case 'PUSHES_REPLACE':
             return {
                 ...state,
-                pushes: action.pushes || state.pushes,
+                bookmarks: action.bookmarks || state.bookmarks,
             };
         default:
             return state;
@@ -35,22 +24,31 @@ export const reducer = (
 //actions
 
 let API = axios.create({
-    baseURL: process.env.API_URL || 'localhost:9000', //will be uncessary in future after i add in dotenv package
+    baseURL: process.env.API_URL,
     timeout: 5000,
 });
 
-export const fetchPushes = () => {
+export const fetchBookmarks = () => {
     return dispatch => {
         //'api.xbo.xuatz.com'
-        return API.get('/pushes', {
-            timeout: 0,
-        })
+        return API.get('/bookmarks')
             .then(res => {
                 dispatch({
-                    type: 'FETCH_PUSHES',
-                    pushes: res.data || [],
+                    type: 'PUSHES_REPLACE',
+                    bookmarks: res.data || [],
+                });
+
+                return API.get('/bookmarks/fetch', {
+                    timeout: 0,
+                })
+            })
+            .then(res => {
+                dispatch({
+                    type: 'PUSHES_REPLACE',
+                    bookmarks: res.data || [],
                 });
             })
+
             .catch(err => {
                 console.log(err);
             });
@@ -66,12 +64,8 @@ export const startClock = () =>
     };
 
 // add support for Redux dev tools
-let composeEnhancers = compose;
-console.log(window);
-if (window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-    console.log(window);
-    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
-}
+const isBrowser = typeof window !== 'undefined';
+const composeEnhancers = isBrowser ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
 export const initStore = initialState => {
     return createStore(

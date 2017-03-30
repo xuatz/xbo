@@ -17,7 +17,7 @@ const GroupCards = props => {
     return (
         <Container>
             {pushes.map((push, key) => (
-                <Item>
+                <Item key={key}>
                     {push.title}
                 </Item>
             ))}

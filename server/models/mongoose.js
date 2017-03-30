@@ -22,11 +22,11 @@ let options = {
             socketTimeoutMS: 30000,
         },
     },
-    user: 'admin',
-    pass: 'nRG2&kYUXRfcPhDPfw4w',
+    user: process.env.DB_USER,
+    pass: process.env.DB_PASSWORD,
 };
 
-let host = 'xuatz.duckdns.org' || 'localhost';
+let host = process.env.DB_HOST || 'localhost';
 
 mongoose.connect('mongodb://' + host + '/xpo', options);
 

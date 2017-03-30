@@ -1,3 +1,7 @@
+if (!process.env.NODE_ENV) {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -19,11 +23,16 @@ let corsOptions = {
 let app = express();
 
 app.set('trust proxy', true); //for express to trust nginx for https delivery
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 // app.use(require('morgan')('combined'));
 // app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.all("*", (req,res,next) => {
+    console.log(req.method + " " + req.url)
+    next()
+})
 
 app.get('/', (req, res) => {
     res.send('hi guys');

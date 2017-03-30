@@ -8,6 +8,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "server": "node server/server.js",
     "demo": "API_URL='yahoo.com' npm run build && npm run start"
   },
   "keywords": [],
@@ -18,6 +19,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "jumpsuit": "^2.1.2",

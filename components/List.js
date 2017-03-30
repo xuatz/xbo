@@ -1,12 +1,13 @@
 import Push from './Push';
 
 const List = props => {
-    let { pushes } = props;
+    let { bookmarks } = props;
 
     return (
         <div>
-            {pushes.map((push, key) => {
-                return <Push key={key} push={push} />;
+            {bookmarks.map((bookmark, key) => {
+            	//TODO will need some renaming/refactoring in future
+                return <Push key={key} push={bookmark} />;
             })}
         </div>
     );

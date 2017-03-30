@@ -40,14 +40,27 @@ router.use((req, res, next) => {
     }
 });
 
-router.get('/pushes', (req, res) => {
-    getPushesFinal(
+router.get('/bookmarks', (req, res) => {
+    Bookmark.find({
+        // userId
+    }).exec()
+    .then(bookmarks => {
+        res.json(bookmarks);
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).send('Something broke!');
+    })
+});
+
+router.get('/bookmarks/fetch', (req, res) => {
+    getBookmarks(
         {
             // userId: req.user.id,
         }
     )
-        .then(pushes => {
-            res.json(pushes);
+        .then(bookmarks => {
+            res.json(bookmarks);
         })
         .catch(err => {
             res.status(500).send('Something broke!');
@@ -57,7 +70,7 @@ router.get('/pushes', (req, res) => {
 // ==============================
 
 //TODO rename function during merge
-const getPushesFinal = params => {
+const getBookmarks = params => {
     let { userId, rebuild = false } = params;
 
     return (
@@ -66,51 +79,51 @@ const getPushesFinal = params => {
                 // userId
             }
         )
-            // .sort({ modified: -1 }) //SORT DESC
-            // .exec()
-            // .then(lastUpdatedPush => {
-            //     // console.log('lastUpdatedPush')
-            //     // console.log(JSON.stringify(lastUpdatedPush, null, 4))
+            .sort({ 'pushBody.modified': -1 }) //SORT DESC
+            .exec()
+            .then(lastUpdatedPush => {
+                // console.log('lastUpdatedPush')
+                // console.log(JSON.stringify(lastUpdatedPush, null, 4))
 
-            //     // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
-            //     // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
+                // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
+                // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
 
-            //     // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
-            //     // console.log(lastUpdatedPush.pushBody.modified)
+                // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
+                // console.log(lastUpdatedPush.pushBody.modified)
 
-            //     return fetchPushesBasic2({
-            //         modified_after: rebuild
-            //             ? null
-            //             : lastUpdatedPush
-            //                   ? lastUpdatedPush.pushBody.modified
-            //                   : null,
-            //     });
-            // })
-            // .catch(err => {
-            //     console.log(err);
-            //     console.log('============================');
-            //     console.error(err.stack);
-            // })
-            // .then(newPushes => {
-            //     if (newPushes && newPushes.length > 0) {
-            //         return Promise.map(newPushes, freshPush => {
-            //             return Bookmark.findOneAndUpdate(
-            //                 {
-            //                     'pushBody.iden': freshPush.iden,
-            //                 },
-            //                 {
-            //                     $set: {
-            //                         // userId,
-            //                         pushBody: freshPush,
-            //                     },
-            //                 },
-            //                 {
-            //                     upsert: true,
-            //                 }
-            //             ).exec();
-            //         });
-            //     }
-            // })
+                return fetchPushesBasic2({
+                    modified_after: rebuild
+                        ? null
+                        : lastUpdatedPush
+                              ? lastUpdatedPush.pushBody.modified
+                              : null,
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                console.log('============================');
+                console.error(err.stack);
+            })
+            .then(newPushes => {
+                if (newPushes && newPushes.length > 0) {
+                    return Promise.map(newPushes, freshPush => {
+                        return Bookmark.findOneAndUpdate(
+                            {
+                                'pushBody.iden': freshPush.iden,
+                            },
+                            {
+                                $set: {
+                                    // userId,
+                                    pushBody: freshPush,
+                                },
+                            },
+                            {
+                                upsert: true,
+                            }
+                        ).exec();
+                    });
+                }
+            })
             .then(() => {
                 return Bookmark.find(
                     {
@@ -118,8 +131,9 @@ const getPushesFinal = params => {
                     }
                 ).exec();
             })
-            .then(pushes => {
-                return pushes;
+            .then(bookmarks => {
+                console.log('getBookmarks() done')
+                return bookmarks;
             })
             .catch(err => {
                 console.log(err);
@@ -181,7 +195,7 @@ const fetchPushesBasic2 = params => {
         });
 };
 
-// getPushesFinal({
+// getBookmarks({
 //     userId: 1,
 //     rebuild: false,
 // })
