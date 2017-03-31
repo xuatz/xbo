@@ -8,11 +8,12 @@ import { Container, Item } from './FlexContainer';
 import { initStore, fetchBookmarks } from '../store';
 import withRedux from 'next-redux-wrapper';
 
+import _ from 'lodash';
+
 const styles = {
     latestPushes: {
         flex: '2',
         border: '1px solid #DDD',
-        
     },
     autoCategories: {
         flex: '5',
@@ -21,12 +22,24 @@ const styles = {
 };
 
 const mapStateToProps = state => {
-    let bookmarks = state.bookmarks || [];
+    let {
+        bookmarks = [],
+        stats: {
+            groupByDomain = [],
+        } = {},
+    } = state;
 
     return {
-        latestBookmarks: bookmarks.sort(function(a, b) {
-            return b.pushBody.modified - a.pushBody.modified;
-        }).slice(0, 25)
+        popularDomains: groupByDomain
+            .sort(function(a, b) {
+                return b.bookmarks.length - a.bookmarks.length;
+            })
+            .slice(0, 9),
+        latestBookmarks: bookmarks
+            .sort(function(a, b) {
+                return b.pushBody.created - a.pushBody.created;
+            })
+            .slice(0, 25),
     };
 };
 
@@ -46,7 +59,7 @@ class MainContent extends Component {
                 </Item>
                 <Item style={styles.autoCategories}>
                     <h1>Auto Categories</h1>
-                    <GroupCards />
+                    <GroupCards popularDomains={this.props.popularDomains} />
                 </Item>
             </Container>
         );
