@@ -12,7 +12,7 @@ import _ from 'lodash';
 
 const styles = {
     latestPushes: {
-        flex: '2',
+        flex: '1',
         border: '1px solid #DDD',
     },
     autoCategories: {
@@ -53,13 +53,13 @@ class MainContent extends Component {
     render() {
         return (
             <Container>
-                <Item style={styles.latestPushes}>
-                    <h1>Latest Pushes</h1>
-                    <List bookmarks={this.props.latestBookmarks || []} />
-                </Item>
                 <Item style={styles.autoCategories}>
                     <h1>Auto Categories</h1>
                     <GroupCards popularDomains={this.props.popularDomains} />
+                </Item>
+                <Item style={styles.latestPushes}>
+                    <h1>Latest Pushes</h1>
+                    <List bookmarks={this.props.latestBookmarks || []} />
                 </Item>
             </Container>
         );
