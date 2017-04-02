@@ -12,3 +12,4 @@ CMD ["npm", "run", "start:server"]
 
 # docker build -f Dockerfile.web -t localhost:5000/xbo-web .
 # docker build -f Dockerfile.server -t localhost:5000/xbo-server .
+# docker build -f Dockerfile.web -t localhost:5000/xbo-web . ; docker build -f Dockerfile.server -t localhost:5000/xbo-server . ;

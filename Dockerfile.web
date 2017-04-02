@@ -5,6 +5,10 @@ COPY . /usr/www
 WORKDIR /usr/www
 
 RUN npm install --production --silent
+
+# ENV API_URL=http://localhost:9000
+# ENV API_URL=http://???:9000
+
 RUN npm run build --production --silent
 
 CMD ["npm", "run", "start"]
