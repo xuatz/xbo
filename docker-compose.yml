@@ -17,14 +17,15 @@ services:
     #   - '/etc/letsencrypt/:/etc/letsencrypt/:ro'
     ports:
       - "5566:3000"
-    environment:
-      - API_URL=http://localhost:9000
+    # environment:
+    #   - API_URL=http://192.168.0.123:9000
   xbo-server:
     image: localhost:5000/xbo-server
     container_name: xbo-server
     restart: always
     ports:
       - "9000:9000"
+      # - "192.168.0.123:9000"
     environment:
       - DB_HOST=xuatz.duckdns.org
       - DB_USER=admin

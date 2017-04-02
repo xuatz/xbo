@@ -52,7 +52,7 @@ export const reducer = (
 //actions
 
 let API = axios.create({
-    baseURL: process.env.API_URL,
+    baseURL: process.env.API_URL || 'http://localhost:9000',
     timeout: 5000,
 });
 
