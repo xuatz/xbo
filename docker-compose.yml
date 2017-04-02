@@ -1,0 +1,46 @@
+version: "3"
+
+volumes:
+  mongo-xbo:
+
+services:
+  xbo-web:
+    image: localhost:5000/xbo-web
+    container_name: xbo-web
+    restart: always
+    # volumes:
+    #   - 'nginx-config:/etc/nginx/conf.d'
+    #   - 'nginx-vhosts:/etc/nginx/vhost.d'
+    #   - 'nginx-certs:/etc/nginx/certs:ro'
+    #   - 'nginx-webroot:/usr/share/nginx/html'
+    #   - './volumes/subdomains/nas.xuatz.com.conf:/etc/nginx/conf.d/nas.xuatz.com.conf'
+    #   - '/etc/letsencrypt/:/etc/letsencrypt/:ro'
+    ports:
+      - "3000"
+      - "9000"
+    environment:
+      - API_URL=http://localhost:9000
+  xbo-server:
+    image: localhost:5000/xbo-server
+    container_name: xbo-server
+    restart: always
+    ports:
+      - "9000"
+    environment:
+      - DB_HOST=xuatz.duckdns.org
+      - DB_USER=admin
+      - DB_PASSWORD=nRG2&kYUXRfcPhDPfw4w
+      - PUSHBULLET_PERSONAL_ACCESS_TOKEN=o.23O6wySabJRYYWHgSQp1OSzdKjrzokop
+  mongo:
+    image: mongo:3.4.
+    container_name: mongo-xbo
+    restart: always
+    volumes:
+      - 'mongo-xbo:/data/db'
+  redis:
+    image: redis
+    container_name: redis-xbo
+    restart: always
+    # environment:
+    #   - NGINX_DOCKER_GEN_CONTAINER=nginx-gen
+    #   - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory

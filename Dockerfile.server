@@ -1,0 +1,14 @@
+FROM node:7
+
+RUN mkdir -p /usr/www 
+COPY . /usr/www
+WORKDIR /usr/www
+
+RUN npm install --production --silent
+
+EXPOSE 9000
+
+CMD ["npm", "run", "start:server"]
+
+# docker build -f /path/to/a/Dockerfile.web -t localhost:5000/xbo-web .
+# docker build -f /path/to/a/Dockerfile.server -t localhost:5000/xbo-server .
