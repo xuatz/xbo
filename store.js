@@ -4,9 +4,29 @@ import thunkMiddleware from 'redux-thunk';
 
 import axios from 'axios';
 
+const groupByDomain = bookmarks => {
+    let tmp = _.groupBy(bookmarks, bk => {
+        return bk.stats && bk.stats.domain;
+    });
+
+    let domains = [];
+    _.forIn(tmp, (value, key) => {
+        if (key !== 'undefined') {
+            domains.push({
+                domain: key,
+                bookmarks: value.map(bk => {
+                    return bk._id;
+                }),
+            });
+        }
+    });
+
+    return domains;
+};
+
 export const reducer = (
     state = {
-        bookmarks: []
+        bookmarks: [],
     },
     action
 ) => {
@@ -15,6 +35,14 @@ export const reducer = (
             return {
                 ...state,
                 bookmarks: action.bookmarks || state.bookmarks,
+            };
+        case 'BOOKMARKS_GROUP_BY_DOMAIN':
+            return {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    groupByDomain: groupByDomain(state.bookmarks),
+                },
             };
         default:
             return state;
@@ -40,15 +68,17 @@ export const fetchBookmarks = () => {
 
                 return API.get('/bookmarks/fetch', {
                     timeout: 0,
-                })
+                });
             })
             .then(res => {
                 dispatch({
                     type: 'PUSHES_REPLACE',
                     bookmarks: res.data || [],
                 });
+                dispatch({
+                    type: 'BOOKMARKS_GROUP_BY_DOMAIN',
+                });
             })
-
             .catch(err => {
                 console.log(err);
             });
@@ -65,7 +95,9 @@ export const startClock = () =>
 
 // add support for Redux dev tools
 const isBrowser = typeof window !== 'undefined';
-const composeEnhancers = isBrowser ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
+const composeEnhancers = isBrowser
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : compose;
 
 export const initStore = initialState => {
     return createStore(

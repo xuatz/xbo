@@ -3,7 +3,7 @@ const styles = {
         display: 'flex',
     },
     item: {
-        flex: '1',
+        flex: 'auto',
     },
 };
 
