@@ -32,7 +32,7 @@ services:
       - DB_PASSWORD=nRG2&kYUXRfcPhDPfw4w
       - PUSHBULLET_PERSONAL_ACCESS_TOKEN=o.23O6wySabJRYYWHgSQp1OSzdKjrzokop
   mongo:
-    image: mongo:3.4.
+    image: mongo:3.4.3
     container_name: mongo-xbo
     restart: always
     volumes:

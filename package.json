@@ -8,7 +8,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "server": "node server/server.js",
+    "start:server": "node server/server.js",
     "demo": "API_URL='yahoo.com' npm run build && npm run start"
   },
   "keywords": [],
