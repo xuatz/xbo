@@ -1,10 +1,10 @@
-import { Container, Item } from './FlexContainer';
+import { Container, Item } from './common/FlexContainer';
 import Link from 'next/link';
 
 const styles = {
     groupCard: {
-        marginRight: '10px',
-    },
+        marginRight: '10px'
+    }
 };
 
 const GroupCards = props => {
@@ -14,7 +14,7 @@ const GroupCards = props => {
         <Container
             style={{
                 flexFlow: 'row wrap',
-                justifyContent: 'flex-start',
+                justifyContent: 'flex-start'
             }}
         >
             <Item style={styles.groupCard}>
