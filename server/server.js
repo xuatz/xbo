@@ -10,11 +10,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 let corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:8011',
-        'https://pb.xuatz.com',
-    ],
+    origin: ['http://localhost:3000'],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: true,
@@ -29,10 +25,10 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.all("*", (req,res,next) => {
-    console.log(req.method + " " + req.url)
-    next()
-})
+app.all('*', (req, res, next) => {
+    console.log(req.method + ' ' + req.url);
+    next();
+});
 
 app.get('/', (req, res) => {
     res.send('hi guys');

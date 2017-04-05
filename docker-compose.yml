@@ -8,15 +8,14 @@ services:
     image: localhost:5000/xbo-web
     container_name: xbo-web
     restart: always
+    ports:
+      - "3000:3000"
     # volumes:
-    #   - 'nginx-config:/etc/nginx/conf.d'
     #   - 'nginx-vhosts:/etc/nginx/vhost.d'
     #   - 'nginx-certs:/etc/nginx/certs:ro'
     #   - 'nginx-webroot:/usr/share/nginx/html'
     #   - './volumes/subdomains/nas.xuatz.com.conf:/etc/nginx/conf.d/nas.xuatz.com.conf'
     #   - '/etc/letsencrypt/:/etc/letsencrypt/:ro'
-    ports:
-      - "5566:3000"
     # environment:
     #   - API_URL=http://192.168.0.123:9000
   xbo-server:
@@ -25,12 +24,11 @@ services:
     restart: always
     ports:
       - "9000:9000"
-      # - "192.168.0.123:9000"
     environment:
-      - DB_HOST=xuatz.duckdns.org
-      - DB_USER=admin
-      - DB_PASSWORD=nRG2&kYUXRfcPhDPfw4w
-      - PUSHBULLET_PERSONAL_ACCESS_TOKEN=o.23O6wySabJRYYWHgSQp1OSzdKjrzokop
+      - DB_HOST=localhost
+      - DB_USER=
+      - DB_PASSWORD=
+      - PUSHBULLET_PERSONAL_ACCESS_TOKEN=
   mongo:
     image: mongo:3.4.3
     container_name: mongo-xbo

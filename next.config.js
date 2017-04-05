@@ -1,8 +1,9 @@
+require('dotenv').config();
 const webpack = require('webpack');
 
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== 'production') {
+
+// }
 
 module.exports = {
     webpack: (config, { dev }) => {

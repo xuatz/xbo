@@ -52,7 +52,7 @@ export const reducer = (
 //actions
 
 let API = axios.create({
-    baseURL: process.env.API_URL || 'http://localhost:9000',
+    baseURL: 'http://' + process.env.API_URL,
     timeout: 5000,
 });
 
@@ -64,6 +64,9 @@ export const fetchBookmarks = () => {
                 dispatch({
                     type: 'PUSHES_REPLACE',
                     bookmarks: res.data || [],
+                });
+                dispatch({
+                    type: 'BOOKMARKS_GROUP_BY_DOMAIN',
                 });
 
                 return API.get('/bookmarks/fetch', {
