@@ -1,17 +1,17 @@
 const styles = {
     container: {
-        display: 'flex',
+        display: 'flex'
     },
     item: {
-        flex: 'auto',
-    },
+        flex: 'auto'
+    }
 };
 
 export const Container = ({ style = {}, children } = props) => (
     <div
         style={{
             ...styles.container,
-            ...style,
+            ...style
         }}
     >
         {children}
@@ -22,7 +22,7 @@ export const Item = ({ style = {}, children } = props) => (
     <div
         style={{
             ...styles.item,
-            ...style,
+            ...style
         }}
     >
         {children}
