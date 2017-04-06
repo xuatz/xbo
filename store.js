@@ -16,7 +16,7 @@ const groupByDomain = bookmarks => {
                 domain: key,
                 bookmarks: value.map(bk => {
                     return bk._id;
-                })
+                }),
             });
         }
     });
@@ -27,9 +27,9 @@ const groupByDomain = bookmarks => {
 export const reducer = (
     state = {
         session: {
-            user: null
+            user: null,
         },
-        bookmarks: []
+        bookmarks: [],
     },
     action
 ) => {
@@ -37,15 +37,15 @@ export const reducer = (
         case 'PUSHES_REPLACE':
             return {
                 ...state,
-                bookmarks: action.bookmarks || state.bookmarks
+                bookmarks: action.bookmarks || state.bookmarks,
             };
         case 'BOOKMARKS_GROUP_BY_DOMAIN':
             return {
                 ...state,
                 stats: {
                     ...state.stats,
-                    groupByDomain: groupByDomain(state.bookmarks)
-                }
+                    groupByDomain: groupByDomain(state.bookmarks),
+                },
             };
         default:
             return state;
@@ -56,8 +56,18 @@ export const reducer = (
 
 let API = axios.create({
     baseURL: 'http://' + process.env.API_URL,
-    timeout: 5000
+    timeout: 5000,
 });
+
+export const signup = form => {
+    return dispatch => {
+        console.log(form);
+
+        return Promise.resolve({
+            error: 'username taken',
+        });
+    };
+};
 
 export const fetchBookmarks = () => {
     return dispatch => {
@@ -66,23 +76,23 @@ export const fetchBookmarks = () => {
             .then(res => {
                 dispatch({
                     type: 'PUSHES_REPLACE',
-                    bookmarks: res.data || []
+                    bookmarks: res.data || [],
                 });
                 dispatch({
-                    type: 'BOOKMARKS_GROUP_BY_DOMAIN'
+                    type: 'BOOKMARKS_GROUP_BY_DOMAIN',
                 });
 
                 return API.get('/bookmarks/fetch', {
-                    timeout: 0
+                    timeout: 0,
                 });
             })
             .then(res => {
                 dispatch({
                     type: 'PUSHES_REPLACE',
-                    bookmarks: res.data || []
+                    bookmarks: res.data || [],
                 });
                 dispatch({
-                    type: 'BOOKMARKS_GROUP_BY_DOMAIN'
+                    type: 'BOOKMARKS_GROUP_BY_DOMAIN',
                 });
             })
             .catch(err => {

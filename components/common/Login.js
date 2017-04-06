@@ -1,33 +1,24 @@
-import { initStore, fetchBookmarks } from '../../store';
-import withRedux from 'next-redux-wrapper';
-
 import { Container, Item } from './FlexContainer';
 
 const styles = {
     inputStyle: {
         borderRadius: '0.25rem',
         padding: '1rem',
-        marginBottom: '1rem'
+        marginBottom: '1rem',
     },
     submitButton: {
         padding: '0.6rem',
         backgroundColor: '#00B9BC',
         color: '#eee',
         fontWeight: 'bold',
-        textTransform: 'uppercase'
-    }
-};
-
-const mapStateToProps = state => {
-    return {
-        isLoggedIn: state.session.user ? true : false
-    };
+        textTransform: 'uppercase',
+    },
 };
 
 const Login = props => (
     <Container
         style={{
-            justifyContent: 'center'
+            justifyContent: 'center',
         }}
     >
         <div
@@ -35,15 +26,17 @@ const Login = props => (
                 background: 'orange',
                 padding: '25px',
                 margin: '20px',
-                borderRadius: '3px'
+                borderRadius: '3px',
             }}
         >
+            <br />
+
             <form onSubmit={null}>
                 <Container
                     style={{
                         flexDirection: 'column',
                         borderRadius: '5px',
-                        width: '300px'
+                        width: '300px',
                     }}
                 >
                     <input
@@ -68,13 +61,20 @@ const Login = props => (
 
             <hr />
 
-            <Container style={{ justifyContent: 'space-between' }}>
+            <Container
+                style={{
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <span>Don't have an account?</span>
-                <span>Sign Up</span>
+                <button onClick={() => props.changeMode()}>
+                    Sign Up
+                </button>
             </Container>
         </div>
 
     </Container>
 );
 
-export default withRedux(initStore, mapStateToProps)(Login);
+export default Login;
