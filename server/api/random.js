@@ -1,6 +1,3 @@
-// 'use strict';
-
-// require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 
@@ -26,8 +23,6 @@ const pushbullet = axios.create({
 // ==============================
 
 router.use((req, res, next) => {
-    console.log('warehouse route generic check!');
-
     if (req.method === 'OPTIONS') {
         next();
     } else {

@@ -64,6 +64,10 @@ class Signup extends Component {
                             errors: [res.error],
                         });
                     }
+
+                    if (res.status == 200) {
+                        Router.push('/about');
+                    }
                 })
                 .catch(err => {
                     this.setState({
@@ -83,8 +87,7 @@ class Signup extends Component {
                         // padding: '25px 25px 18px',
                         margin: '20px',
                         borderRadius: '3px',
-                    }}
-                >
+                    }}>
                     {this.state.errors &&
                         this.state.errors.map((item, key) => {
                             return (
@@ -102,8 +105,7 @@ class Signup extends Component {
                                 flexDirection: 'column',
                                 borderRadius: '5px',
                                 width: '300px',
-                            }}
-                        >
+                            }}>
                             <input
                                 style={styles.inputStyle}
                                 type="text"
@@ -142,10 +144,9 @@ class Signup extends Component {
                         style={{
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                        }}
-                    >
+                        }}>
                         <span>Have an account?</span>
-                        <button onClick={() => this.props.changeMode()}>
+                        <button type="button" onClick={this.props.changeMode}>
                             Log In
                         </button>
                     </Container>

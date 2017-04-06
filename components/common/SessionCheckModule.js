@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
 import Promise from 'bluebird';
 
-import { initStore, signup } from '../../store';
+import { initStore } from '../../store';
+import { signup } from '../../actions/userActions';
 
 import Login from './Login';
 import Signup from './Signup';
@@ -28,23 +29,20 @@ class SessionCheckModule extends Component {
     };
 
     signup = form => {
-        console.log(form);
-
-        return this.props
-            .dispatch(signup(form))
-            .then(res => {
-                if (res.error) {
-                    return {
-                        error: res.error,
-                    };
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                return {
-                    error: 'Server Error!!',
-                };
-            });
+        return this.props.dispatch(signup(form));
+        // .then(res => {
+        //     if (res.error) {
+        //         return {
+        //             error: res.error,
+        //         };
+        //     }
+        // })
+        // .catch(err => {
+        //     console.log(err);
+        //     return {
+        //         error: 'Server Error!!',
+        //     };
+        // });
     };
 
     changeMode = () => {

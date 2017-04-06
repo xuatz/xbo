@@ -34,11 +34,8 @@ app.get('/', (req, res) => {
     res.send('hi guys');
 });
 
-app.use(
-    // '/api',
-    // cors(corsOptions), isAuth,
-    require('./api/random.js')
-);
+app.use(require('./api/random.js'));
+app.use(require('./api/auth.js'));
 
 app.listen(9000, function() {
     console.log('Example app listening on port 9000!');
