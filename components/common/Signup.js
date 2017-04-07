@@ -66,7 +66,7 @@ class Signup extends Component {
                     }
 
                     if (res.status == 200) {
-                        Router.push('/about');
+                        Router.push('/');
                     }
                 })
                 .catch(err => {

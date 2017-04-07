@@ -13,20 +13,20 @@ import _ from 'lodash';
 const styles = {
     latestPushes: {
         flex: '1',
-        border: '1px solid #DDD'
+        border: '1px solid #DDD',
     },
     autoCategories: {
         flex: '5',
-        border: '1px solid #DDD'
-    }
+        border: '1px solid #DDD',
+    },
 };
 
 const mapStateToProps = state => {
     let {
         bookmarks = [],
         stats: {
-            groupByDomain = []
-        } = {}
+            groupByDomain = [],
+        } = {},
     } = state;
 
     return {
@@ -39,7 +39,7 @@ const mapStateToProps = state => {
             .sort(function(a, b) {
                 return b.pushBody.created - a.pushBody.created;
             })
-            .slice(0, 25)
+            .slice(0, 25),
     };
 };
 
@@ -47,7 +47,7 @@ class MainContent extends Component {
     state = {};
 
     componentDidMount() {
-        this.props.dispatch(fetchBookmarks());
+        // this.props.dispatch(fetchBookmarks());
     }
 
     render() {

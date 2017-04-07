@@ -21,4 +21,22 @@ router.post('/signup', (req, res) => {
     });
 });
 
+app.post(
+    '/login',
+    (req, res, next) => {
+        console.log('sup boys');
+        console.log('body parsing', req.body);
+        next();
+    },
+    passport.authenticate('local'),
+    (req, res) => {
+        // If this function gets called, authentication was successful.
+        // `req.user` contains the authenticated user.
+        // res.redirect('/users/' + req.user.username);
+        res.json({
+            user: req.user,
+        });
+    }
+);
+
 module.exports = router;
