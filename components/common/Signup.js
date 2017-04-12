@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Item } from './FlexContainer';
+import Router from 'next/router';
 
 const styles = {
     inputStyle: {
@@ -45,7 +46,6 @@ class Signup extends Component {
 
         if (password1 && password2 && password1 !== password2) {
             errors.push('The passwords are not the same!');
-        } else {
         }
 
         if (errors.length > 0) {
@@ -56,7 +56,7 @@ class Signup extends Component {
             this.props
                 .onSubmit({
                     username: username,
-                    password: this.state.password1,
+                    password: password1,
                 })
                 .then(res => {
                     if (res.error) {
@@ -66,11 +66,11 @@ class Signup extends Component {
                     }
 
                     if (res.status == 200) {
-                        Router.push('/');
+                        Router.push('/yaaaaaaaa');
                     }
                 })
                 .catch(err => {
-                    console.log('here also kena error');
+                    console.log(err);
                     this.setState({
                         errors: ['server error!!'],
                     });

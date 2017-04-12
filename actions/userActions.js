@@ -10,13 +10,11 @@ let API = axios.create({
 export const signup = form => {
     return dispatch => {
         return API.post('/signup', {
-            data: {
-                ...form,
-            },
+            ...form,
         })
             .then(res => {
+                console.log('11111111');
                 console.log(res);
-
                 if (res.data && res.data.error) {
                     return {
                         error: res.data.error,
@@ -27,7 +25,7 @@ export const signup = form => {
                 };
             })
             .catch(err => {
-                console.log('error in signup action');
+                console.log('222222');
                 console.log(err);
                 throw err;
             });
