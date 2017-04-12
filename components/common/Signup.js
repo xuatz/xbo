@@ -70,8 +70,9 @@ class Signup extends Component {
                     }
                 })
                 .catch(err => {
+                    console.log('here also kena error');
                     this.setState({
-                        error: ['server error!!'],
+                        errors: ['server error!!'],
                     });
                 });
         }

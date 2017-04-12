@@ -27,6 +27,7 @@ export const signup = form => {
                 };
             })
             .catch(err => {
+                console.log('error in signup action');
                 console.log(err);
                 throw err;
             });
