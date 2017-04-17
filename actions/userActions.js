@@ -13,20 +13,25 @@ export const signup = form => {
             ...form,
         })
             .then(res => {
-                console.log('11111111');
-                console.log(res);
+                console.log(res)
                 if (res.data && res.data.error) {
                     return {
                         error: res.data.error,
                     };
                 }
+
+                if (res.status == 200) {
+                    // dispatch({
+                    //     type: 'USER_LOGGED_IN',
+                    //     user: res.data.user
+                    // })
+                }
+
                 return {
                     status: res.status,
                 };
             })
             .catch(err => {
-                console.log('222222');
-                console.log(err);
                 throw err;
             });
     };

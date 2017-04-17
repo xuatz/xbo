@@ -45,7 +45,7 @@ passport.use(
                 .exec()
                 .then(user => {
                     if (user) {
-                        console.log('hmmm?');
+                        console.log('Username already taken');
                         return done(null, false, {
                             message: 'Username already taken',
                         });
@@ -95,8 +95,12 @@ app.use(cors(corsOptions));
 // app.use(require('morgan')('combined'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(session({ store: new RedisStore(), secret: 'keyboard cat' }));
-app.use(require('cookie-parser')());
+app.use(session({ 
+    store: new RedisStore(), 
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -121,28 +125,10 @@ app.get('/', (req, res) => {
 });
 
 // app.use(require('./api/random.js'));
-// app.use(require('./api/auth.js'));
+app.use(require('./api/auth.js'));
 // require('./routes')(app);
 
-app.post(
-    '/signup',
-    (req, res, next) => {
-        console.log('sup boys');
-        console.log('body parsing', req.body);
-        next();
-    },
-    passport.authenticate('local-signup'),
-    (req, res) => {
-        // If this function gets called, authentication was successful.
-        // `req.user` contains the authenticated user.
-        // res.redirect('/users/' + req.user.username);
-        console.log('aaaaaaaaaaaaa', req.user);
 
-        res.json({
-            user: req.user,
-        });
-    }
-);
 
 app.listen(9000, function() {
     console.log('Example app listening on port 9000!');

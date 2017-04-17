@@ -66,7 +66,7 @@ class Signup extends Component {
                     }
 
                     if (res.status == 200) {
-                        Router.push('/yaaaaaaaa');
+                        console.log('signup success!')
                     }
                 })
                 .catch(err => {
@@ -79,6 +79,8 @@ class Signup extends Component {
     };
 
     render() {
+        console.log('this.props', this.props)
+
         return (
             <Container style={{ justifyContent: 'center' }}>
                 <div

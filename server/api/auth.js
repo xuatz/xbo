@@ -9,4 +9,19 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('../models/user');
 
+router.post('/signup',
+    (req, res, next) => {
+        console.log('sup boys');
+        console.log('body parsing', req.body);
+        next();
+    },
+    passport.authenticate('local-signup'),
+    (req, res) => {
+        console.log('aaaaaaaaaaaaa', req.user);
+        res.json({
+            user: req.user,
+        });
+    }
+);
+
 module.exports = router;
