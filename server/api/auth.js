@@ -4,35 +4,20 @@ const router = express.Router();
 const _ = require('lodash');
 const Promise = require('bluebird');
 
-router.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-        next();
-    } else {
-        next();
-    }
-});
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-router.post('/signup', (req, res) => {
-    console.log('req.data', req.data);
-    console.log('req.body', req.body);
+const User = require('../models/user');
 
-    res.json({
-        error: 'username taken',
-    });
-});
-
-app.post(
-    '/login',
+router.post('/signup',
     (req, res, next) => {
         console.log('sup boys');
         console.log('body parsing', req.body);
         next();
     },
-    passport.authenticate('local'),
+    passport.authenticate('local-signup'),
     (req, res) => {
-        // If this function gets called, authentication was successful.
-        // `req.user` contains the authenticated user.
-        // res.redirect('/users/' + req.user.username);
+        console.log('aaaaaaaaaaaaa', req.user);
         res.json({
             user: req.user,
         });
