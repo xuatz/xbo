@@ -1,5 +1,5 @@
 const initialState = {
-	user: null,
+	sessionId: null,
 }
 
 export default (state = initialState, action) => {
@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
 		case 'USER_LOGIN':
 			return {
 				...state,
-				user: action.user,
+				sessionId: action.sessionId,
 			}
 		default:
 			return state

@@ -9,10 +9,12 @@ let API = axios.create({
 
 export const login = form => {
 	return dispatch => {
+		console.log('hi21')
 		return API.post('/login', {
 			...form,
 		})
 			.then(res => {
+				console.log('hi22')
 				console.log(res)
 				if (res.data && res.data.error) {
 					return {
@@ -22,8 +24,8 @@ export const login = form => {
 
 				if (res.status == 200) {
 					dispatch({
-						type: 'USER_LOGGED_IN',
-						user: res.data.user,
+						type: 'USER_LOGIN',
+						sessionId: res.data.sessionId,
 					})
 				}
 
@@ -52,8 +54,8 @@ export const signup = form => {
 
 				if (res.status == 200) {
 					dispatch({
-						type: 'USER_LOGGED_IN',
-						user: res.data.user,
+						type: 'USER_LOGIN',
+						sessionId: res.data.sessionId,
 					})
 				}
 
