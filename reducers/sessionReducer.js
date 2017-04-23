@@ -1,17 +1,15 @@
 const initialState = {
-    user: null
+	sessionId: null,
 }
 
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case 'USER_LOGGED_IN':
-            console.log('USER_LOGGED_IN')
-            console.log(action.user)
-            return {
-                ...state,
-                user: action.user
-            };
-        default:
-            return state;
-    }
+	switch (action.type) {
+		case 'USER_LOGIN':
+			return {
+				...state,
+				sessionId: action.sessionId,
+			}
+		default:
+			return state
+	}
 }

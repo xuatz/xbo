@@ -3,14 +3,14 @@ import withRedux from 'next-redux-wrapper'
 import Promise from 'bluebird'
 
 import {initStore} from '../../store'
-import {signup} from '../../actions/userActions'
+import {login, signup} from '../../actions/userActions'
 
 import Login from './Login'
 import Signup from './Signup'
 
 const mapStateToProps = state => {
 	return {
-		isLoggedIn: state.session.user ? true : false,
+		isLoggedIn: state.session.sessionId ? true : false,
 	}
 }
 
@@ -23,8 +23,8 @@ class SessionCheckModule extends Component {
 		// this.props.dispatch(checkLoginSession());
 	}
 
-	login = params => {
-		// this.props.dispatch(login(params));
+	login = form => {
+		return this.props.dispatch(login(form))
 	}
 
 	signup = form => {
