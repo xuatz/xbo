@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import withRedux from 'next-redux-wrapper'
 import Promise from 'bluebird'
 
-import {initStore} from '../../store'
-import {signup} from '../../actions/userActions'
+import { initStore } from '../../store'
+import { login, signup } from '../../actions/userActions'
 
 import Login from './Login'
 import Signup from './Signup'
@@ -24,7 +24,7 @@ class SessionCheckModule extends Component {
 	}
 
 	login = params => {
-		// this.props.dispatch(login(params));
+		return this.props.dispatch(login(form))
 	}
 
 	signup = form => {
@@ -43,8 +43,14 @@ class SessionCheckModule extends Component {
 				{this.props.isLoggedIn
 					? this.props.children
 					: this.state.login
-							? <Login onSubmit={this.login} changeMode={this.changeMode} />
-							: <Signup onSubmit={this.signup} changeMode={this.changeMode} />}
+							? <Login
+									onSubmit={this.login}
+									changeMode={this.changeMode}
+								/>
+							: <Signup
+									onSubmit={this.signup}
+									changeMode={this.changeMode}
+								/>}
 			</div>
 		)
 	}
