@@ -28,6 +28,7 @@ services:
       - DB_HOST=localhost
       - DB_USER=
       - DB_PASSWORD=
+      - REDIS_HOST=localhost
       - PUSHBULLET_PERSONAL_ACCESS_TOKEN=
   mongo:
     image: mongo:3.4.3
