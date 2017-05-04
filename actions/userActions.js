@@ -1,70 +1,82 @@
-import Router from 'next/router'
-import axios from 'axios'
+import Router from 'next/router';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 let API = axios.create({
 	baseURL: 'http://' + process.env.API_URL,
 	withCredentials: true,
-	timeout: 5000,
-})
+	timeout: 5000
+});
 
-export const login = form => {
+export const checkUserSession = () => {
 	return dispatch => {
-		console.log('hi21')
-		return API.post('/login', {
-			...form,
-		})
+		dispatch({
+			type: 'USER_CHECK_SESSION'
+		});
+
+		return API.get('/user')
 			.then(res => {
-				console.log('hi22')
-				console.log(res)
-				if (res.data && res.data.error) {
-					return {
-						error: res.data.error,
-					}
-				}
-
 				if (res.status == 200) {
-					dispatch({
-						type: 'USER_LOGIN',
-						sessionId: res.data.sessionId,
-					})
-				}
-
-				return {
-					status: res.status,
+					dispatch({ type: 'USER_LOGGED_IN' });
+				} else {
+					dispatch({ type: 'USER_LOGGED_OUT' });
 				}
 			})
 			.catch(err => {
-				throw err
+				dispatch({ type: 'USER_LOGGED_OUT' });
+			});
+	};
+};
+
+export const login = form => {
+	return dispatch => {
+		return API.post('/login', {
+			...form
+		})
+			.then(res => {
+				if (res.data && res.data.error) {
+					return {
+						error: res.data.error
+					};
+				}
+
+				if (res.status == 200) {
+					dispatch({ type: 'USER_LOGGED_IN' });
+				}
+
+				return {
+					status: res.status
+				};
 			})
-	}
-}
+			.catch(err => {
+				throw err;
+			});
+	};
+};
 
 export const signup = form => {
 	return dispatch => {
 		return API.post('/signup', {
-			...form,
+			...form
 		})
 			.then(res => {
-				console.log(res)
+				console.log(res);
 				if (res.data && res.data.error) {
 					return {
-						error: res.data.error,
-					}
+						error: res.data.error
+					};
 				}
 
 				if (res.status == 200) {
-					dispatch({
-						type: 'USER_LOGIN',
-						sessionId: res.data.sessionId,
-					})
+					dispatch({ type: 'USER_LOGGED_IN' });
 				}
 
 				return {
-					status: res.status,
-				}
+					status: res.status
+				};
 			})
 			.catch(err => {
-				throw err
-			})
-	}
-}
+				throw err;
+			});
+	};
+};
