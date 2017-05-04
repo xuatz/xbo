@@ -1,11 +1,11 @@
-import Layout from '../components/common/MyLayout.js';
 import SessionCheckModule from '../components/common/SessionCheckModule';
+import Layout from '../components/common/MyLayout';
 import MainContent from '../components/MainContent';
 
 export default () => (
-    <Layout>
-        <SessionCheckModule>
-            <MainContent />
-        </SessionCheckModule>
-    </Layout>
+	<SessionCheckModule>
+		<Layout>
+			<MainContent />
+		</Layout>
+	</SessionCheckModule>
 );
