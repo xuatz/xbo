@@ -109,14 +109,40 @@ passport.use(
 	)
 );
 
+// =============================================
+
+router.get('/user', (req, res) => {
+	// console.log('req.session', req.session);
+	// console.log('req.session.cookie', req.session.cookie);
+	// console.log('req.session.id', req.session.id);
+	// console.log('req.sessionID', req.sessionID);
+	// console.log('req.user', req.user);
+	if (req.user) {
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(401);
+	}
+});
+
 router.post('/signup', passport.authenticate('local-signup'), (req, res) => {
-	console.log('req.sessionID', req.sessionID);
-	res.json({ sessionId: req.sessionID });
+	// console.log('req.session', req.session);
+	// console.log('req.session.cookie', req.session.cookie);
+	// console.log('req.session.id', req.session.id);
+	// console.log('req.sessionID', req.sessionID);
+	res.sendStatus(200);
 });
 
 router.post('/login', passport.authenticate('local-login'), (req, res) => {
-	console.log('req.sessionID', req.sessionID);
-	res.json({ sessionId: req.sessionID });
+	// console.log('req.session', req.session);
+	// console.log('req.session.cookie', req.session.cookie);
+	// console.log('req.session.id', req.session.id);
+	// console.log('req.sessionID', req.sessionID);
+	res.sendStatus(200);
+});
+
+router.get('/logout', (req, res) => {
+	req.logout();
+	res.sendStatus(200);
 });
 
 module.exports = router;
