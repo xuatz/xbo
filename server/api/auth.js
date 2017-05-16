@@ -6,6 +6,7 @@ const Promise = require('bluebird');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const OAuth1Strategy = require('passport-oauth1').Strategy;
 
 const User = require('../models/user');
 
@@ -109,7 +110,76 @@ passport.use(
 	)
 );
 
+// https://www.pushbullet.com/authorize?
+// client_id=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
+// redirect_uri=localhost%3A9000%2Fapi%2Fauth
+// response_type=token&scope=everything
+
+// passport.use(
+// 	'pushbullet-connect',
+// 	new OAuth1Strategy(
+// 		{
+// 			passReqToCallback: true,
+// 			authorizationURL: 'https://www.pushbullet.com/authorize',
+// 			clientID: '2TXDmPJN0tukzOqu19qvwNCju16SyMb7',
+// 			// clientSecret: 'IlQ1SBBY9fRnWLRVEFSQMxkB5UIS9Rxt',
+// 			callbackURL: 'http://localhost:9000/auth/pushbullet/callback'
+// 		},
+// 		(req, accessToken, refreshToken, profile, done) => {
+// 			console.log(profile);
+// 			console.log('profile');
+
+// 			if (!req.user) {
+// 				console.log(
+// 					'there is something wrong, no user found. is the user logged in?'
+// 				);
+// 				return done(null, false);
+// 			}
+
+// 			User.findById(req.user._id)
+// 				.exec()
+// 				.then(user => {
+// 					let newProvider = {
+// 						provider: 'pushbullet',
+// 						profile,
+// 						accessToken,
+// 						refreshToken
+// 					};
+
+// 					if (!user.accounts) {
+// 						user.accounts = [];
+// 					}
+
+// 					user.accounts = user.accounts.concat(newProvider);
+
+// 					return user.save().lean().exec();
+// 				})
+// 				.then(user => {
+// 					console.log('user', user);
+// 					done(null, user);
+// 				})
+// 				.catch(err => {
+// 					console.log('there is an error!!!');
+// 					console.log(err);
+// 					done(err);
+// 				});
+// 		}
+// 	)
+// );
+
 // =============================================
+
+// router.get('/connect/pushbullet', passport.authenticate('pushbullet-connect'));
+// router.get(
+// 	'/connect/pushbullet/callback',
+// 	passport.authenticate('pushbullet-connect'),
+// 	(req, res) => {
+// 		res.sendStatus(200);
+// 	}
+// );
+router.get('/connect/pushbullet/callback', (req, res) => {
+	console.log(req);
+});
 
 router.get('/user', (req, res) => {
 	// console.log('req.session', req.session);

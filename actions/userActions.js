@@ -8,13 +8,15 @@ let API = axios.create({
 	timeout: 5000
 });
 
+export const connectPushbullet = () => {};
+
 export const checkUserSession = () => {
 	return dispatch => {
 		dispatch({
 			type: 'USER_CHECK_SESSION'
 		});
 
-		return API.get('/user')
+		return API.get('/auth/user')
 			.then(res => {
 				if (res.status == 200) {
 					dispatch({ type: 'USER_LOGGED_IN' });
@@ -30,7 +32,7 @@ export const checkUserSession = () => {
 
 export const login = form => {
 	return dispatch => {
-		return API.post('/login', {
+		return API.post('/auth/login', {
 			...form
 		})
 			.then(res => {
@@ -56,7 +58,7 @@ export const login = form => {
 
 export const signup = form => {
 	return dispatch => {
-		return API.post('/signup', {
+		return API.post('/auth/signup', {
 			...form
 		})
 			.then(res => {

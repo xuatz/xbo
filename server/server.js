@@ -91,7 +91,7 @@ app.get('/', (req, res) => {
 //==============================================================
 
 // app.use(require('./api/random.js'));
-app.use(require('./api/auth.js'));
+app.use('/auth', require('./api/auth.js'));
 
 app.listen(9000, function() {
 	console.log('Example app listening on port 9000!');
