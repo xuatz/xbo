@@ -21,10 +21,12 @@ let options = Object.assign(
 			}
 		}
 	},
-	{
-		user: process.env.DB_USER,
-		pass: process.env.DB_PASSWORD
-	}
+	process.env.DB_HOST != 'localhost'
+		? {
+				user: process.env.DB_USER,
+				pass: process.env.DB_PASSWORD
+			}
+		: {}
 );
 
 mongoose.connect(dbConnectionString, options);

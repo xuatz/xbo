@@ -22,7 +22,7 @@ const Header = () => (
 					timeout: 5000
 				});
 
-				API.get('/logout').then(res => {
+				API.get('/auth/logout').then(res => {
 					console.log(res);
 				});
 			}}>

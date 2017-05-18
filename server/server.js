@@ -45,7 +45,7 @@ let app = express();
 
 let sessionOptions = {
 	store: new RedisStore({
-		host: process.env.REDIS_HOST
+		host: process.env.REDIS_HOST || 'localhost'
 	}),
 	secret: 'keyboard cat',
 	resave: true,

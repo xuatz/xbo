@@ -12,8 +12,6 @@ import Signup from './Signup';
 import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 
 const mapStateToProps = state => {
-	console.log('mapStateToProps', state);
-
 	return {
 		isCheckingSession: state.session.isCheckingSession,
 		isLoggedIn: state.session.isLoggedIn
@@ -44,8 +42,6 @@ class SessionCheckModule extends Component {
 	};
 
 	render() {
-		console.log(this.props);
-
 		return (
 			<div>
 				{this.props.isCheckingSession
