@@ -10,41 +10,11 @@ const Bookmark = require('../models/bookmark.js');
 
 // ==============================
 
-const baseUrl = 'https://api.pushbullet.com/v2/';
-const PUSHBULLET_PERSONAL_ACCESS_TOKEN =
-	process.env.PUSHBULLET_PERSONAL_ACCESS_TOKEN;
-
 const pushbullet = axios.create({
-	baseURL: baseUrl,
-	headers: {
-		'Access-Token': PUSHBULLET_PERSONAL_ACCESS_TOKEN
-	}
-});
-
-// ==============================
-
-router.use((req, res, next) => {
-	console.log('api/bookmark.js', 'i must run first');
-	if (req.method === 'OPTIONS') {
-		next();
-	} else {
-		// if (redisReady) {
-		//  next();
-		// } else {
-		//  res.statusCode = 500;
-		//  res.send('Redis not ready');
-		// }
-		next();
-	}
-});
-
-router.use((req, res, next) => {
-	console.log('api/bookmark.js', 'den run me next');
-	if (req.user) {
-		res.sendStatus(401);
-	} else {
-		next();
-	}
+	baseURL: process.env.PUSHBULLET_API_URL || 'https://api.pushbullet.com/v2/'
+	// headers: {
+	// 	'Access-Token': PUSHBULLET_PERSONAL_ACCESS_TOKEN
+	// }
 });
 
 router.get('/bookmarks', (req, res) => {
@@ -61,6 +31,17 @@ router.get('/bookmarks', (req, res) => {
 			console.log(err);
 			res.status(500).send('Something broke!');
 		});
+});
+
+// ==============================
+
+router.use((req, res, next) => {
+	console.log('api/bookmark.js', 'den run me next');
+	if (req.user) {
+		res.sendStatus(401);
+	} else {
+		next();
+	}
 });
 
 router.get('/bookmarks/fetch', (req, res) => {
