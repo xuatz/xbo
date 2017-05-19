@@ -17,8 +17,8 @@ var UserSchema = new Schema(
 		password: {
 			type: String,
 			required: true
-		}
-		// accounts: [UserAccountsSchema]
+		},
+		accounts: {} //define this schema in future
 	},
 	{
 		timestamps: true,

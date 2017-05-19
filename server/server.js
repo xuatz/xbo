@@ -14,7 +14,7 @@ const User = require('./models/user');
 
 let corsOptions = {
 	credentials: true,
-	origin: ['http://localhost:3000'],
+	origin: ['http://localhost:3000', 'https://www.pushbullet.com/authorize'],
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	preflightContinue: true
 };
@@ -76,16 +76,12 @@ app.all('*', (req, res, next) => {
 	next();
 });
 
-// app.use((req, res, next) => {
-// 	if (req.method === 'OPTIONS') {
-// 		next();
-// 	} else {
-// 		next();
-// 	}
-// });
-
-app.get('/', (req, res) => {
-	res.send('hi guys');
+app.use((req, res, next) => {
+	if (req.method === 'OPTIONS') {
+		next();
+	} else {
+		next();
+	}
 });
 
 //==============================================================

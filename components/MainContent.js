@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import List from './List';
 import GroupCards from './GroupCards';
@@ -46,10 +47,18 @@ class MainContent extends Component {
 	}
 
 	render() {
+		let url =
+			'https://www.pushbullet.com/authorize?client_id=' +
+			'2TXDmPJN0tukzOqu19qvwNCju16SyMb7' +
+			'&redirect_uri=' +
+			'http://localhost:9000/auth/connect/pushbullet/callback' +
+			'&response_type=' +
+			'code';
+
 		return (
 			<div>
 				<div>
-					<a href="http://localhost:9000/auth/connect/pushbullet">
+					<a href={url}>
 						Connect with PushBullet
 					</a>
 				</div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
 let API = axios.create({
-	baseURL: 'http://' + process.env.API_URL,
+	baseURL: process.env.API_URL,
 	withCredentials: true,
 	timeout: 5000
 });

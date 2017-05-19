@@ -3,6 +3,7 @@ const router = express.Router();
 
 const _ = require('lodash');
 const Promise = require('bluebird');
+const axios = require('axios');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -177,8 +178,58 @@ passport.use(
 // 		res.sendStatus(200);
 // 	}
 // );
+router.get('/connect/pushbullet', (req, res) => {
+	let url =
+		'https://www.pushbullet.com/authorize?client_id=' +
+		'2TXDmPJN0tukzOqu19qvwNCju16SyMb7' +
+		'&redirect_uri=' +
+		'http://localhost:9000/auth/connect/pushbullet/callback' +
+		'&response_type=' +
+		'code';
+
+	res.redirect(url);
+});
 router.get('/connect/pushbullet/callback', (req, res) => {
 	console.log(req);
+	axios
+		.request({
+			url: 'https://api.pushbullet.com/oauth2/token',
+			method: 'post',
+			data: {
+				grant_type: 'authorization_code',
+				client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
+				client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
+				code: req.query.code
+			}
+		})
+		.then(resp => {
+			console.log('resp.status', resp.status);
+			console.log('resp.headers', resp.headers);
+			console.log('resp.data', resp.data);
+
+			return User.findOne({
+				_id: req.user.id
+			})
+				.exec()
+				.then(user => {
+					if (!user.accounts) {
+						user.accounts = {};
+					}
+					user.accounts.pushbullet = resp.data;
+					return user.save();
+				});
+		})
+		.then(user => {
+			// console.log(user);
+			let access_token = user.accounts.pushbullet.access_token;
+			//todo fetch pushbullets
+
+			res.redirect('http://localhost:3000');
+		})
+		.catch(err => {
+			console.log(err);
+			res.redirect('http://localhost:3000');
+		});
 });
 
 router.get('/user', (req, res) => {
