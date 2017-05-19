@@ -15,15 +15,16 @@ const Header = () => (
 		</Link>
 		<a
 			href="#"
-			onClick={() => {
+			onClick={e => {
 				let API = axios.create({
-					baseURL: 'http://' + process.env.API_URL,
+					baseURL: process.env.API_URL,
 					withCredentials: true,
 					timeout: 5000
 				});
 
 				API.get('/auth/logout').then(res => {
 					console.log(res);
+					window.location.reload();
 				});
 			}}>
 			shitty logout

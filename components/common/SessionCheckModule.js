@@ -48,18 +48,12 @@ class SessionCheckModule extends Component {
 					? null
 					: this.props.isLoggedIn
 							? this.props.children
-							: <Layout>
-									{this.state.login
-										? <Login
-												onSubmit={this.login}
-												changeMode={this.changeMode}
-											/>
-										: <Signup
-												onSubmit={this.signup}
-												changeMode={this.changeMode}
-											/>}
-
-								</Layout>}
+							: this.state.login
+									? <Login onSubmit={this.login} changeMode={this.changeMode} />
+									: <Signup
+											onSubmit={this.signup}
+											changeMode={this.changeMode}
+										/>}
 			</div>
 		);
 	}
