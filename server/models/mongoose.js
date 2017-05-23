@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+const mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
 
-let dbConnectionString = 'mongodb://';
-dbConnectionString += process.env.DB_HOST || 'localhost';
+let dbConnectionString = "mongodb://";
+dbConnectionString += process.env.DB_HOST || "localhost";
 if (process.env.DB_PORT) {
-	dbConnectionString += ':' + process.env.DB_PORT;
+	dbConnectionString += ":" + process.env.DB_PORT;
 }
-dbConnectionString += '/' + process.env.DB_NAME || 'xbo_development';
+dbConnectionString += "/" + process.env.DB_NAME || "xbo_development";
 
 let options = Object.assign(
 	{
@@ -21,7 +21,7 @@ let options = Object.assign(
 			}
 		}
 	},
-	process.env.DB_HOST != 'localhost'
+	process.env.DB_HOST != "localhost"
 		? {
 				user: process.env.DB_USER,
 				pass: process.env.DB_PASSWORD
@@ -31,14 +31,14 @@ let options = Object.assign(
 
 mongoose.connect(dbConnectionString, options);
 
-mongoose.connection.on('error', function(error) {
-	console.log('mongoose err', error);
+mongoose.connection.on("error", function(error) {
+	console.log("mongoose err", error);
 });
-mongoose.connection.on('connected', function() {
-	console.log('Connection established to MongoDB');
+mongoose.connection.on("connected", function() {
+	console.log("Connection established to MongoDB");
 });
-mongoose.connection.on('reconnected', function() {
-	console.log('Reconnected to MongoDB');
+mongoose.connection.on("reconnected", function() {
+	console.log("Reconnected to MongoDB");
 });
 
 module.exports = mongoose;

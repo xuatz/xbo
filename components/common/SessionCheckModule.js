@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import withRedux from 'next-redux-wrapper';
-import Promise from 'bluebird';
+import React, { Component } from "react";
+import withRedux from "next-redux-wrapper";
+import Promise from "bluebird";
 
-import { initStore } from '../../store';
-import { login, signup, checkUserSession } from '../../actions/userActions';
+import { initStore } from "../../store";
+import { login, signup, checkUserSession } from "../../actions/userActions";
 
-import Layout from './MyLayout.js';
-import Login from './Login';
-import Signup from './Signup';
+import Layout from "./MyLayout.js";
+import Login from "./Login";
+import Signup from "./Signup";
 
-import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
+import { CookiesProvider, withCookies, Cookies } from "react-cookie";
 
 const mapStateToProps = state => {
 	return {

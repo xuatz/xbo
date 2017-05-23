@@ -1,44 +1,44 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const _ = require('lodash');
-const Promise = require('bluebird');
-const axios = require('axios');
+const _ = require("lodash");
+const Promise = require("bluebird");
+const axios = require("axios");
 
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const OAuth1Strategy = require('passport-oauth1').Strategy;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const OAuth1Strategy = require("passport-oauth1").Strategy;
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 passport.use(
-	'local-signup',
+	"local-signup",
 	new LocalStrategy(
 		{
-			usernameField: 'username',
-			passwordField: 'password'
+			usernameField: "username",
+			passwordField: "password"
 		},
 		(username, password, done) => {
 			if (!username) {
-				return done(null, false, { message: 'No username provided' });
+				return done(null, false, { message: "No username provided" });
 			}
 
 			if (!password) {
-				return done(null, false, { message: 'No password provided' });
+				return done(null, false, { message: "No password provided" });
 			}
 
 			User.findOne(
 				{
 					username: username
 				},
-				'-password'
+				"-password"
 			)
 				.exec()
 				.then(user => {
 					if (user) {
-						console.log('Username already taken');
+						console.log("Username already taken");
 						return done(null, false, {
-							message: 'Username already taken'
+							message: "Username already taken"
 						});
 					}
 
@@ -51,7 +51,7 @@ passport.use(
 					// console.log('newUser', newUser)
 					// console.log('newUser._id', newUser._id)
 					// console.log('newUser.id', newUser.id)
-					return User.findOne(newUser._id, '-password').exec();
+					return User.findOne(newUser._id, "-password").exec();
 				})
 				.then(newUser => {
 					return done(null, newUser);
@@ -64,19 +64,19 @@ passport.use(
 );
 
 passport.use(
-	'local-login',
+	"local-login",
 	new LocalStrategy(
 		{
-			usernameField: 'username',
-			passwordField: 'password'
+			usernameField: "username",
+			passwordField: "password"
 		},
 		(username, password, done) => {
 			if (!username) {
-				return done(null, false, { message: 'No username provided' });
+				return done(null, false, { message: "No username provided" });
 			}
 
 			if (!password) {
-				return done(null, false, { message: 'No password provided' });
+				return done(null, false, { message: "No password provided" });
 			}
 
 			User.findOne({
@@ -86,7 +86,7 @@ passport.use(
 				.then(user => {
 					if (!user) {
 						return done(null, false, {
-							message: 'No user found'
+							message: "No user found"
 						});
 					} else {
 						user.comparePassword(password, (err, isMatch) => {
@@ -98,7 +98,7 @@ passport.use(
 								return done(null, user);
 							} else {
 								return done(null, false, {
-									message: 'Password is wrong'
+									message: "Password is wrong"
 								});
 							}
 						});
@@ -178,34 +178,34 @@ passport.use(
 // 		res.sendStatus(200);
 // 	}
 // );
-router.get('/connect/pushbullet', (req, res) => {
+router.get("/connect/pushbullet", (req, res) => {
 	let url =
-		'https://www.pushbullet.com/authorize?client_id=' +
-		'2TXDmPJN0tukzOqu19qvwNCju16SyMb7' +
-		'&redirect_uri=' +
-		'http://localhost:9000/auth/connect/pushbullet/callback' +
-		'&response_type=' +
-		'code';
+		"https://www.pushbullet.com/authorize?client_id=" +
+		"2TXDmPJN0tukzOqu19qvwNCju16SyMb7" +
+		"&redirect_uri=" +
+		"http://localhost:9000/auth/connect/pushbullet/callback" +
+		"&response_type=" +
+		"code";
 
 	res.redirect(url);
 });
-router.get('/connect/pushbullet/callback', (req, res) => {
+router.get("/connect/pushbullet/callback", (req, res) => {
 	console.log(req);
 	axios
 		.request({
-			url: 'https://api.pushbullet.com/oauth2/token',
-			method: 'post',
+			url: "https://api.pushbullet.com/oauth2/token",
+			method: "post",
 			data: {
-				grant_type: 'authorization_code',
+				grant_type: "authorization_code",
 				client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
 				client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
 				code: req.query.code
 			}
 		})
 		.then(resp => {
-			console.log('resp.status', resp.status);
-			console.log('resp.headers', resp.headers);
-			console.log('resp.data', resp.data);
+			console.log("resp.status", resp.status);
+			console.log("resp.headers", resp.headers);
+			console.log("resp.data", resp.data);
 
 			return User.findOne({
 				_id: req.user.id
@@ -224,15 +224,15 @@ router.get('/connect/pushbullet/callback', (req, res) => {
 			let access_token = user.accounts.pushbullet.access_token;
 			//todo fetch pushbullets
 
-			res.redirect('http://localhost:3000');
+			res.redirect("http://localhost:3000");
 		})
 		.catch(err => {
 			console.log(err);
-			res.redirect('http://localhost:3000');
+			res.redirect("http://localhost:3000");
 		});
 });
 
-router.get('/user', (req, res) => {
+router.get("/user", (req, res) => {
 	// console.log('req.session', req.session);
 	// console.log('req.session.cookie', req.session.cookie);
 	// console.log('req.session.id', req.session.id);
@@ -245,7 +245,7 @@ router.get('/user', (req, res) => {
 	}
 });
 
-router.post('/signup', passport.authenticate('local-signup'), (req, res) => {
+router.post("/signup", passport.authenticate("local-signup"), (req, res) => {
 	// console.log('req.session', req.session);
 	// console.log('req.session.cookie', req.session.cookie);
 	// console.log('req.session.id', req.session.id);
@@ -253,7 +253,7 @@ router.post('/signup', passport.authenticate('local-signup'), (req, res) => {
 	res.sendStatus(200);
 });
 
-router.post('/login', passport.authenticate('local-login'), (req, res) => {
+router.post("/login", passport.authenticate("local-login"), (req, res) => {
 	// console.log('req.session', req.session);
 	// console.log('req.session.cookie', req.session.cookie);
 	// console.log('req.session.id', req.session.id);
@@ -261,7 +261,7 @@ router.post('/login', passport.authenticate('local-login'), (req, res) => {
 	res.sendStatus(200);
 });
 
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
 	req.logout();
 	res.sendStatus(200);
 });

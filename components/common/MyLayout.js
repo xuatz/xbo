@@ -1,17 +1,17 @@
-import Header from './Header';
+import Header from "./Header";
 
 const layoutStyle = {
-    margin: '15px 10px',
-    padding: '15px 10px',
-    border: '1px solid #DDD'
+	margin: "15px 10px",
+	padding: "15px 10px",
+	border: "1px solid #DDD"
 };
 
 const Layout = props => (
-    <div style={layoutStyle}>
-        <Header />
+	<div style={layoutStyle}>
+		<Header />
 
-        {props.children}
-    </div>
+		{props.children}
+	</div>
 );
 
 export default Layout;

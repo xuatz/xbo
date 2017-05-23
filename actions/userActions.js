@@ -1,6 +1,6 @@
-import Router from 'next/router';
-import axios from 'axios';
-import { Cookies } from 'react-cookie';
+import Router from "next/router";
+import axios from "axios";
+import { Cookies } from "react-cookie";
 
 let API = axios.create({
 	baseURL: process.env.API_URL,
@@ -13,26 +13,26 @@ export const connectPushbullet = () => {};
 export const checkUserSession = () => {
 	return dispatch => {
 		dispatch({
-			type: 'USER_CHECK_SESSION'
+			type: "USER_CHECK_SESSION"
 		});
 
-		return API.get('/auth/user')
+		return API.get("/auth/user")
 			.then(res => {
 				if (res.status == 200) {
-					dispatch({ type: 'USER_LOGGED_IN' });
+					dispatch({ type: "USER_LOGGED_IN" });
 				} else {
-					dispatch({ type: 'USER_LOGGED_OUT' });
+					dispatch({ type: "USER_LOGGED_OUT" });
 				}
 			})
 			.catch(err => {
-				dispatch({ type: 'USER_LOGGED_OUT' });
+				dispatch({ type: "USER_LOGGED_OUT" });
 			});
 	};
 };
 
 export const login = form => {
 	return dispatch => {
-		return API.post('/auth/login', {
+		return API.post("/auth/login", {
 			...form
 		})
 			.then(res => {
@@ -43,7 +43,7 @@ export const login = form => {
 				}
 
 				if (res.status == 200) {
-					dispatch({ type: 'USER_LOGGED_IN' });
+					dispatch({ type: "USER_LOGGED_IN" });
 				}
 
 				return {
@@ -58,7 +58,7 @@ export const login = form => {
 
 export const signup = form => {
 	return dispatch => {
-		return API.post('/auth/signup', {
+		return API.post("/auth/signup", {
 			...form
 		})
 			.then(res => {
@@ -70,7 +70,7 @@ export const signup = form => {
 				}
 
 				if (res.status == 200) {
-					dispatch({ type: 'USER_LOGGED_IN' });
+					dispatch({ type: "USER_LOGGED_IN" });
 				}
 
 				return {

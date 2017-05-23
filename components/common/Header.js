@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import axios from 'axios';
+import Link from "next/link";
+import axios from "axios";
 
 const linkStyle = {
 	marginRight: 15
@@ -22,7 +22,7 @@ const Header = () => (
 					timeout: 5000
 				});
 
-				API.get('/auth/logout').then(res => {
+				API.get("/auth/logout").then(res => {
 					console.log(res);
 					window.location.reload();
 				});
