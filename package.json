@@ -8,6 +8,7 @@
     "dev:client": "next",
     "dev:server": "nodemon server/server.js",
     "start:server": "node server/server.js",
+    "format": "prettier --jsx-bracket-same-line --use-tabs --write '{actions,components,pages,reducers,server,store,next.config}/**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "next build",
     "start": "next start"
@@ -43,5 +44,8 @@
     "react-cookie": "^2.0.6",
     "react-dom": "^15.5.4",
     "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.3.1"
   }
 }
