@@ -1,17 +1,18 @@
-const mongoose = require('./mongoose.js');
+const mongoose = require("./mongoose.js");
 const Schema = mongoose.Schema;
 
 var BookmarkSchema = new Schema(
-    {
-        userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        pushBody: Schema.Types.Mixed,
-        // stats,
-        // ...rest
-    },
-    {
-        timestamps: true,
-        strict: false,
-    }
+	{
+		// userId: { type: Schema.Types.ObjectId, ref: 'User' },
+		provider: { type: Schema.Types.String },
+		data: Schema.Types.Mixed
+		// stats,
+		// ...rest
+	},
+	{
+		timestamps: true,
+		strict: false
+	}
 );
 
 // var Cat = mongoose.model('Cat', { name: String });
@@ -25,5 +26,5 @@ var BookmarkSchema = new Schema(
 //   }
 // });
 
-const Bookmark = mongoose.model('Bookmark', BookmarkSchema);
+const Bookmark = mongoose.model("Bookmark", BookmarkSchema);
 module.exports = Bookmark;
