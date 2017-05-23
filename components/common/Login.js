@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { Container, Item } from './FlexContainer';
+import React, { Component } from "react";
+import { Container, Item } from "./FlexContainer";
 
 const styles = {
 	inputStyle: {
-		borderRadius: '0.25rem',
-		padding: '1rem',
-		marginBottom: '1rem'
+		borderRadius: "0.25rem",
+		padding: "1rem",
+		marginBottom: "1rem"
 	},
 	submitButton: {
-		padding: '0.6rem',
-		backgroundColor: '#00B9BC',
-		color: '#eee',
-		fontWeight: 'bold',
-		textTransform: 'uppercase'
+		padding: "0.6rem",
+		backgroundColor: "#00B9BC",
+		color: "#eee",
+		fontWeight: "bold",
+		textTransform: "uppercase"
 	}
 };
 
 class Login extends Component {
 	state = {
-		username: '',
-		password: ''
+		username: "",
+		password: ""
 	};
 
 	handleChange = event => {
@@ -31,39 +31,39 @@ class Login extends Component {
 	handleSubmit = event => {
 		event.preventDefault();
 
-		console.log('hi1');
+		console.log("hi1");
 
 		let { username, password } = this.state;
 
 		let errors = [];
 
 		if (!username) {
-			console.log('hi1.1');
-			errors.push('The username field is empty!');
+			console.log("hi1.1");
+			errors.push("The username field is empty!");
 		}
 
 		if (!password) {
-			console.log('hi1.2');
-			errors.push('The password field is empty!');
+			console.log("hi1.2");
+			errors.push("The password field is empty!");
 		}
 
-		console.log('hi2');
+		console.log("hi2");
 
 		if (errors.length > 0) {
-			console.log('hi2.5');
+			console.log("hi2.5");
 			console.log(errors);
 			this.setState({
 				errors
 			});
 		} else {
-			console.log('hi3');
+			console.log("hi3");
 			this.props
 				.onSubmit({
 					username: username,
 					password: this.state.password
 				})
 				.then(res => {
-					console.log('hi4');
+					console.log("hi4");
 					if (res.error) {
 						this.setState({
 							errors: [res.error]
@@ -72,7 +72,7 @@ class Login extends Component {
 				})
 				.catch(err => {
 					this.setState({
-						error: ['server error!!']
+						error: ["server error!!"]
 					});
 				});
 		}
@@ -82,14 +82,14 @@ class Login extends Component {
 		return (
 			<Container
 				style={{
-					justifyContent: 'center'
+					justifyContent: "center"
 				}}>
 				<div
 					style={{
-						background: 'orange',
-						padding: '25px',
-						margin: '20px',
-						borderRadius: '3px'
+						background: "orange",
+						padding: "25px",
+						margin: "20px",
+						borderRadius: "3px"
 					}}>
 					{this.state.errors &&
 						this.state.errors.map((item, key) => {
@@ -105,9 +105,9 @@ class Login extends Component {
 					<form onSubmit={this.handleSubmit}>
 						<Container
 							style={{
-								flexDirection: 'column',
-								borderRadius: '5px',
-								width: '300px'
+								flexDirection: "column",
+								borderRadius: "5px",
+								width: "300px"
 							}}>
 							<input
 								style={styles.inputStyle}
@@ -133,8 +133,8 @@ class Login extends Component {
 
 					<Container
 						style={{
-							justifyContent: 'space-between',
-							alignItems: 'center'
+							justifyContent: "space-between",
+							alignItems: "center"
 						}}>
 						<span>Don't have an account?</span>
 						<button type="button" onClick={this.props.changeMode}>

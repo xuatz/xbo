@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
-import List from './List';
-import GroupCards from './GroupCards';
+import List from "./List";
+import GroupCards from "./GroupCards";
 
-import { Container, Item } from './common/FlexContainer';
+import { Container, Item } from "./common/FlexContainer";
 
-import { initStore, fetchBookmarks } from '../store';
-import withRedux from 'next-redux-wrapper';
+import { initStore, fetchBookmarks } from "../store";
+import withRedux from "next-redux-wrapper";
 
-import _ from 'lodash';
+import _ from "lodash";
 
 const styles = {
 	latestPushes: {
-		flex: '1',
-		border: '1px solid #DDD'
+		flex: "1",
+		border: "1px solid #DDD"
 	},
 	autoCategories: {
-		flex: '5',
-		border: '1px solid #DDD'
+		flex: "5",
+		border: "1px solid #DDD"
 	}
 };
 
@@ -48,12 +48,12 @@ class MainContent extends Component {
 
 	render() {
 		let url =
-			'https://www.pushbullet.com/authorize?client_id=' +
-			'2TXDmPJN0tukzOqu19qvwNCju16SyMb7' +
-			'&redirect_uri=' +
-			'http://localhost:9000/auth/connect/pushbullet/callback' +
-			'&response_type=' +
-			'code';
+			"https://www.pushbullet.com/authorize?client_id=" +
+			"2TXDmPJN0tukzOqu19qvwNCju16SyMb7" +
+			"&redirect_uri=" +
+			"http://localhost:9000/auth/connect/pushbullet/callback" +
+			"&response_type=" +
+			"code";
 
 		return (
 			<div>
