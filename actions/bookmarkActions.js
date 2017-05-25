@@ -1,39 +1,32 @@
-import Router from "next/router";
-import axios from "axios";
+import Router from 'next/router';
+import axios from 'axios';
 
 let API = axios.create({
-	baseURL: process.env.API_URL || "http://locahost:9000",
+	baseURL: process.env.API_URL || 'http://locahost:9000',
+	withCredentials: true,
 	timeout: 5000
 });
 
 export const fetchBookmarks = () => {
 	return dispatch => {
 		//'api.xbo.xuatz.com'
-		return API.get("/bookmarks")
+		return API.get('/bookmarks')
 			.then(res => {
 				dispatch({
-					type: "PUSHES_REPLACE",
+					type: 'BOOKMARKS_REPLACE',
 					bookmarks: res.data || []
 				});
-				dispatch({
-					type: "BOOKMARKS_GROUP_BY_DOMAIN"
-				});
-
-				return API.get("/bookmarks/fetch", {
+				dispatch({ type: 'BOOKMARKS_GROUP_BY_DOMAIN' });
+				return API.get('/bookmarks/fetch', {
 					timeout: 0
 				});
 			})
 			.then(res => {
 				dispatch({
-					type: "PUSHES_REPLACE",
+					type: 'BOOKMARKS_REPLACE',
 					bookmarks: res.data || []
 				});
-				dispatch({
-					type: "BOOKMARKS_GROUP_BY_DOMAIN"
-				});
-			})
-			.catch(err => {
-				console.log(err);
+				dispatch({ type: 'BOOKMARKS_GROUP_BY_DOMAIN' });
 			});
 	};
 };
