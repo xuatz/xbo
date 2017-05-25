@@ -1,41 +1,41 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
 
-import List from "./List";
-import GroupCards from "./GroupCards";
+import List from './List';
+import GroupCards from './GroupCards';
 
-import { Container, Item } from "./common/FlexContainer";
+import { Container, Item } from './common/FlexContainer';
 
-import { initStore, fetchBookmarks } from "../store";
-import withRedux from "next-redux-wrapper";
+import { initStore } from '../store';
 
-import _ from "lodash";
+import { fetchBookmarks } from '../actions/bookmarkActions';
+
+import withRedux from 'next-redux-wrapper';
+
+import _ from 'lodash';
 
 const styles = {
 	latestPushes: {
-		flex: "1",
-		border: "1px solid #DDD"
+		flex: '1',
+		border: '1px solid #DDD'
 	},
 	autoCategories: {
-		flex: "5",
-		border: "1px solid #DDD"
+		flex: '5',
+		border: '1px solid #DDD'
 	}
 };
 
 const mapStateToProps = state => {
-	let { bookmarks = [], stats: { groupByDomain = [] } = {} } = state;
-
+	let { bookmarks = [], stats: { groupByDomain = [] } = {} } = state.bookmarks;
 	return {
 		popularDomains: groupByDomain
-			.sort(function(a, b) {
-				return b.bookmarks.length - a.bookmarks.length;
-			})
-			.slice(0, 9),
+			? groupByDomain
+					.sort((a, b) => b.bookmarks.length - a.bookmarks.length)
+					.slice(0, 9)
+			: [],
 		latestBookmarks: bookmarks
-			.sort(function(a, b) {
-				return b.pushBody.created - a.pushBody.created;
-			})
-			.slice(0, 25)
+			? bookmarks.sort((a, b) => b.data.created - a.data.created).slice(0, 25)
+			: []
 	};
 };
 
@@ -43,17 +43,17 @@ class MainContent extends Component {
 	state = {};
 
 	componentDidMount() {
-		// this.props.dispatch(fetchBookmarks());
+		this.props.dispatch(fetchBookmarks());
 	}
 
 	render() {
 		let url =
-			"https://www.pushbullet.com/authorize?client_id=" +
-			"2TXDmPJN0tukzOqu19qvwNCju16SyMb7" +
-			"&redirect_uri=" +
-			"http://localhost:9000/auth/connect/pushbullet/callback" +
-			"&response_type=" +
-			"code";
+			'https://www.pushbullet.com/authorize?client_id=' +
+			'2TXDmPJN0tukzOqu19qvwNCju16SyMb7' +
+			'&redirect_uri=' +
+			'http://localhost:9000/auth/connect/pushbullet/callback' +
+			'&response_type=' +
+			'code';
 
 		return (
 			<div>

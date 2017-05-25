@@ -1,11 +1,9 @@
 const groupByDomain = bookmarks => {
-	let tmp = _.groupBy(bookmarks, bk => {
-		return bk.stats && bk.stats.domain;
-	});
+	let tmp = _.groupBy(bookmarks, bk => bk.stats && bk.stats.domain);
 
 	let domains = [];
 	_.forIn(tmp, (value, key) => {
-		if (key !== "undefined") {
+		if (key !== 'undefined') {
 			domains.push({
 				domain: key,
 				bookmarks: value.map(bk => {
@@ -20,12 +18,12 @@ const groupByDomain = bookmarks => {
 
 export default (state = [], action) => {
 	switch (action.type) {
-		case "PUSHES_REPLACE":
+		case 'BOOKMARKS_REPLACE':
 			return {
 				...state,
 				bookmarks: action.bookmarks || state.bookmarks
 			};
-		case "BOOKMARKS_GROUP_BY_DOMAIN":
+		case 'BOOKMARKS_GROUP_BY_DOMAIN':
 			return {
 				...state,
 				stats: {
