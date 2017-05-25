@@ -1,18 +1,17 @@
-import Push from "./Push";
+import Bookmark from './Bookmark';
 
-const List = props => {
-	let { bookmarks } = props;
-
+const List = ({ bookmarks }) => {
 	return (
 		<div
 			style={{
-				overflow: "scroll",
-				height: "400px"
+				overflow: 'scroll',
+				height: '400px'
 			}}>
-			{bookmarks.map((bookmark, key) => {
-				//TODO will need some renaming/refactoring in future
-				return <Push key={key} push={bookmark} />;
-			})}
+			{bookmarks &&
+				bookmarks.map((bookmark, key) => {
+					//TODO will need some renaming/refactoring in future
+					return <Bookmark key={key} bookmark={bookmark} />;
+				})}
 		</div>
 	);
 };
