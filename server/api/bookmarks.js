@@ -1,12 +1,13 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const _ = require("lodash");
-const axios = require("axios");
-const Promise = require("bluebird");
-const parseDomain = require("parse-domain");
+const _ = require('lodash');
+const axios = require('axios');
+const Promise = require('bluebird');
+const parseDomain = require('parse-domain');
 
-const Bookmark = require("../models/bookmark.js");
+const Bookmark = require('../models/bookmark.js');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 // ============================================================
 // db.getCollection('bookmarks').find({}).sort({ 'data.created': 1 })
@@ -30,12 +31,12 @@ const getPushbulletBookmarksQuery = queryParams => {
 	return singleRecord
 		? Bookmark.findOne(
 				Object.assign({}, rest, {
-					provider: "pushbullet"
+					provider: 'pushbullet'
 				})
 			)
 		: Bookmark.find(
 				Object.assign({}, rest, {
-					provider: "pushbullet"
+					provider: 'pushbullet'
 				})
 			);
 };
@@ -43,119 +44,77 @@ const getPushbulletBookmarksQuery = queryParams => {
 // ==============================
 
 const pushbullet = axios.create({
-	baseURL: process.env.PUSHBULLET_API_URL || "https://api.pushbullet.com/v2/"
+	baseURL: process.env.PUSHBULLET_API_URL || 'https://api.pushbullet.com/v2/'
 	// headers: {
 	// 	'Access-Token': PUSHBULLET_PERSONAL_ACCESS_TOKEN
 	// }
 });
 
-router.get("/", (req, res) => {
-	Bookmark.find({
-		userId: req.user.id
-	})
-		.exec()
-		.then(bookmarks => {
-			res.json(bookmarks);
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).send("Something broke!");
-		});
-});
-
-// ==============================
-
-router.get("/fetch", (req, res) => {
-	//xz: may include many sources in future
-
-	let { pushbullet } = req.user.accounts;
-
-	if (pushbullet) {
-		fetchFreshPushbullets({
-			userId: req.user.id,
-			access_token: pushbullet.access_token
-		})
-			.then(bookmarks => {
-				res.json(bookmarks);
-			})
-			.catch(err => {
-				res.status(500).send("Something broke!");
-			});
-	}
-
-	//... and more sources in future
-});
-
 // ==============================
 
 const fetchFreshPushbullets = params => {
-	console.log("fetchFreshPushbullets()");
+	console.log('fetchFreshPushbullets()');
 	let { userId, access_token, rebuild = false } = params;
 
-	return (
-		getPushbulletBookmarksQuery({
-			userId,
-			singleRecord: true
+	return getPushbulletBookmarksQuery({
+		userId: new ObjectId(userId),
+		singleRecord: true
+	})
+		.sort({ 'data.modified': -1 }) //SORT DESC
+		.exec()
+		.then(lastModifiedPush => {
+			// console.log('lastModifiedPush');
+			// console.log(JSON.stringify(lastModifiedPush, null, 4));
+
+			// console.log('lastUpdatedPush._id', lastUpdatedPush._id)
+			// console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
+
+			// console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
+			// console.log(lastUpdatedPush.pushBody.modified)
+
+			return fetchPushesBasic2({
+				access_token,
+				modified_after: rebuild || !lastModifiedPush
+					? null
+					: lastModifiedPush.data.modified
+			});
 		})
-			.sort({ "data.modified": -1 }) //SORT DESC
-			.exec()
-			.then(lastModifiedPush => {
-				// console.log('lastUpdatedPush')
-				// console.log(JSON.stringify(lastUpdatedPush, null, 4))
-
-				// console.log('lastUpdatedPush._id', lastUpdatedPush._id)
-				// console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
-
-				// console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
-				// console.log(lastUpdatedPush.pushBody.modified)
-
-				return fetchPushesBasic2({
-					access_token,
-					modified_after: rebuild || !lastUpdatedPush
-						? null
-						: lastModifiedPush.data.modified
-				});
-			})
-			.catch(err => {
-				console.log(err);
-				console.log("============================");
-				console.error(err.stack);
-			})
-			.then(newPushes => {
-				if (newPushes && newPushes.length > 0) {
-					return Promise.map(newPushes, newPush => {
-						//TODO xz: ideally should also check if modified is < newPush.modified
-						return Bookmark.findOneAndUpdate(
-							{
-								provider: "pushbullet",
-								"data.iden": newPush.iden
-							},
-							{
-								$set: {
-									userId,
-									data: newPush
-								}
-							},
-							{
-								upsert: true
+		.catch(err => {
+			console.log(err);
+			console.log('============================');
+			console.error(err.stack);
+		})
+		.then(newPushes => {
+			if (newPushes && newPushes.length > 0) {
+				return Promise.map(newPushes, newPush => {
+					//TODO xz: ideally should also check if modified is < newPush.modified
+					return Bookmark.findOneAndUpdate(
+						{
+							provider: 'pushbullet',
+							'data.iden': newPush.iden
+						},
+						{
+							$set: {
+								userId,
+								data: newPush
 							}
-						).exec();
-					});
-				}
-			})
-			.then(() => getPushbulletBookmarksQuery({ userId }).exec())
-			// .then(getPushbulletBookmarksQuery({ userId }).exec())
-			.then(bookmarks => {
-				console.log("fetchFreshPushbullets() done");
-				return bookmarks; //xz: probably redundant then statement
-			})
-			.catch(err => {
-				console.log(err);
-				console.log("============================");
-				console.error(err.stack);
-				throw err;
-			})
-	);
+						},
+						{
+							upsert: true
+						}
+					).exec();
+				});
+			}
+		})
+		.then(() => {
+			console.log('fetchFreshPushbullets() done');
+			return true;
+		})
+		.catch(err => {
+			console.log('err in fetchFreshPushbullets');
+			console.log(err);
+			throw err;
+		});
 };
 
 const fetchPushesBasic2 = params => {
@@ -169,13 +128,13 @@ const fetchPushesBasic2 = params => {
 		count = 1
 	} = params;
 
-	console.log("fetchPushesBasic2():count:", count);
+	console.log('fetchPushesBasic2():count:', count);
 
 	return pushbullet
 		.request({
-			url: "/pushes",
+			url: '/pushes',
 			headers: {
-				"Access-Token": access_token
+				'Access-Token': access_token
 			},
 			params: {
 				active: true,
@@ -188,7 +147,7 @@ const fetchPushesBasic2 = params => {
 			let newPushes = data.pushes;
 			let nextCursor = data.cursor;
 
-			console.log("newPushes.length", newPushes.length);
+			console.log('newPushes.length', newPushes.length);
 
 			let mergedPushes = pushes.concat(newPushes);
 
@@ -217,16 +176,17 @@ const fetchPushesBasic2 = params => {
 };
 
 const parseUrlFromBookmarks = () => {
-	Bookmark.find({
-		"pushBody.url": { $exists: true },
-		"stats.domain": { $exists: false }
+	return Bookmark.find({
+		provider: 'pushbullet',
+		'data.url': { $exists: true },
+		'stats.domain': { $exists: false }
 	})
 		.exec()
 		.then(bookmarks => {
 			return bookmarks.map(bk => {
-				let { stats, pushBody: { url } } = bk;
+				let { stats, data: { url } } = bk;
 
-				if ("magnet" == url.substring(0, 5)) {
+				if ('magnet' == url.substring(0, 5)) {
 					//TODO can consider if i wan to add them to some category in future
 					// for now do nothing
 				} else {
@@ -247,8 +207,8 @@ const parseUrlFromBookmarks = () => {
 				}
 			});
 		})
-		.then(() => {
-			console.log("done");
+		.then(bookmarks => {
+			return true;
 		});
 };
 
@@ -265,5 +225,48 @@ const parseUrlFromBookmarks = () => {
 // 	.catch(err => {
 // 		throw err;
 // 	});
+
+router.get('/', (req, res) => {
+	Bookmark.find({
+		userId: new ObjectId(req.user.id)
+	})
+		.exec()
+		.then(bookmarks => {
+			res.json(bookmarks);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).send('Something broke!');
+		});
+});
+
+// ==============================
+
+router.get('/fetch', (req, res) => {
+	//xz: may include many sources in future
+
+	let { pushbullet } = req.user.accounts;
+
+	if (pushbullet) {
+		fetchFreshPushbullets({
+			userId: new ObjectId(req.user.id),
+			access_token: pushbullet.access_token
+		})
+			.then(() => parseUrlFromBookmarks())
+			.then(() => Bookmark.find({ userId: new ObjectId(req.user.id) }).exec())
+			.then(bookmarks => {
+				// console.log('bookmarks.length', bookmarks.length);
+				res.json(bookmarks);
+			})
+			.catch(err => {
+				console.log(err);
+				res.status(500).send('Something broke!');
+			});
+	} else {
+		return res.json([]);
+	}
+
+	//... and more sources in future
+});
 
 module.exports = router;
