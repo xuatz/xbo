@@ -16,6 +16,30 @@ const groupByDomain = bookmarks => {
 	return domains;
 };
 
+const groupByHashtag = bookmarks => {
+	const hashtags = ['guide', 'todo'];
+
+	let tmp = {};
+
+	bookmarks.map((bk, index) => {
+		let { body } = bk.data;
+
+		if (body) {
+			hashtags.map(hashtag => {
+				if (body.toLowerCase().indexOf('#' + hashtag) !== -1) {
+					if (!tmp[hashtag]) {
+						tmp[hashtag] = [];
+					}
+					console.log(bk);
+					tmp[hashtag].push(bk._id);
+				}
+			});
+		}
+	});
+	console.log(tmp);
+	return tmp;
+};
+
 export default (state = [], action) => {
 	switch (action.type) {
 		case 'BOOKMARKS_REPLACE':
@@ -29,6 +53,14 @@ export default (state = [], action) => {
 				stats: {
 					...state.stats,
 					groupByDomain: groupByDomain(state.bookmarks)
+				}
+			};
+		case 'BOOKMARKS_GROUP_BY_HASHTAG':
+			return {
+				...state,
+				stats: {
+					...state.stats,
+					groupByHashtag: groupByHashtag(state.bookmarks)
 				}
 			};
 		default:

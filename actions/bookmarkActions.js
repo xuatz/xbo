@@ -16,7 +16,6 @@ export const fetchBookmarks = () => {
 					type: 'BOOKMARKS_REPLACE',
 					bookmarks: res.data || []
 				});
-				dispatch({ type: 'BOOKMARKS_GROUP_BY_DOMAIN' });
 				return API.get('/bookmarks/fetch', {
 					timeout: 0
 				});
@@ -27,6 +26,7 @@ export const fetchBookmarks = () => {
 					bookmarks: res.data || []
 				});
 				dispatch({ type: 'BOOKMARKS_GROUP_BY_DOMAIN' });
+				dispatch({ type: 'BOOKMARKS_GROUP_BY_HASHTAG' });
 			});
 	};
 };
