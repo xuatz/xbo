@@ -15,12 +15,12 @@ import withRedux from 'next-redux-wrapper';
 import _ from 'lodash';
 
 const styles = {
-	latestPushes: {
-		flex: '1',
+	autoCategories: {
+		flex: '3',
 		border: '1px solid #DDD'
 	},
-	autoCategories: {
-		flex: '5',
+	latestPushes: {
+		flex: '1',
 		border: '1px solid #DDD'
 	}
 };
