@@ -2,5 +2,5 @@
 {
     "editor.formatOnSave": true,
     "prettier.jsxBracketSameLine": true,
-    "prettier.useTabs": true
+    "prettier.tabWidth": 4
 }
