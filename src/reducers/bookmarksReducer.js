@@ -34,8 +34,11 @@ const groupByHashtag = bookmarks => {
                     }
                     tmp[hashtag].push(bk._id);
                 }
+                return true;
             });
         }
+
+        return true;
     });
     return tmp;
 };

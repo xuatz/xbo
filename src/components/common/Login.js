@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Container, Item } from "./FlexContainer";
+import {
+    Container
+    // Item
+} from "./FlexContainer";
 
 const styles = {
     inputStyle: {

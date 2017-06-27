@@ -97,7 +97,7 @@ const isLoggedIn = (req, res, next) => {
 
 // app.use(require('./api/random.js'));
 app.use("/auth", require("./api/auth.js"));
-app.use("/bookmarks", isLoggedIn, require("./api/bookmarks.js"));
+app.use("/bookmarks", isLoggedIn, require("./api/bookmarks.js").router);
 
 //==============================================================
 

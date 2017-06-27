@@ -9,22 +9,20 @@ const styles = {
     }
 };
 
-export const Container = ({ style = {}, children }) => (
+export const Container = ({ style = {}, children }) =>
     <div
         style={{
             ...styles.container,
             ...style
         }}>
         {children}
-    </div>
-);
+    </div>;
 
-export const Item = ({ style = {}, children }) => (
+export const Item = ({ style = {}, children }) =>
     <div
         style={{
             ...styles.item,
             ...style
         }}>
         {children}
-    </div>
-);
+    </div>;

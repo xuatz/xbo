@@ -6,8 +6,7 @@ const layoutStyle = {
     // border: '1px solid #DDD'
 };
 
-export default props => (
+export default props =>
     <div style={layoutStyle}>
         {props.children}
-    </div>
-);
+    </div>;

@@ -7,7 +7,7 @@ const Promise = require("bluebird");
 const parseDomain = require("parse-domain");
 
 const Bookmark = require("../models/bookmark.js");
-var ObjectId = require("mongoose").Types.ObjectId;
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // ============================================================
 // db.getCollection('bookmarks').find({}).sort({ 'data.created': 1 })
@@ -274,4 +274,11 @@ router.get("/fetch", (req, res) => {
     //... and more sources in future
 });
 
-module.exports = router;
+const getMagicBookmarks = userID => {
+    console.log("raaaa");
+};
+
+module.exports = {
+    router,
+    getMagicBookmarks
+};

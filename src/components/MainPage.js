@@ -3,10 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { Container, Item } from "./common/FlexContainer";
-import GroupCards from "./GroupCards";
-import List from "./List";
-
+import {
+    Container
+    // Item
+} from "./common/FlexContainer";
 import * as actions from "../actions/bookmarkActions";
 
 const mapStateToProps = state => {
@@ -32,16 +32,16 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)
 });
 
-const styles = {
-    autoCategories: {
-        flex: "3",
-        border: "1px solid #DDD"
-    },
-    latestPushes: {
-        flex: "1",
-        border: "1px solid #DDD"
-    }
-};
+// const styles = {
+//     autoCategories: {
+//         flex: "3",
+//         border: "1px solid #DDD"
+//     },
+//     latestPushes: {
+//         flex: "1",
+//         border: "1px solid #DDD"
+//     }
+// };
 
 const ShittyHeader = props => {
     let url =
@@ -64,12 +64,13 @@ const ShittyHeader = props => {
                 </a>
             </div>
             <div style={linkStyle}>
-                <a
+                <button
                     href="#"
                     onClick={e => {
                         let API = axios.create({
-                            baseURL: process.env.REACT_APP_API_URL ||
-                                "http://localhost:9000",
+                            baseURL:
+                                process.env.REACT_APP_API_URL ||
+                                    "http://localhost:9000",
                             withCredentials: true,
                             timeout: 5000
                         });
@@ -79,7 +80,7 @@ const ShittyHeader = props => {
                         });
                     }}>
                     shitty logout
-                </a>
+                </button>
             </div>
 
         </div>
@@ -88,7 +89,7 @@ const ShittyHeader = props => {
 
 class MainPage extends Component {
     componentDidMount() {
-        this.props.actions.fetchBookmarks();
+        // this.props.actions.fetchBookmarks();
     }
 
     render() {
@@ -97,9 +98,6 @@ class MainPage extends Component {
                 <ShittyHeader />
                 <Container>
                     {/*
-                    
-                
-                    */}
                     <Item style={styles.autoCategories}>
                         <h1>Auto Categories</h1>
                         <GroupCards
@@ -110,6 +108,9 @@ class MainPage extends Component {
                         <h1>Latest Pushes</h1>
                         <List bookmarks={this.props.latestBookmarks || []} />
                     </Item>
+                
+                    */}
+                    Container Placeholder
                 </Container>
             </div>
         );
