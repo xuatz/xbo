@@ -5,6 +5,7 @@ const _ = require("lodash");
 const axios = require("axios");
 const Promise = require("bluebird");
 const parseDomain = require("parse-domain");
+const moment = require("moment");
 
 const Bookmark = require("../models/bookmark.js");
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -227,20 +228,6 @@ const parseUrlFromBookmarks = () => {
 // 		throw err;
 // 	});
 
-router.get("/", (req, res) => {
-    Bookmark.find({
-        userId: new ObjectId(req.user.id)
-    })
-        .exec()
-        .then(bookmarks => {
-            res.json(bookmarks);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send("Something broke!");
-        });
-});
-
 // ==============================
 
 router.get("/fetch", (req, res) => {
@@ -274,11 +261,86 @@ router.get("/fetch", (req, res) => {
     //... and more sources in future
 });
 
-const getMagicBookmarks = userID => {
-    console.log("raaaa");
+const getMagicUncategorisedBookmarks = (params = {}) => {
+    let { userId } = params;
+
+    // let recently be 6 days for now
+    let recently = moment().format("X") - 24 * 60 * 60 * 10;
+
+    return (
+        Bookmark.find({
+            userId: new ObjectId(userId)
+        })
+            // .where("data.created")
+            // .gte(recently)
+            .sort({ "data.created": "desc" })
+            .or([{ status: undefined }, { status: "uncategorised" }])
+            // .where("status")
+            // .equals(undefined)
+            .limit(50)
+            .exec()
+            .then(bookmarks => {
+                // console.log("woohoo2");
+                // console.log(bookmarks);
+                console.log(bookmarks.length);
+                return bookmarks;
+            })
+            .then(bookmarks => {
+                let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
+                let right = bookmarks.slice(
+                    Math.min(bookmarks.length, 4),
+                    bookmarks.length
+                );
+
+                // console.log("left.length", left.length);
+                // console.log("right.length", right.length);
+
+                // left.forEach(bk => {
+                //     // console.log(bk.createdAt);
+                //     console.log(bk.data);
+                //     console.log(bk.data.created);
+                // });
+
+                return [].concat(
+                    left,
+                    _.shuffle(right).slice(0, Math.min(right.length, 6))
+                );
+            })
+            .then(bookmarks => {
+                console.log(bookmarks);
+                console.log(bookmarks.length);
+                return bookmarks;
+            })
+    );
 };
+
+router.get("/", (req, res) => {
+    let { type } = req.query;
+
+    Promise.resolve()
+        .then(() => {
+            switch (type) {
+                case "magic":
+                    return getMagicUncategorisedBookmarks({
+                        userId: req.user.id
+                    });
+                default:
+                    return Bookmark.find({
+                        userId: new ObjectId(req.user.id)
+                    }).exec();
+            }
+        })
+        .then(bookmarks => {
+            // console.log('bookmarks.length', bookmarks.length);
+            res.json(bookmarks);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send("Something broke!");
+        });
+});
 
 module.exports = {
     router,
-    getMagicBookmarks
+    getMagicUncategorisedBookmarks
 };

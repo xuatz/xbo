@@ -7,6 +7,8 @@ import {
     Container
     // Item
 } from "./common/FlexContainer";
+import UncategorisedBookmarks from "./UncategorisedBookmarks";
+
 import * as actions from "../actions/bookmarkActions";
 
 const mapStateToProps = state => {
@@ -110,7 +112,8 @@ class MainPage extends Component {
                     </Item>
                 
                     */}
-                    Container Placeholder
+
+                    <UncategorisedBookmarks />
                 </Container>
             </div>
         );

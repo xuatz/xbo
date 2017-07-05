@@ -6,6 +6,19 @@ let API = axios.create({
     timeout: 5000
 });
 
+export const getBookmarksUncategorised = () => {
+    return dispatch => {
+        return API.get("/bookmarks?type=magic").then(res => {
+            if (res.status === 200) {
+                dispatch({
+                    type: "BOOKMARKS_UNCATEGORISED_REPLACE",
+                    uncategorisedBookmarks: res.data || []
+                });
+            }
+        });
+    };
+};
+
 export const fetchBookmarks = () => {
     return dispatch => {
         //'api.xbo.xuatz.com'
