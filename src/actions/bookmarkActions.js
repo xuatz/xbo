@@ -6,13 +6,27 @@ let API = axios.create({
     timeout: 5000
 });
 
+export const deleteBookmark = id => {
+    return dispatch => {
+        dispatch({
+            type: "BOOKMARKS_REMOVE_BY_ID",
+            id
+        });
+
+        return API.delete("/bookmarks/" + id).then(res => {
+            // if (res.status === 200) {
+            // }
+        });
+    };
+};
+
 export const getBookmarksUncategorised = () => {
     return dispatch => {
         return API.get("/bookmarks?type=magic").then(res => {
             if (res.status === 200) {
                 dispatch({
                     type: "BOOKMARKS_UNCATEGORISED_REPLACE",
-                    uncategorisedBookmarks: res.data || []
+                    uncategorised: res.data || []
                 });
             }
         });

@@ -6,6 +6,7 @@ import SessionCheckModule from "../components/common/SessionCheckModule";
 
 import MainPage from "../components/MainPage";
 import Profile from "../components/Profile";
+import Organiser from "../components/Organiser";
 
 import AboutPage from "../components/AboutPage";
 
@@ -26,7 +27,7 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/organiser"
-                                component={MainPage}
+                                component={Organiser}
                             />
                             <Route exact path="/curated" component={MainPage} />
                             <Route exact path="/all" component={MainPage} />

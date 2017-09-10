@@ -44,7 +44,7 @@ const getPushbulletBookmarksQuery = queryParams => {
 
 // ==============================
 
-const pushbullet = axios.create({
+const PB_API = axios.create({
     baseURL: "https://api.pushbullet.com/v2/"
 });
 
@@ -129,18 +129,17 @@ const fetchPushesBasic = params => {
 
     console.log("fetchPushesBasic():count:", count);
 
-    return pushbullet
-        .request({
-            url: "/pushes",
-            headers: {
-                "Access-Token": access_token
-            },
-            params: {
-                active: true,
-                cursor,
-                modified_after
-            }
-        })
+    return PB_API.request({
+        url: "/pushes",
+        headers: {
+            "Access-Token": access_token
+        },
+        params: {
+            active: true,
+            cursor,
+            modified_after
+        }
+    })
         .then(res => {
             let { status, statusText, data } = res;
             let newPushes = data.pushes;
@@ -268,16 +267,12 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
     let recently = moment().format("X") - 24 * 60 * 60 * 10;
 
     return (
-        Bookmark.find({
+        getPushbulletBookmarksQuery({
             userId: new ObjectId(userId)
         })
-            // .where("data.created")
-            // .gte(recently)
-            .sort({ "data.created": "desc" })
+            .sort({ "data.modified": -1 })
+            // .sort({ "stats.viewCount": -1 }) //SORT DESC
             .or([{ status: undefined }, { status: "uncategorised" }])
-            // .where("status")
-            // .equals(undefined)
-            .limit(50)
             .exec()
             .then(bookmarks => {
                 let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
@@ -288,8 +283,37 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
 
                 return [].concat(
                     left,
-                    _.shuffle(right).slice(0, Math.min(right.length, 6))
+                    _.shuffle(
+                        right
+                            .sort((a, b) => {
+                                if (a.stats && b.stats) {
+                                    return (
+                                        b.stats.viewCount - a.stats.viewCount
+                                    );
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            .slice(10)
+                    ).slice(0, Math.min(right.length, 6))
                 );
+            })
+            .then(bookmarks => {
+                Promise.map(bookmarks, bk => {
+                    return bk
+                        .update(
+                            {
+                                $inc: { "stats.viewCount": 1 }
+                            },
+                            {
+                                multi: false
+                                // upsert: true,
+                                // overwrite: true,
+                            }
+                        )
+                        .exec();
+                });
+                return bookmarks;
             })
             .then(bookmarks => {
                 // console.log(bookmarks);
@@ -321,6 +345,53 @@ router.get("/", (req, res) => {
         .catch(err => {
             console.log(err);
             res.status(500).send("Something broke!");
+        });
+});
+
+const deletePush = iden => {
+    return;
+
+    return new Promise((resolve, reject) => {
+        if (iden !== undefined) {
+            asdasdasd;
+        } else {
+            resolve(null);
+        }
+    });
+};
+
+router.delete("/:id", (req, res) => {
+    // console.log(req.query);
+    console.log(req.params);
+
+    let { pushbullet } = req.user.providers;
+
+    Bookmark.findById(req.params.id)
+        .exec()
+        .then(bk => {
+            if (bk) {
+                switch (bk.provider) {
+                    case "pushbullet": {
+                        return PB_API({
+                            method: "delete",
+                            url: "/pushes/" + bk.data.iden,
+                            headers: {
+                                "Access-Token": pushbullet.access_token
+                            }
+                        })
+                            .then(res => {
+                                if (res.status === 200) {
+                                    return bk.remove();
+                                }
+                                res.sendStatus(200);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).send("Something broke!");
+                            });
+                    }
+                }
+            }
         });
 });
 

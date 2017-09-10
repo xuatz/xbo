@@ -43,8 +43,30 @@ const groupByHashtag = bookmarks => {
     return tmp;
 };
 
-export default (state = [], action) => {
+const initialState = {
+    bookmarks: [],
+    uncategorised: []
+};
+
+export default (state = initialState, action) => {
     switch (action.type) {
+        case "BOOKMARKS_REMOVE_BY_ID": {
+            return {
+                ...state,
+                uncategorised: state.uncategorised.filter(bk => {
+                    return bk._id !== action.id;
+                }),
+                bookmarks: state.bookmarks.filter(bk => {
+                    return bk._id !== action.id;
+                })
+            };
+        }
+        case "BOOKMARKS_UNCATEGORISED_REPLACE": {
+            return {
+                ...state,
+                uncategorised: action.uncategorised
+            };
+        }
         case "BOOKMARKS_REPLACE":
             return {
                 ...state,
