@@ -15,7 +15,7 @@ export const checkUserSession = () => {
         return API.get("/auth/user")
             .then(res => {
                 if (res.status === 200) {
-                    dispatch({ type: "USER_LOGGED_IN" });
+                    dispatch({ type: "USER_LOGGED_IN", user: res.data });
                 } else {
                     dispatch({ type: "USER_LOGGED_OUT" });
                 }
@@ -39,7 +39,7 @@ export const login = form => {
                 }
 
                 if (res.status === 200) {
-                    dispatch({ type: "USER_LOGGED_IN" });
+                    dispatch({ type: "USER_LOGGED_IN", user: res.data });
                 }
 
                 return {
