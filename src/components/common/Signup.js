@@ -16,10 +16,11 @@ const styles = {
     }
 };
 
-class Login extends Component {
+class Signup extends Component {
     state = {
         username: "",
-        password: ""
+        password1: "",
+        password2: ""
     };
 
     handleChange = event => {
@@ -30,8 +31,7 @@ class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-
-        let { username, password } = this.state;
+        let { username, password1, password2 } = this.state;
 
         let errors = [];
 
@@ -39,12 +39,15 @@ class Login extends Component {
             errors.push("The username field is empty!");
         }
 
-        if (!password) {
+        if (!password1 || !password2) {
             errors.push("The password field is empty!");
         }
 
+        if (password1 && password2 && password1 !== password2) {
+            errors.push("The passwords are not the same!");
+        }
+
         if (errors.length > 0) {
-            console.log(errors);
             this.setState({
                 errors
             });
@@ -52,7 +55,7 @@ class Login extends Component {
             this.props
                 .onSubmit({
                     username: username,
-                    password: this.state.password
+                    password: password1
                 })
                 .then(res => {
                     if (res.error) {
@@ -60,10 +63,15 @@ class Login extends Component {
                             errors: [res.error]
                         });
                     }
+
+                    if (res.status === 200) {
+                        console.log("signup success!");
+                    }
                 })
                 .catch(err => {
+                    console.log(err);
                     this.setState({
-                        error: ["server error!!"]
+                        errors: ["server error!!"]
                     });
                 });
         }
@@ -71,14 +79,12 @@ class Login extends Component {
 
     render() {
         return (
-            <Container
-                style={{
-                    justifyContent: "center"
-                }}>
+            <Container style={{ justifyContent: "center" }}>
                 <div
                     style={{
                         background: "orange",
                         padding: "25px",
+                        // padding: '25px 25px 18px',
                         margin: "20px",
                         borderRadius: "3px"
                     }}>
@@ -112,14 +118,22 @@ class Login extends Component {
                                 style={styles.inputStyle}
                                 type="password"
                                 placeholder="Password"
-                                name="password"
-                                value={this.state.password}
+                                name="password1"
+                                value={this.state.password1}
+                                onChange={this.handleChange}
+                            />
+                            <input
+                                style={styles.inputStyle}
+                                type="password"
+                                placeholder="Re-enter Password"
+                                name="password2"
+                                value={this.state.password2}
                                 onChange={this.handleChange}
                             />
                             <input
                                 style={styles.submitButton}
                                 type="submit"
-                                value="Login"
+                                value="Sign Up"
                             />
                         </Container>
                     </form>
@@ -131,9 +145,9 @@ class Login extends Component {
                             justifyContent: "space-between",
                             alignItems: "center"
                         }}>
-                        <span>Don't have an account?</span>
+                        <span>Have an account?</span>
                         <button type="button" onClick={this.props.changeMode}>
-                            Sign Up
+                            Log In
                         </button>
                     </Container>
                 </div>
@@ -143,4 +157,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default Signup;

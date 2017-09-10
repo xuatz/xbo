@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-// import Layout from '../components/common/MyLayout'
 import SessionCheckModule from "../components/common/SessionCheckModule";
-import MainPage from "./MainPage";
+
+import MainPage from "../components/MainPage";
+import Profile from "../components/Profile";
+
+import AboutPage from "../components/AboutPage";
 
 import configureStore from "../store";
 
@@ -14,7 +18,20 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <SessionCheckModule>
-                    <MainPage />
+                    <Router>
+                        <div>
+                            {/* <Header /> */}
+                            <Route exact path="/" component={MainPage} />
+                            <Route exact path="/profile" component={Profile} />
+                            <Route
+                                exact
+                                path="/organiser"
+                                component={MainPage}
+                            />
+                            <Route exact path="/curated" component={MainPage} />
+                            <Route exact path="/all" component={MainPage} />
+                        </div>
+                    </Router>
                 </SessionCheckModule>
             </Provider>
         );

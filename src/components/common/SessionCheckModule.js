@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import Login from "./Login";
+import Signup from "./Signup";
 
 import * as actions from "../../actions/userActions";
 
@@ -47,14 +48,19 @@ class SessionCheckModule extends Component {
     render() {
         return (
             <div>
-                {this.props.isCheckingSession
-                    ? null
-                    : this.props.isLoggedIn
-                      ? this.props.children
-                      : <Login
-                            onSubmit={this.props.actions.login}
-                            changeMode={this.changeMode}
-                        />}
+                {this.props.isCheckingSession ? null : this.props.isLoggedIn ? (
+                    this.props.children
+                ) : this.state.login ? (
+                    <Login
+                        onSubmit={this.props.actions.login}
+                        changeMode={this.changeMode}
+                    />
+                ) : (
+                    <Signup
+                        onSubmit={this.props.actions.signup}
+                        changeMode={this.changeMode}
+                    />
+                )}
             </div>
         );
     }

@@ -1,45 +1,45 @@
 {
-  "name": "xbo2",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.16.2",
-    "bcryptjs": "^2.4.3",
-    "bluebird": "^3.5.0",
-    "body-parser": "^1.17.2",
-    "connect-mongodb-session": "^1.3.0",
-    "cors": "^2.8.3",
-    "express": "^4.15.3",
-    "express-session": "^1.15.3",
-    "lodash": "^4.17.4",
-    "moment-timezone": "^0.5.13",
-    "momentjs": "^2.0.0",
-    "mongoose": "^4.10.8",
-    "parse-domain": "^1.1.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-redux": "^5.0.5",
-    "redux": "^3.7.1",
-    "redux-thunk": "^2.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.11.0",
-    "prettier": "^1.3.1",
-    "react-scripts": "1.0.7"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "start:server": "node server/server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
-    "prettier:win": "prettier --jsx-bracket-same-line --tab-width 4 --write src/**/**/*.js",
-    "dev": "yarn install && yarn run dev:both",
-    "dev:both": "npm run dev:client & npm run dev:server",
-    "dev:client": "npm run start",
-    "dev:server": "nodemon src/server/server.js"
-  }
+    "name": "xbo2",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "axios": "^0.16.2",
+        "bcryptjs": "^2.4.3",
+        "bluebird": "^3.5.0",
+        "body-parser": "^1.17.2",
+        "connect-mongodb-session": "^1.3.0",
+        "cors": "^2.8.3",
+        "express": "^4.15.3",
+        "express-session": "^1.15.3",
+        "lodash": "^4.17.4",
+        "moment-timezone": "^0.5.13",
+        "momentjs": "^2.0.0",
+        "mongoose": "^4.10.8",
+        "parse-domain": "^1.1.0",
+        "passport": "^0.3.2",
+        "passport-local": "^1.0.0",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "react-redux": "^5.0.5",
+        "react-router": "^4.2.0",
+        "react-router-dom": "^4.2.2",
+        "react-scripts": "1.0.12",
+        "redux": "^3.6.0",
+        "redux-thunk": "^2.2.0",
+        "styled-components": "^2.1.2"
+    },
+    "devDependencies": {
+        "nodemon": "^1.11.0",
+        "prettier": "^1.4.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject",
+        "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
+        "dev": "yarn install && npm run dev:client & npm run dev:server",
+        "dev:client": "npm run start",
+        "dev:server": "nodemon src/server/server.js"
+    }
 }
