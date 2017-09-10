@@ -9,6 +9,31 @@ const axios = require("axios");
 
 const User = require("../models/user");
 
+const { fetchFreshPushbullets } = require("./bookmarks.js");
+
+const loginTasks = (req, res) => {
+    let providers = {};
+    if (req.user && req.user.providers) {
+        Object.keys(req.user.providers).map(key => {
+            if (req.user.providers[key]) {
+                providers[key] = true;
+                switch (key) {
+                    case "pushbullet": {
+                        fetchFreshPushbullets({
+                            userId: req.user.id,
+                            access_token:
+                                req.user.providers.pushbullet.access_token
+                        });
+                    }
+                }
+            }
+        });
+    }
+    res.send({
+        providers
+    });
+};
+
 passport.use(
     "local-signup",
     new LocalStrategy(
@@ -116,27 +141,18 @@ router.get("/user", (req, res) => {
     // console.log('req.sessionID', req.sessionID);
     // console.log("req.user", req.user);
     if (req.user) {
-        let providers = {};
-
-        Object.keys(req.user.providers).map(key => {
-            if (req.user.providers[key]) {
-                providers[key] = true;
-            }
-        });
-
-        res.send({
-            providers
-        });
+        loginTasks(req, res);
     } else {
         res.sendStatus(401);
     }
 });
 
 router.post("/signup", passport.authenticate("local-signup"), (req, res) => {
-    // console.log('req.session', req.session);
+    // console.log("req.session", req.session);
     // console.log('req.session.cookie', req.session.cookie);
     // console.log('req.session.id', req.session.id);
     // console.log('req.sessionID', req.sessionID);
+    // console.log(req.user);
     res.sendStatus(200);
 });
 
@@ -147,17 +163,7 @@ router.post("/login", passport.authenticate("local-login"), (req, res) => {
     // console.log('req.sessionID', req.sessionID);
     // console.log(req.user);
 
-    let providers = {};
-
-    Object.keys(req.user.providers).map(key => {
-        if (req.user.providers[key]) {
-            providers[key] = true;
-        }
-    });
-
-    res.send({
-        providers
-    });
+    loginTasks(req, res);
 });
 
 router.get("/logout", (req, res) => {
@@ -198,7 +204,7 @@ router.get("/connect/pushbullet/callback", (req, res) => {
         })
         .then(user => {
             // console.log(user);
-            // let access_token = user.accounts.pushbullet.access_token;
+            // let access_token = user.providers.pushbullet.access_token;
             //todo fetch pushbullets
             res.redirect("http://localhost:3000/profile");
         })
@@ -208,4 +214,4 @@ router.get("/connect/pushbullet/callback", (req, res) => {
         });
 });
 
-module.exports = router;
+module.exports = { router };

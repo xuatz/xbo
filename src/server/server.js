@@ -88,7 +88,8 @@ app.use((req, res, next) => {
 
 //==============================================================
 
-app.use("/auth", require("./api/auth.js"));
+app.use("/auth", require("./api/auth.js").router);
+app.use("/bookmarks", require("./api/bookmarks.js").router);
 
 app.listen(9000, function() {
     console.log("Example app listening on port 9000!");

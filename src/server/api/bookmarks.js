@@ -70,11 +70,12 @@ const fetchFreshPushbullets = params => {
             // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
             // console.log(lastUpdatedPush.pushBody.modified)
 
-            return fetchPushesBasic2({
+            return fetchPushesBasic({
                 access_token,
-                modified_after: rebuild || !lastModifiedPush
-                    ? null
-                    : lastModifiedPush.data.modified
+                modified_after:
+                    rebuild || !lastModifiedPush
+                        ? null
+                        : lastModifiedPush.data.modified
             });
         })
         .catch(err => {
@@ -93,7 +94,7 @@ const fetchFreshPushbullets = params => {
                         },
                         {
                             $set: {
-                                userId,
+                                userId: new ObjectId(userId),
                                 data: newPush
                             }
                         },
@@ -115,7 +116,7 @@ const fetchFreshPushbullets = params => {
         });
 };
 
-const fetchPushesBasic2 = params => {
+const fetchPushesBasic = params => {
     const demoLimit = 2;
 
     let {
@@ -126,7 +127,7 @@ const fetchPushesBasic2 = params => {
         count = 1
     } = params;
 
-    console.log("fetchPushesBasic2():count:", count);
+    console.log("fetchPushesBasic():count:", count);
 
     return pushbullet
         .request({
@@ -153,7 +154,7 @@ const fetchPushesBasic2 = params => {
             if (nextCursor) {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        fetchPushesBasic2({
+                        fetchPushesBasic({
                             access_token,
                             cursor: nextCursor,
                             pushes: mergedPushes,
@@ -232,8 +233,7 @@ const parseUrlFromBookmarks = () => {
 
 router.get("/fetch", (req, res) => {
     //xz: may include many sources in future
-
-    let { pushbullet } = req.user.accounts;
+    let { pushbullet } = req.user.providers;
 
     if (pushbullet) {
         fetchFreshPushbullets({
@@ -264,7 +264,7 @@ router.get("/fetch", (req, res) => {
 const getMagicUncategorisedBookmarks = (params = {}) => {
     let { userId } = params;
 
-    // let recently be 6 days for now
+    // let recently be 6 days, for now
     let recently = moment().format("X") - 24 * 60 * 60 * 10;
 
     return (
@@ -280,26 +280,11 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
             .limit(50)
             .exec()
             .then(bookmarks => {
-                // console.log("woohoo2");
-                // console.log(bookmarks);
-                console.log(bookmarks.length);
-                return bookmarks;
-            })
-            .then(bookmarks => {
                 let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
                 let right = bookmarks.slice(
                     Math.min(bookmarks.length, 4),
                     bookmarks.length
                 );
-
-                // console.log("left.length", left.length);
-                // console.log("right.length", right.length);
-
-                // left.forEach(bk => {
-                //     // console.log(bk.createdAt);
-                //     console.log(bk.data);
-                //     console.log(bk.data.created);
-                // });
 
                 return [].concat(
                     left,
@@ -307,8 +292,8 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
                 );
             })
             .then(bookmarks => {
-                console.log(bookmarks);
-                console.log(bookmarks.length);
+                // console.log(bookmarks);
+                // console.log(bookmarks.length);
                 return bookmarks;
             })
     );
@@ -316,7 +301,6 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
 
 router.get("/", (req, res) => {
     let { type } = req.query;
-
     Promise.resolve()
         .then(() => {
             switch (type) {
@@ -331,7 +315,7 @@ router.get("/", (req, res) => {
             }
         })
         .then(bookmarks => {
-            // console.log('bookmarks.length', bookmarks.length);
+            console.log("bookmarks.length", bookmarks.length);
             res.json(bookmarks);
         })
         .catch(err => {
@@ -342,5 +326,6 @@ router.get("/", (req, res) => {
 
 module.exports = {
     router,
-    getMagicUncategorisedBookmarks
+    getMagicUncategorisedBookmarks,
+    fetchFreshPushbullets
 };
