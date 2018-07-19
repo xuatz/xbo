@@ -31,15 +31,15 @@ const getPushbulletBookmarksQuery = queryParams => {
 
     return singleRecord
         ? Bookmark.findOne(
-              Object.assign({}, rest, {
-                  provider: "pushbullet"
-              })
-          )
+            Object.assign({}, rest, {
+                provider: "pushbullet"
+            })
+        )
         : Bookmark.find(
-              Object.assign({}, rest, {
-                  provider: "pushbullet"
-              })
-          );
+            Object.assign({}, rest, {
+                provider: "pushbullet"
+            })
+        );
 };
 
 // ==============================
@@ -54,38 +54,88 @@ const fetchFreshPushbullets = params => {
     console.log("fetchFreshPushbullets()");
     let { userId, access_token, rebuild = false } = params;
 
-    return getPushbulletBookmarksQuery({
-        userId: new ObjectId(userId),
-        singleRecord: true
-    })
-        .sort({ "data.modified": -1 }) //SORT DESC
-        .exec()
-        .then(lastModifiedPush => {
-            // console.log('lastModifiedPush');
-            // console.log(JSON.stringify(lastModifiedPush, null, 4));
+    return Promise.all([
+        getPushbulletBookmarksQuery({
+            userId: new ObjectId(userId),
+            singleRecord: true
+        })
+            .sort({ "data.modified": 1 }) //SORT ASC
+            .exec()
+            .then(firstModifiedPush => {
+                return fetchPushesBasic({
+                    userId,
+                    access_token,
+                    // modified_after: firstModifiedPush ? firstModifiedPush.data.modified : null
+                })
+            }),
+        getPushbulletBookmarksQuery({
+            userId: new ObjectId(userId),
+            singleRecord: true
+        })
+            .sort({ "data.modified": -1 }) //SORT DESC
+            .exec()
+            .then(lastModifiedPush => {
+                // console.log('lastModifiedPush');
+                // console.log(JSON.stringify(lastModifiedPush, null, 4));
 
-            // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
-            // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
+                // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
+                // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
 
-            // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
-            // console.log(lastUpdatedPush.pushBody.modified)
+                // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
+                // console.log(lastUpdatedPush.pushBody.modified)
 
-            return fetchPushesBasic({
-                access_token,
-                modified_after:
-                    rebuild || !lastModifiedPush
-                        ? null
-                        : lastModifiedPush.data.modified
-            });
+                return fetchPushesBasic({
+                    userId,
+                    access_token,
+                    modified_after:
+                        rebuild || !lastModifiedPush
+                            ? null
+                            : lastModifiedPush.data.modified
+                });
+            })
+    ])
+        .then(() => {
+            console.log("fetchFreshPushbullets() done");
+            return true;
         })
         .catch(err => {
+            console.log("err in fetchFreshPushbullets");
             console.log(err);
-            console.log("============================");
-            console.error(err.stack);
-        })
-        .then(newPushes => {
+            throw err;
+        });
+};
+
+const fetchPushesBasic = params => {
+    const demoLimit = 2;
+
+    let {
+        access_token,
+        cursor = null,
+        modified_after = null,
+        count = 1,
+        userId
+    } = params;
+
+    console.log("fetchPushesBasic():count:", count);
+
+    return PB_API.request({
+        url: "/pushes",
+        headers: {
+            "Access-Token": access_token
+        },
+        params: {
+            active: true,
+            cursor,
+            modified_after,
+            limit: 400
+        }
+    })
+        .then(res => {
+            let { status, statusText, data } = res;
+            let newPushes = data.pushes;
+
             if (newPushes && newPushes.length > 0) {
-                return Promise.map(newPushes, newPush => {
+                Promise.map(newPushes, newPush => {
                     //TODO xz: ideally should also check if modified is < newPush.modified
                     return Bookmark.findOneAndUpdate(
                         {
@@ -104,59 +154,19 @@ const fetchFreshPushbullets = params => {
                     ).exec();
                 });
             }
-        })
-        .then(() => {
-            console.log("fetchFreshPushbullets() done");
-            return true;
-        })
-        .catch(err => {
-            console.log("err in fetchFreshPushbullets");
-            console.log(err);
-            throw err;
-        });
-};
 
-const fetchPushesBasic = params => {
-    const demoLimit = 2;
-
-    let {
-        access_token,
-        cursor = null,
-        pushes = [],
-        modified_after = null,
-        count = 1
-    } = params;
-
-    console.log("fetchPushesBasic():count:", count);
-
-    return PB_API.request({
-        url: "/pushes",
-        headers: {
-            "Access-Token": access_token
-        },
-        params: {
-            active: true,
-            cursor,
-            modified_after
-        }
-    })
-        .then(res => {
-            let { status, statusText, data } = res;
-            let newPushes = data.pushes;
             let nextCursor = data.cursor;
 
             console.log("newPushes.length", newPushes.length);
 
-            let mergedPushes = pushes.concat(newPushes);
-
-            // if (nextCursor && count < demoLimit) {
-            if (nextCursor) {
+            if (nextCursor && count < demoLimit) {
+                // if (nextCursor) {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
                         fetchPushesBasic({
+                            userId,
                             access_token,
                             cursor: nextCursor,
-                            pushes: mergedPushes,
                             count: ++count,
                             modified_after
                         })
@@ -164,8 +174,6 @@ const fetchPushesBasic = params => {
                             .catch(reject);
                     }, 10000);
                 });
-            } else {
-                return mergedPushes;
             }
         })
         .catch(err => {

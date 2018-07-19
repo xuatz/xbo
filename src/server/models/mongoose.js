@@ -9,13 +9,13 @@
 //         ? process.env.DB_USER + ":" + process.env.DB_PASSWORD + "@"
 //         : "";
 // dbConnectionString += process.env.DB_HOST || "localhost";
-// dbConnectionString += process.env.DB_PORT ? ":" + process.env.DB_PORT : "";
-// dbConnectionString += "/" + (process.env.DB_NAME || "placeholder_db");
+// dbConnectionString += ":" + (process.env.DB_PORT ? process.env.DB_PORT : "27017");
+// dbConnectionString += "/" + (process.env.DB_NAME || "xbo_dev");
 
-// // console.log("dbConnectionString", dbConnectionString);
+// console.log("dbConnectionString", dbConnectionString);
 
 // let options = {
-//     useMongoClient: true
+//     useNewUrlParser: true
 // };
 
 // mongoose.connect(dbConnectionString, options);

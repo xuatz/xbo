@@ -163,7 +163,7 @@ router.get("/logout", (req, res) => {
 // ======
 
 router.get("/connect/pushbullet/callback", (req, res) => {
-    console.log(req);
+    // console.log(req);
     axios
         .request({
             url: "https://api.pushbullet.com/oauth2/token",
