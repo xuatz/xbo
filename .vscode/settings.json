@@ -1,6 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.formatOnSave": true,
+    "files.encoding": "utf8",
+    "files.eol": "\n",
     "prettier.jsxBracketSameLine": true,
     "prettier.tabWidth": 4
 }
