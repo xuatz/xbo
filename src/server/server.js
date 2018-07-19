@@ -4,13 +4,13 @@ if (!process.env.NODE_ENV) {
 
 const express = require("express");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const { uri } = require("./models/mongoose.js");
+
+const PouchDB = require("pouchdb");
+PouchDB.plugin(require("pouchdb-find"));
+
 const User = require("./models/user");
 
 let corsOptions = {
@@ -24,17 +24,18 @@ let corsOptions = {
 
 passport.serializeUser(function(user, cb) {
     // console.log("serializeUser()");
-    cb(null, user.id);
+    cb(null, user._id);
 });
 
 passport.deserializeUser(function(id, cb) {
     // console.log("deserializeUser()");
-    User.findById(id, (err, user) => {
-        if (err) {
+    return User.get(id)
+        .then(user => {
+            return cb(null, user);
+        })
+        .catch(err => {
             return cb(err);
-        }
-        return cb(null, user);
-    });
+        });
 });
 
 //==============================================================
@@ -45,10 +46,10 @@ let app = express();
 //==============================================================
 
 let sessionOptions = {
-    store: new MongoDBStore({
-        uri,
-        collection: "sessions"
-    }),
+    // store: new MongoDBStore({
+    //     uri,
+    //     collection: "sessions"
+    // }),
     secret: "truly a secretive secret",
     resave: true,
     saveUninitialized: true,
@@ -89,7 +90,7 @@ app.use((req, res, next) => {
 //==============================================================
 
 app.use("/auth", require("./api/auth.js").router);
-app.use("/bookmarks", require("./api/bookmarks.js").router);
+// app.use("/bookmarks", require("./api/bookmarks.js").router);
 
 app.listen(9000, function() {
     console.log("Example app listening on port 9000!");
