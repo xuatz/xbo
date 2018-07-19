@@ -50,38 +50,23 @@ passport.use(
                 return done(null, false, { message: "No password provided" });
             }
 
-            User.findOne(
-                {
-                    username: username
-                },
-                "-password"
-            )
-                .exec()
-                .then(user => {
-                    if (user) {
-                        console.log("Username already taken");
+            User.find({
+                query: {
+                    username
+                }
+            })
+                .then(res => {
+                    if (res && res.length > 0) {
+                        let message = "Username already taken";
+                        console.log(message);
                         return done(null, false, {
-                            message: "Username already taken"
+                            message
                         });
                     }
-
-                    return User.create({
-                        username,
-                        password
-                    });
+                    return User.create(username, password);
                 })
-                .then(newUser => {
-                    // console.log('newUser', newUser)
-                    // console.log('newUser._id', newUser._id)
-                    // console.log('newUser.id', newUser.id)
-                    return User.findOne(newUser._id, "-password").exec();
-                })
-                .then(newUser => {
-                    return done(null, newUser);
-                })
-                .catch(err => {
-                    return done(err);
-                });
+                .then(newUser => done(null, newUser))
+                .catch(done);
         }
     )
 );
@@ -102,17 +87,21 @@ passport.use(
                 return done(null, false, { message: "No password provided" });
             }
 
-            User.findOne({
-                username: username
+            User.find({
+                query: {
+                    username
+                },
+                options: {
+                    single: true
+                }
             })
-                .exec()
                 .then(user => {
                     if (!user) {
                         return done(null, false, {
                             message: "No user found"
                         });
                     } else {
-                        user.comparePassword(password, (err, isMatch) => {
+                        User.comparePassword(user, password, (err, isMatch) => {
                             if (err) {
                                 return done(err);
                             }
