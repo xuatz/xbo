@@ -105,7 +105,6 @@ passport.use(
                             if (err) {
                                 return done(err);
                             }
-
                             if (isMatch) {
                                 return done(null, user);
                             } else {
@@ -151,7 +150,6 @@ router.post("/login", passport.authenticate("local-login"), (req, res) => {
     // console.log('req.session.id', req.session.id);
     // console.log('req.sessionID', req.sessionID);
     // console.log(req.user);
-
     loginTasks(req, res);
 });
 
@@ -179,10 +177,7 @@ router.get("/connect/pushbullet/callback", (req, res) => {
             // console.log("resp.status", resp.status);
             // console.log("resp.headers", resp.headers);
             // console.log("resp.data", resp.data);
-            return User.findOne({
-                _id: req.user.id
-            })
-                .exec()
+            return User.get(req.user._id)
                 .then(user => {
                     if (!user.providers) {
                         user.providers = {};

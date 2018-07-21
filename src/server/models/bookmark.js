@@ -1,5 +1,5 @@
-// const { mongoose } = require("./mongoose.js");
-// const Schema = mongoose.Schema;
+const { pouch, get, find, create, update } = require("./pouch");
+const bookmarks = pouch("bookmarks");
 
 // var BookmarkSchema = new Schema(
 //     {
@@ -15,5 +15,11 @@
 //     }
 // );
 
-// const Bookmark = mongoose.model("Bookmark", BookmarkSchema);
-// module.exports = Bookmark;
+const Bookmark = {
+    create: doc => create(bookmarks, doc),
+    find: (params) => find(bookmarks, params),
+    update: (doc) => update(bookmarks, doc),
+    get: (id) => get(bookmarks, id)
+};
+
+module.exports = Bookmark;
