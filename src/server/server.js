@@ -22,12 +22,12 @@ let corsOptions = {
 
 //==============================================================
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
     // console.log("serializeUser()");
     cb(null, user._id);
 });
 
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser(function (id, cb) {
     // console.log("deserializeUser()");
     return User.get(id)
         .then(user => {
@@ -92,6 +92,6 @@ app.use((req, res, next) => {
 app.use("/auth", require("./api/auth.js").router);
 // app.use("/bookmarks", require("./api/bookmarks.js").router);
 
-app.listen(9000, function() {
+app.listen(9000, function () {
     console.log("Example app listening on port 9000!");
 });
