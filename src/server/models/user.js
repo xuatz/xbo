@@ -90,6 +90,7 @@ const User = {
     },
     get,
     create,
+    update: (doc) => update(users, doc),
     comparePassword
 }
 

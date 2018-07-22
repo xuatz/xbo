@@ -19,11 +19,11 @@ const loginTasks = (req, res) => {
                 providers[key] = true;
                 switch (key) {
                     case "pushbullet": {
-                        fetchFreshPushbullets({
-                            userId: req.user.id,
-                            access_token:
-                                req.user.providers.pushbullet.access_token
-                        });
+                        // fetchFreshPushbullets({
+                        //     userId: req.user.id,
+                        //     access_token:
+                        //         req.user.providers.pushbullet.access_token
+                        // });
                     }
                 }
             }
@@ -183,11 +183,10 @@ router.get("/connect/pushbullet/callback", (req, res) => {
                         user.providers = {};
                     }
                     user.providers.pushbullet = resp.data;
-                    return user.save();
+                    return User.update(user);
                 });
         })
         .then(user => {
-            // console.log(user);
             // let access_token = user.providers.pushbullet.access_token;
             //todo fetch pushbullets
             res.redirect("http://localhost:3000/profile");

@@ -30,7 +30,7 @@ const getPushbulletBookmarksQuery = queryParams => {
     delete rest.singleRecord;
 
     return singleRecord
-        ? Bookmark.findOne(
+        ? Bookmark.find(
             Object.assign({}, rest, {
                 provider: "pushbullet"
             })
@@ -54,46 +54,47 @@ const fetchFreshPushbullets = params => {
     console.log("fetchFreshPushbullets()");
     let { userId, access_token, rebuild = false } = params;
 
-    return Promise.all([
-        getPushbulletBookmarksQuery({
-            userId: new ObjectId(userId),
-            singleRecord: true
-        })
-            .sort({ "data.modified": 1 }) //SORT ASC
-            .exec()
-            .then(firstModifiedPush => {
-                return fetchPushesBasic({
-                    userId,
-                    access_token,
-                    // modified_after: firstModifiedPush ? firstModifiedPush.data.modified : null
-                })
-            }),
-        getPushbulletBookmarksQuery({
-            userId: new ObjectId(userId),
-            singleRecord: true
-        })
-            .sort({ "data.modified": -1 }) //SORT DESC
-            .exec()
-            .then(lastModifiedPush => {
-                // console.log('lastModifiedPush');
-                // console.log(JSON.stringify(lastModifiedPush, null, 4));
+    return Bookmark.find({
+        query: {
+            provider: "pushbullet"
+        },
+        sort: [{ "data.modified": "asc" }]
+    }).then(res => {
+        if (res && res.length > 0) {
+            console.log('res[0]', res[0])
+            if (Math.max(res.length - 1, 0) != 0) {
+                console.log('res[res.length]', res[res.length])
+            }
+        }
+        // return Promise.all([
+        //     first => {
+        //         return fetchPushesBasic({
+        //             userId,
+        //             access_token,
+        //             // modified_after: firstModifiedPush ? firstModifiedPush.data.modified : null
+        //         })
+        //     },
+        //     last => {
+        //         // console.log('lastModifiedPush');
+        //         // console.log(JSON.stringify(lastModifiedPush, null, 4));
 
-                // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
-                // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
+        //         // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
+        //         // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
 
-                // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
-                // console.log(lastUpdatedPush.pushBody.modified)
+        //         // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
+        //         // console.log(lastUpdatedPush.pushBody.modified)
 
-                return fetchPushesBasic({
-                    userId,
-                    access_token,
-                    modified_after:
-                        rebuild || !lastModifiedPush
-                            ? null
-                            : lastModifiedPush.data.modified
-                });
-            })
-    ])
+        //         return fetchPushesBasic({
+        //             userId,
+        //             access_token,
+        //             modified_after:
+        //                 rebuild || !lastModifiedPush
+        //                     ? null
+        //                     : lastModifiedPush.data.modified
+        //         });
+        //     }
+        // ])
+    })
         .then(() => {
             console.log("fetchFreshPushbullets() done");
             return true;
@@ -238,36 +239,6 @@ const parseUrlFromBookmarks = () => {
 
 // ==============================
 
-router.get("/fetch", (req, res) => {
-    //xz: may include many sources in future
-    let { pushbullet } = req.user.providers;
-
-    if (pushbullet) {
-        fetchFreshPushbullets({
-            userId: new ObjectId(req.user.id),
-            access_token: pushbullet.access_token
-        })
-            .then(() => parseUrlFromBookmarks())
-            .then(() =>
-                Bookmark.find({
-                    userId: new ObjectId(req.user.id)
-                }).exec()
-            )
-            .then(bookmarks => {
-                // console.log('bookmarks.length', bookmarks.length);
-                res.json(bookmarks);
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).send("Something broke!");
-            });
-    } else {
-        return res.json([]);
-    }
-
-    //... and more sources in future
-});
-
 const getMagicUncategorisedBookmarks = (params = {}) => {
     let { userId } = params;
 
@@ -276,12 +247,18 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
 
     return (
         getPushbulletBookmarksQuery({
-            userId: new ObjectId(userId)
+            query: {
+                userId: new ObjectId(userId)
+            },
+            sort: {
+                //.sort({ "data.modified": -1 }) //SORT DESC
+            },
+            options: {
+                single: true
+                // .or([{ status: undefined }, { status: "uncategorised" }])
+                // .sort({ "stats.viewCount": -1 }) //SORT DESC
+            }
         })
-            .sort({ "data.modified": -1 })
-            // .sort({ "stats.viewCount": -1 }) //SORT DESC
-            .or([{ status: undefined }, { status: "uncategorised" }])
-            .exec()
             .then(bookmarks => {
                 let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
                 let right = bookmarks.slice(
@@ -331,6 +308,22 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
     );
 };
 
+
+
+const deletePush = iden => {
+    return;
+
+    return new Promise((resolve, reject) => {
+        if (iden !== undefined) {
+            asdasdasd;
+        } else {
+            resolve(null);
+        }
+    });
+};
+
+
+
 router.get("/", (req, res) => {
     let { type } = req.query;
     Promise.resolve()
@@ -356,21 +349,38 @@ router.get("/", (req, res) => {
         });
 });
 
-const deletePush = iden => {
-    return;
+router.get("/fetch", (req, res) => {
+    let { pushbullet } = req.user.providers;
 
-    return new Promise((resolve, reject) => {
-        if (iden !== undefined) {
-            asdasdasd;
-        } else {
-            resolve(null);
-        }
-    });
-};
+    if (pushbullet) {
+        fetchFreshPushbullets({
+            userId: new ObjectId(req.user.id),
+            access_token: pushbullet.access_token
+        })
+            // .then(() => parseUrlFromBookmarks())
+            .then(() =>
+                Bookmark.find({
+                    userId: new ObjectId(req.user.id)
+                }).exec()
+            )
+            .then(bookmarks => {
+                // console.log('bookmarks.length', bookmarks.length);
+                res.json(bookmarks);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send("Something broke!");
+            });
+    } else {
+        return res.json([]);
+    }
+
+    //... and more sources in future
+});
 
 router.delete("/:id", (req, res) => {
     // console.log(req.query);
-    console.log(req.params);
+    // console.log(req.params);
 
     let { pushbullet } = req.user.providers;
 
