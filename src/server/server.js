@@ -5,6 +5,7 @@ if (!process.env.NODE_ENV) {
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const RedisStore = require('connect-redis')(session);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -23,7 +24,8 @@ let corsOptions = {
 //==============================================================
 
 passport.serializeUser(function (user, cb) {
-    // console.log("serializeUser()");
+    console.log("serializeUser()");
+    console.log(user)
     cb(null, user._id);
 });
 
@@ -46,10 +48,7 @@ let app = express();
 //==============================================================
 
 let sessionOptions = {
-    // store: new MongoDBStore({
-    //     uri,
-    //     collection: "sessions"
-    // }),
+    store: new RedisStore(options),
     secret: "truly a secretive secret",
     resave: true,
     saveUninitialized: true,
