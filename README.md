@@ -10,6 +10,14 @@ You do not need to break your usage pattern, continue to add youtube videos to "
 1. thumbs up/down
 1. etc
 
+# .env
+```
+COUCHDB_URL=
+COUCHDB_USER=
+COUCHDB_PASS=
+COUCHDB_HTTPS=
+```
+
 ---
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

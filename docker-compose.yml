@@ -1,37 +1,43 @@
 version: "3"
 
 volumes:
-  mongo-xbo:
+  # mongo-xbo:
 
 services:
-  xbo-web:
-    image: localhost:5000/xbo-web
-    container_name: xbo-web
+  # xbo-web:
+  #   image: localhost:5000/xbo-web
+  #   container_name: xbo-web
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   # volumes:
+  #   #   - 'nginx-vhosts:/etc/nginx/vhost.d'
+  #   #   - 'nginx-certs:/etc/nginx/certs:ro'
+  #   #   - 'nginx-webroot:/usr/share/nginx/html'
+  #   #   - './volumes/subdomains/nas.xuatz.com.conf:/etc/nginx/conf.d/nas.xuatz.com.conf'
+  #   #   - '/etc/letsencrypt/:/etc/letsencrypt/:ro'
+  #   # environment:
+  #   #   - API_URL=http://192.168.0.123:9000
+  # xbo-server:
+  #   image: localhost:5000/xbo-server
+  #   container_name: xbo-server
+  #   restart: always
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     - DB_HOST=localhost
+  #     - DB_USER=
+  #     - DB_PASSWORD=
+  #     - PUSHBULLET_PERSONAL_ACCESS_TOKEN=
+  # mongo:
+  #   image: mongo:3.4.3
+  #   container_name: mongo-xbo
+  #   restart: always
+  #   volumes:
+  #     - 'mongo-xbo:/data/db'
+  redis:
+    image: redis
+    container_name: redis
     restart: always
     ports:
-      - "3000:3000"
-    # volumes:
-    #   - 'nginx-vhosts:/etc/nginx/vhost.d'
-    #   - 'nginx-certs:/etc/nginx/certs:ro'
-    #   - 'nginx-webroot:/usr/share/nginx/html'
-    #   - './volumes/subdomains/nas.xuatz.com.conf:/etc/nginx/conf.d/nas.xuatz.com.conf'
-    #   - '/etc/letsencrypt/:/etc/letsencrypt/:ro'
-    # environment:
-    #   - API_URL=http://192.168.0.123:9000
-  xbo-server:
-    image: localhost:5000/xbo-server
-    container_name: xbo-server
-    restart: always
-    ports:
-      - "9000:9000"
-    environment:
-      - DB_HOST=localhost
-      - DB_USER=
-      - DB_PASSWORD=
-      - PUSHBULLET_PERSONAL_ACCESS_TOKEN=
-  mongo:
-    image: mongo:3.4.3
-    container_name: mongo-xbo
-    restart: always
-    volumes:
-      - 'mongo-xbo:/data/db'
+      - "6379"

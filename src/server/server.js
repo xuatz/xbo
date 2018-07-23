@@ -5,31 +5,40 @@ if (!process.env.NODE_ENV) {
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
-const RedisStore = require('connect-redis')(session);
+const RedisStore = require("connect-redis")(session);
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const redis = require("redis");
 
 const PouchDB = require("pouchdb");
 PouchDB.plugin(require("pouchdb-find"));
 
 const User = require("./models/user");
 
+let whitelist = ["http://localhost:3000"];
 let corsOptions = {
+    origin: function(origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    origin: ["http://localhost:3000"],
+
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     preflightContinue: true
 };
 
 //==============================================================
 
-passport.serializeUser(function (user, cb) {
+passport.serializeUser(function(user, cb) {
     console.log("serializeUser()");
-    console.log(user)
+    console.log(user);
     cb(null, user._id);
 });
 
-passport.deserializeUser(function (id, cb) {
+passport.deserializeUser(function(id, cb) {
     // console.log("deserializeUser()");
     return User.get(id)
         .then(user => {
@@ -40,6 +49,13 @@ passport.deserializeUser(function (id, cb) {
         });
 });
 
+const client = redis.createClient({
+    auth_pass: null
+});
+client.on("error", function(err) {
+    console.log("Error " + err);
+});
+
 //==============================================================
 //==============================================================
 
@@ -48,7 +64,9 @@ let app = express();
 //==============================================================
 
 let sessionOptions = {
-    store: new RedisStore(options),
+    store: new RedisStore({
+        client
+    }),
     secret: "truly a secretive secret",
     resave: true,
     saveUninitialized: true,
@@ -91,6 +109,6 @@ app.use((req, res, next) => {
 app.use("/auth", require("./api/auth.js").router);
 // app.use("/bookmarks", require("./api/bookmarks.js").router);
 
-app.listen(9000, function () {
+app.listen(9000, function() {
     console.log("Example app listening on port 9000!");
 });
