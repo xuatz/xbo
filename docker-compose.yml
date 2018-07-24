@@ -38,6 +38,14 @@ services:
   redis:
     image: redis
     container_name: redis
-    restart: always
+    # restart: always
     ports:
-      - "6379"
+      - "6379:6379"
+  couchdb:
+    image: couchdb
+    container_name: couchdb
+    # restart: always
+    ports:
+      - "5984:5984"
+  
+    
