@@ -59,16 +59,15 @@ const ShittyHeader = props => {
     return (
         <div>
             <div style={linkStyle}>
-                <a href={url}>
-                    Connect with PushBullet
-                </a>
+                <a href={url}>Connect with PushBullet</a>
             </div>
             <div style={linkStyle}>
                 <a
                     href="#"
                     onClick={e => {
                         let API = axios.create({
-                            baseURL: process.env.REACT_APP_API_URL ||
+                            baseURL:
+                                process.env.REACT_APP_API_URL ||
                                 "http://localhost:9000",
                             withCredentials: true,
                             timeout: 5000
@@ -81,7 +80,6 @@ const ShittyHeader = props => {
                     shitty logout
                 </a>
             </div>
-
         </div>
     );
 };
@@ -96,10 +94,6 @@ class MainPage extends Component {
             <div>
                 <ShittyHeader />
                 <Container>
-                    {/*
-                    
-                
-                    */}
                     <Item style={styles.autoCategories}>
                         <h1>Auto Categories</h1>
                         <GroupCards
@@ -116,4 +110,7 @@ class MainPage extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MainPage);
