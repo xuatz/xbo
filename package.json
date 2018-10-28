@@ -12,8 +12,8 @@
         "express": "^4.15.3",
         "express-session": "^1.15.3",
         "lodash": "^4.17.4",
-        "moment-timezone": "^0.5.13",
-        "momentjs": "^2.0.0",
+        "moment": "^2.22.2",
+        "moment-timezone": "^0.5.21",
         "mongoose": "^4.10.8",
         "parse-domain": "^1.1.0",
         "passport": "^0.3.2",
@@ -38,7 +38,7 @@
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
         "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
-        "dev": "yarn install && npm run dev:client & npm run dev:server",
+        "dev": "npm run dev:client & npm run dev:server",
         "dev:client": "npm run start",
         "dev:server": "nodemon src/server/server.js"
     }
