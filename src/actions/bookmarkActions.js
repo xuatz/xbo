@@ -13,10 +13,16 @@ export const deleteBookmark = id => {
       type: "BOOKMARKS_REMOVE_BY_ID",
       id
     });
-    return API.delete("/bookmarks/" + id).then(res => {
-      // if (res.status === 200) {
-      // }
-    });
+    return API.delete("/bookmarks/" + id)
+      .then(res => {
+        // console.log(res);
+        // if (res.status === 200) {
+        // }
+      })
+      .catch(err => {
+        console.log(err);
+        throw err;
+      });
   };
 };
 
