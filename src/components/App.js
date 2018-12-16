@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Router, Link } from "@reach/router";
+import styled from "styled-components";
 
 import SessionCheckModule from "../components/common/SessionCheckModule";
 
@@ -15,22 +16,44 @@ import configureStore from "../store";
 
 let store = configureStore();
 
+const Header = () => (
+  <MyNav>
+    <Link to="/">Home</Link> <Link to="gallery">Gallery</Link>{" "}
+    <Link to="profile">Profile</Link> <Link to="organiser">Organiser</Link>{" "}
+  </MyNav>
+);
+
+const MyNav = styled.nav`
+  display: flex;
+  background: red;
+  padding: 5px 20px;
+  align-items: center;
+`;
+
+const Body = styled.div`overflow-y: auto;`;
+
+const Container = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+`;
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <SessionCheckModule>
-          <Router>
-            <div>
-              {/* <Header /> */}
-              <Route exact path="/" component={MainPage} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/organiser" component={Organiser} />
-              <Route exact path="/curated" component={MainPage} />
-              <Route exact path="/gallery" component={Gallery} />
-              <Route exact path="/all" component={MainPage} />
-            </div>
-          </Router>
+          <Container>
+            <Header />
+            <Body>
+              <Router>
+                <MainPage path="/" />
+                <Gallery path="/gallery" />
+                <Profile path="/profile" />
+                <Organiser path="/organiser" />
+              </Router>
+            </Body>
+          </Container>
         </SessionCheckModule>
       </Provider>
     );
