@@ -31,25 +31,19 @@ export const login = form => {
   return dispatch => {
     return API.post("/auth/login", {
       ...form
-    })
-      .then(res => {
-        if (res.data && res.data.error) {
-          return {
-            error: res.data.error
-          };
-        }
-
-        if (res.status === 200) {
-          dispatch({ type: "USER_LOGGED_IN", user: res.data });
-        }
-
+    }).then(res => {
+      if (res.data && res.data.error) {
         return {
-          status: res.status
+          error: res.data.error
         };
-      })
-      .catch(err => {
-        throw err;
-      });
+      }
+      if (res.status === 200) {
+        dispatch({ type: "USER_LOGGED_IN", user: res.data });
+      }
+      return {
+        status: res.status
+      };
+    });
   };
 };
 
@@ -57,25 +51,18 @@ export const signup = form => {
   return dispatch => {
     return API.post("/auth/signup", {
       ...form
-    })
-      .then(res => {
-        console.log(res);
-        if (res.data && res.data.error) {
-          return {
-            error: res.data.error
-          };
-        }
-
-        if (res.status === 200) {
-          dispatch({ type: "USER_LOGGED_IN" });
-        }
-
+    }).then(res => {
+      if (res.data && res.data.error) {
         return {
-          status: res.status
+          error: res.data.error
         };
-      })
-      .catch(err => {
-        throw err;
-      });
+      }
+      if (res.status === 200) {
+        dispatch({ type: "USER_LOGGED_IN" });
+      }
+      return {
+        status: res.status
+      };
+    });
   };
 };
