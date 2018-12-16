@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
 import styled from "styled-components";
-import Waypoint from "react-waypoint";
 
 import Push from "./Push";
 import * as actions from "../actions/bookmarkActions";
@@ -34,12 +33,36 @@ const mapDispatchToProps = dispatch => {
 
 class Gallery extends Component {
   state = {
-    listSize: 10
+    listSize: 10,
+    lastLoadTime: Date.now()
   };
 
   componentDidMount() {
-    this.props.actions.fetchBookmarks();
+    this.props.actions.fetchBookmarks().then(res => {
+      console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
+    });
+
+    window.addEventListener("scroll", this.onScroll, false);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.onScroll, false);
+  }
+
+  onScroll = () => {
+    const now = Date.now();
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 600 &&
+      this.props.bookmarks.length &&
+      now - this.state.lastLoadTime > 0.25 * 1000
+    ) {
+      // console.log(now, this.state.lastLoadTime);
+      this.setState(prevState => ({
+        lastLoadTime: now,
+        listSize: prevState.listSize + 10
+      }));
+    }
+  };
 
   pushRenderer = data => {
     let { type, modified, title, url } = data;
@@ -70,16 +93,10 @@ class Gallery extends Component {
     }
   };
 
-  _handleWaypointEnter = () => {
-    this.setState(prevState => ({
-      listSize: prevState.listSize + 10
-      // listSize:
-    }));
-  };
-
   handleOnDelete = id => this.props.actions.deleteBookmark(id);
 
   render() {
+    console.log(this.state);
     let sublist = this.props.bookmarks.slice(
       0,
       Math.min(this.state.listSize, this.props.bookmarks.length - 1)
@@ -126,7 +143,6 @@ class Gallery extends Component {
                 </li>
               );
             })}
-          <Waypoint onEnter={this._handleWaypointEnter} />
         </ul>
       </div>
     );

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Untitled from "./Untitled";
 
 const Wrapper = styled.section`
   padding: 4em;
@@ -7,7 +8,11 @@ const Wrapper = styled.section`
 `;
 
 const MainPage = props => {
-  return <Wrapper>Main Page</Wrapper>;
+  return (
+    <Wrapper>
+      <Untitled />
+    </Wrapper>
+  );
 };
 
 export default MainPage;
