@@ -9,9 +9,7 @@ const mapStateToProps = state => {
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
-    bookmarks = bookmarks
-      // .concat(link)
-      .concat(note);
+    bookmarks = bookmarks.concat(link).concat(note);
   }
 
   return {
@@ -24,29 +22,42 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const UrlAndNoteItem = props => {
-  const { title, url, type, body } = props.item.data;
+class UrlAndNoteItem extends Component {
+  state = {
+    isOpen: false
+  };
 
-  return (
-    <div style={props.style}>
-      {/* <pre>{JSON.stringify(props, 0, 2)}</pre> */}
-      {type === "note" ? (
-        <div>
-          <h3>{title}</h3>
-          <p>{body}</p>
-        </div>
-      ) : (
-        <div>
-          <a target="_blank" href={url}>
-            {title || url}
-          </a>
-        </div>
-      )}
-    </div>
-  );
-};
+  handleOnClick = () => {
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen
+    }));
+  };
 
-class Gallery extends Component {
+  render() {
+    const { onClick, item, style } = this.props;
+    const { title, url, type, body } = item.data;
+    return (
+      <div onClick={this.handleOnClick} style={style}>
+        {type === "note" ? (
+          <div>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </div>
+        ) : (
+          <div>
+            <a target="_blank" href={url}>
+              {title || url}
+            </a>
+          </div>
+        )}
+
+        {this.state.isOpen && <pre>{JSON.stringify(item.data, 0, 2)}</pre>}
+      </div>
+    );
+  }
+}
+
+class Untitled extends Component {
   state = {
     listSize: 10,
     lastLoadTime: Date.now()
@@ -145,4 +156,7 @@ class Gallery extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Gallery);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Untitled);
