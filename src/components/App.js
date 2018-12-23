@@ -8,11 +8,14 @@ import SessionCheckModule from '../components/common/SessionCheckModule';
 import MainPage from '../components/MainPage';
 import SummaryPage from '../components/SummaryPage';
 import StreamPage from '../components/StreamPage';
+import MainPageV2 from '../components/MainPageV2';
 import Profile from '../components/Profile';
 import Organiser from '../components/Organiser';
 import Gallery from '../components/Gallery';
 
 import AboutPage from '../components/AboutPage';
+
+import Crypto from '../components/Crypto';
 
 import configureStore from '../store';
 
@@ -56,11 +59,13 @@ class App extends Component {
             <Body>
               <Router>
                 <MainPage path="/" />
+                <MainPageV2 path="/v2" />
                 <SummaryPage path="/summary" />
                 <StreamPage path="/stream" />
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />
+                <Crypto path="/crypto" />
               </Router>
             </Body>
           </Container>
