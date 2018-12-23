@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import * as actions from "../actions/bookmarkActions";
 
 const mapStateToProps = state => {
-  // console.log(state.bookmarks);
   let bookmarks = [];
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
-    bookmarks = bookmarks.concat(link).concat(note);
+    bookmarks = bookmarks
+      .concat(link)
+      .concat(note)
+      .sort((a, b) => b.data.modified - a.data.modified);
   }
 
   return {
@@ -65,7 +67,7 @@ class Untitled extends Component {
 
   componentDidMount() {
     this.props.actions.fetchBookmarks().then(res => {
-      console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
+      // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
     window.addEventListener("scroll", this.onScroll, false);

@@ -39,7 +39,7 @@ class Gallery extends Component {
 
   componentDidMount() {
     this.props.actions.fetchBookmarks().then(res => {
-      console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
+      // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
     window.addEventListener("scroll", this.onScroll, false);
@@ -96,7 +96,6 @@ class Gallery extends Component {
   handleOnDelete = id => this.props.actions.deleteBookmark(id);
 
   render() {
-    console.log(this.state);
     let sublist = this.props.bookmarks.slice(
       0,
       Math.min(this.state.listSize, this.props.bookmarks.length - 1)
@@ -179,4 +178,7 @@ const QuickActions = props => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Gallery);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Gallery);
