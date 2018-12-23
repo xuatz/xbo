@@ -36,7 +36,7 @@ class UrlAndNoteItem extends Component {
   };
 
   render() {
-    const { onClick, item, style } = this.props;
+    const { item, style } = this.props;
     const { title, url, type, body } = item.data;
     return (
       <div onClick={this.handleOnClick} style={style}>

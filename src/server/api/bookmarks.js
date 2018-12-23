@@ -180,26 +180,27 @@ const parseUrlFromBookmarks = () => {
     .exec()
     .then(bookmarks => {
       return bookmarks.map(bk => {
-        let { stats, data: { url } } = bk;
+        let {
+          stats,
+          data: { url }
+        } = bk;
 
         if ("magnet" == url.substring(0, 5)) {
           //TODO can consider if i wan to add them to some category in future
           // for now do nothing
         } else {
-          bk
-            .update(
-              {
-                $set: {
-                  stats: Object.assign({}, stats, parseDomain(url))
-                }
-              },
-              {
-                multi: false
-                // upsert: true,
-                // overwrite: true,
+          bk.update(
+            {
+              $set: {
+                stats: Object.assign({}, stats, parseDomain(url))
               }
-            )
-            .exec();
+            },
+            {
+              multi: false
+              // upsert: true,
+              // overwrite: true,
+            }
+          ).exec();
         }
       });
     })
@@ -372,11 +373,35 @@ router.delete("/:id", (req, res) => {
               }
             })
               .then(pb_res => {
-                console.log("hey hey");
                 if (pb_res.status === 200) {
-                  bk.remove();
+                  return true;
+                } else {
+                  console.log(pb_res);
+                  return false;
                 }
-                res.sendStatus(pb_res.status);
+              })
+              .catch(err => {
+                switch (err.response.status) {
+                  case 404:
+                    // probably deleted elsewhere like on another client
+                    // or on pushbullet itself
+                    return true;
+                  default: {
+                    console.error(err);
+                    console.log(err.response.status);
+                    console.log(err.response.statusText);
+                    console.log(err.response.data);
+                    return false;
+                  }
+                }
+              })
+              .then(isDeleted => {
+                if (isDeleted) {
+                  bk.remove();
+                  res.sendStatus(200);
+                } else {
+                  res.sendStatus(400);
+                }
               })
               .catch(err => {
                 console.log(err);
