@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Untitled from './Untitled';
 
 const Wrapper = styled.section`
-  padding: 4em;
+  padding: 2em 6em;
   background: papayawhip;
 `;
 
