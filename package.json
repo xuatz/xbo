@@ -33,14 +33,19 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:server": "node src/server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prettier":
-      "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
+    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
     "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "npm run start",
     "dev:server": "nodemon src/server/server.js"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
