@@ -1,4 +1,4 @@
-FROM node:7
+FROM node:9
 
 RUN mkdir -p /usr/www 
 COPY . /usr/www
@@ -9,7 +9,7 @@ RUN npm run build --production --silent
 
 CMD ["npm", "run", "start"]
 
-# docker build -f Dockerfile.web -t localhost:5000/xbo-web . ; \
+# docker build -f Dockerfile.client -t localhost:5000/xbo-client-prod .
 # 	docker build -f Dockerfile.server -t localhost:5000/xbo-server . ; \
 # 	docker push localhost:5000/xbo-web; \
 # 	docker push localhost:5000/xbo-server;
