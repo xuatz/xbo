@@ -1,13 +1,10 @@
-FROM node:9
+FROM node:9 AS build
+COPY . .
+RUN npm install --production --silent && npm run build --silent
 
-RUN mkdir -p /usr/www 
-COPY . /usr/www
-WORKDIR /usr/www
-
-RUN npm install --production --silent
-RUN npm run build --production --silent
-
-CMD ["npm", "run", "start"]
+FROM nginx:alpine
+COPY --from=build ./build /usr/share/nginx/html/
+COPY --from=build ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # docker build -f Dockerfile.client -t localhost:5000/xbo-client-prod .
 # 	docker build -f Dockerfile.server -t localhost:5000/xbo-server . ; \
