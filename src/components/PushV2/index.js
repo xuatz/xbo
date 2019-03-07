@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from '../actions/bookmarkActions';
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import * as actions from "../../actions/bookmarkActions";
+import UrlAndNoteItem from "./url-and-note";
 
 const mapStateToProps = state => {
   let bookmarks = [];
@@ -25,42 +27,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class UrlAndNoteItem extends Component {
-  state = {
-    isOpen: false
-  };
-
-  handleOnClick = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
-    }));
-  };
-
-  render() {
-    const { item, style } = this.props;
-    const { title, url, type, body } = item.data;
-    return (
-      <div onClick={this.handleOnClick} style={style}>
-        {type === 'note' ? (
-          <div>
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </div>
-        ) : (
-            <div>
-              <a target="_blank" rel="noopener noreferrer" href={url}>
-                {title || url}
-              </a>
-            </div>
-          )}
-
-        {this.state.isOpen && <pre>{JSON.stringify(item.data, 0, 2)}</pre>}
-      </div>
-    );
-  }
-}
-
-class Untitled extends Component {
+class PushV2 extends Component {
   state = {
     listSize: 10,
     lastLoadTime: Date.now()
@@ -105,11 +72,10 @@ class Untitled extends Component {
   };
 
   render() {
-    console.log(this.state.filter);
     let sublist = this.props.bookmarks
       .filter(item => {
         const pattern = this.state.filter;
-        if (!pattern || pattern == "") {
+        if (!pattern || pattern === "") {
           return true;
         }
 
@@ -193,4 +159,4 @@ class Untitled extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Untitled);
+)(PushV2);

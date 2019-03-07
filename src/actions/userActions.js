@@ -66,16 +66,12 @@ export const signup = form => {
       const res = await API.post('/auth/signup', {}, { auth: form });
 
       if (res.data && res.data.error) {
-        return {
-          error: res.data.error
-        };
+        return { error: res.data.error };
       }
       if (res.status === 200) {
         dispatch({ type: 'USER_LOGGED_IN' });
       }
-      return {
-        status: res.status
-      };
+      return { status: res.status };
     } catch (err) {
       console.error(err);
       return {
