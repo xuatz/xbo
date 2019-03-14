@@ -8,6 +8,8 @@ import Signup from './Signup';
 
 import * as actions from '../../actions/userActions';
 
+const skipLogin = false;
+
 const mapStateToProps = state => {
   return {
     isCheckingSession: state.session.isCheckingSession,
@@ -40,20 +42,20 @@ class SessionCheckModule extends Component {
         {this.props.isCheckingSession ? null : this.props.isLoggedIn ? (
           this.props.children
         ) : (
-          <Container style={{ justifyContent: 'center' }}>
-            {this.state.login ? (
-              <Login
-                onSubmit={this.props.actions.login}
-                changeMode={this.changeMode}
-              />
-            ) : (
-              <Signup
-                onSubmit={this.props.actions.signup}
-                changeMode={this.changeMode}
-              />
-            )}
-          </Container>
-        )}
+            <Container style={{ justifyContent: 'center' }}>
+              {this.state.login ? (
+                <Login
+                  onSubmit={this.props.actions.login}
+                  changeMode={this.changeMode}
+                />
+              ) : (
+                  <Signup
+                    onSubmit={this.props.actions.signup}
+                    changeMode={this.changeMode}
+                  />
+                )}
+            </Container>
+          )}
       </div>
     );
   }

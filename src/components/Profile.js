@@ -44,10 +44,10 @@ class Profile extends Component {
           {this.props.providers && this.props.providers.pushbullet ? (
             'Connected with Pushbullet!'
           ) : (
-            <a href={url}>
-              <button>Connect with pushbullet</button>
-            </a>
-          )}
+              <a href={url}>
+                <button>Connect with pushbullet</button>
+              </a>
+            )}
         </Wrapper>
         <div>
           <button

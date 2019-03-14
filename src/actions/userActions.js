@@ -14,6 +14,8 @@ export const checkUserSession = () => {
 
     return API.get('/auth/user')
       .then(res => {
+        console.log("hi2");
+        console.log(res);
         if (res.status === 200) {
           dispatch({ type: 'USER_LOGGED_IN', user: res.data });
         } else {
@@ -24,6 +26,15 @@ export const checkUserSession = () => {
         console.log(err);
         dispatch({ type: 'USER_LOGGED_OUT' });
       });
+  };
+};
+
+export const logout = () => {
+  return dispatch => {
+    return API.get("/auth/logout").then(res => {
+      console.log(res);
+      dispatch({ type: "USER_LOGGED_OUT" });
+    });
   };
 };
 

@@ -12,6 +12,8 @@ import Gallery from "../components/Gallery";
 
 import AboutPage from "../components/AboutPage";
 
+import Crypto from "../components/Crypto";
+
 import configureStore from "../store";
 
 let store = configureStore();
@@ -30,7 +32,9 @@ const MyNav = styled.nav`
   align-items: center;
 `;
 
-const Body = styled.div`overflow-y: auto;`;
+const Body = styled.div`
+  overflow-y: auto;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -51,6 +55,7 @@ class App extends Component {
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />
+                <Crypto path="/crypto" />
               </Router>
             </Body>
           </Container>
