@@ -227,6 +227,10 @@ const parseUrlFromBookmarks = () => {
 
 router.get("/fetch", (req, res) => {
   //xz: may include many sources in future
+  if (!req.user.providers) {
+    return res.json([]);
+  }
+
   let { pushbullet } = req.user.providers;
 
   if (pushbullet) {

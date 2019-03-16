@@ -11,6 +11,7 @@ const mapStateToProps = state => {
     bookmarks = bookmarks
       .concat(link)
       .concat(note)
+      .filter(bk => bk !== undefined)
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
