@@ -12,6 +12,43 @@ You do not need to break your usage pattern, continue to add youtube videos to "
 1. thumbs up/down
 1. etc
 
+# What can I do?
+
+1. create account
+2. login
+3. logout
+4. connect to Pushbullet
+5. Tabs
+    1. Home Page - Shows Urls and Notes
+    1. Gallery - Shows media/photo
+    1. Profile - connects to different data sources
+    1. Organiser - Attempt to build a module to process bookmarks (tag, delete, other actions???)
+1. inefficiently fetching latest pushes from pushbullet on every request
+1. inefficiently fetching all pushes from server on every client request
+1. infinity scroll
+1. delete push at origin from client (without confirmation!!! DANGER)
+
+# Get Started
+
+## Development with Docker
+
+```bash
+$ install docker
+$ git clone ...
+$ docker-compose up -d
+```
+
+> `$ docker-compose up --build --force-recreate -d`  
+> you might need this sometimes
+
+## Development on local machine
+
+You know the drill
+
+# Supported data sources
+
+- https://www.pushbullet.com
+
 # Roadmap
 
 - Server
