@@ -47,6 +47,14 @@ export const login = form => {
   };
 };
 
+export const logout = () => {
+  return dispatch => {
+    return API.get("/auth/logout").then(res => {
+      dispatch({ type: "USER_LOGGED_OUT" });
+    });
+  };
+};
+
 export const signup = form => {
   return dispatch => {
     return API.post("/auth/signup", {

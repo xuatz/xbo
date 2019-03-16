@@ -1,58 +1,73 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import styled from "styled-components";
+import * as actions from '../actions/userActions';
 
 const Wrapper = styled.section`
-    padding: 4em;
-    background: papayawhip;
+  padding: 4em;
+  background: papayawhip;
 `;
 
-let url =
-    "https://www.pushbullet.com/authorize?client_id=" +
-    "2TXDmPJN0tukzOqu19qvwNCju16SyMb7" +
-    "&redirect_uri=" +
-    "http://localhost:9000/auth/connect/pushbullet/callback" +
-    "&response_type=" +
-    "code";
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:9000';
+
+// TODO xz: pretty sure i can just ask for this URL from the server
+const PUSHBULLET_CLIENT_ID =
+  process.env.REACT_APP_PUSHBULLET_APP_CLIENT_ID ||
+  '2TXDmPJN0tukzOqu19qvwNCju16SyMb7';
+const url = `https://www.pushbullet.com/authorize?client_id=${PUSHBULLET_CLIENT_ID}&redirect_uri=${API_URL}/auth/connect/pushbullet/callback&response_type=code`;
 
 const mapStateToProps = state => {
-    return {
-        providers: state.session.user.providers
-    };
+  let providers = {};
+  // TODO xz: im pretty sure this can be avoided with some better data model design
+  if (state.session) {
+    if (state.session.user) {
+      providers = state.session.user.providers;
+    }
+  }
+
+  return {
+    providers
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
-    //xz: sample for different pattern to bindActionCreators
-    // actions: bindActionCreators({
-    // 	...inboundActions,
-    // 	load: (line) => {
-    // 		return (dispatch) => {
-    // 			dispatch(actions.load('line', line))
-    // 		}
-    // 	}
-    // }, dispatch)
-    // actions: bindActionCreators(actions, dispatch)
-    // load: line => {
-    // 	dispatch(actions.load("line", line));
-    // }
+  actions: bindActionCreators(actions, dispatch)
 });
 
 class Profile extends Component {
-    render() {
-        return (
-            <Wrapper>
-                {this.props.providers.pushbullet ? (
-                    "Connected with Pushbullet!"
-                ) : (
-                    <a href={url}>
-                        <button>Connect with pushbullet</button>
-                    </a>
-                )}
-            </Wrapper>
-        );
-    }
+  render() {
+    return (
+      <>
+        <Wrapper>
+          {this.props.providers && this.props.providers.pushbullet ? (
+            'Connected with Pushbullet!'
+          ) : (
+            <a href={url}>
+              <button>Connect with pushbullet</button>
+            </a>
+          )}
+        </Wrapper>
+        <div>
+          <button
+            onClick={() => {
+              this.props.actions.logout();
+            }}
+            style={{
+              padding: '20px',
+              background: 'yellow'
+            }}
+          >
+            LOGOUT
+          </button>
+        </div>
+      </>
+    );
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile);
