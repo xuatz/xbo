@@ -1,33 +1,47 @@
-version: "3"
+version: '2.4'
 
 volumes:
   mongo-xbo:
 
 services:
   xbo-web:
-    image: localhost:5000/xbo-web
-    container_name: xbo-web
+    image: localhost:5000/xbo-web:local
+    build:
+      context: .
+      dockerfile: ./resources/Dockerfile.dev
+    command: npm start
+    container_name: xbo-web-dev
     restart: always
+    volumes:
+      - ./src:/code/src
+    environment:
+      - REACT_APP_API_URL=http://localhost:9000
+      - REACT_APP_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
     ports:
-      - "3000:3000"
-  xbo-server:
-    image: localhost:5000/xbo-server
+      - 3000:3000
+  server:
+    image: localhost:5000/xbo-server:local
+    build:
+      context: .
+      dockerfile: ./resources/Dockerfile.dev
+    command: npm run start:server # npm run dev:server
     container_name: xbo-server
     restart: always
+    volumes:
+      - ./src:/code/src
     ports:
-      - "9000:9000"
+      - 9000:9000
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=mongo
       - DB_USER=
       - DB_PASSWORD=
-      - PUSHBULLET_PERSONAL_ACCESS_TOKEN=
+      - PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
+      - PUSHBULLET_APP_CLIENT_SECRET=IlQ1SBBY9fRnWLRVEFSQMxkB5UIS9Rxt
   mongo:
-    image: mongo:3.4.3
+    image: mongo:3.6.11
     container_name: mongo-xbo
     restart: always
     ports:
-      - "27017:27017"
+      - 27017
     volumes:
-      - 'mongo-xbo:/data/db'
-
-      
+      - mongo-xbo:/data/db

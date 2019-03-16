@@ -1,0 +1,6 @@
+FROM node:9.11.2
+
+RUN mkdir -p /code
+COPY . /code
+WORKDIR /code
+RUN npm install
