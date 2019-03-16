@@ -19,17 +19,17 @@
     "parse-domain": "^1.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "16.8.4",
+    "react-dom": "16.8.4",
     "react-redux": "^5.0.5",
-    "react-scripts": "2.1.1",
+    "react-scripts": "^2.1.8",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "styled-components": "^2.1.2"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
-    "prettier": "^1.4.4"
+    "prettier": "^1.16.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,6 +41,9 @@
     "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "npm run start",
     "dev:server": "nodemon src/server/server.js"
+  },
+  "prettier": {
+    "singleQuote": true
   },
   "browserslist": [
     ">0.2%",
