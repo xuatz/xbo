@@ -19,14 +19,14 @@ You do not need to break your usage pattern, continue to add youtube videos to "
   - I have confirmed that xbo#master is working fine
   - I have plans to migrate db from mongodb to couchdb, in the future
   - the remaining server tasks include:
-    [ ] mongorestore dump in unraid-mongo
-    [ ] setup running instance of xbo-server
+    - [x] mongorestore dump in unraid-mongo
+    - [x] setup running instance of xbo-server
   - wishlist
-    [ ] sync job xbo-server between mongo to couchdb
-    [ ] take note of soft-delete flag
-    [ ] define business logic for conflict resolution:
-      [ ] what fields to overwrite
-      [ ] what fields to append
+    - [ ] sync job xbo-server between mongo to couchdb
+    - [ ] take note of soft-delete flag
+    - [ ] define business logic for conflict resolution:
+      - [ ] what fields to overwrite
+      - [ ] what fields to append
 - Client
   - Register/Login flow
   - navbar (basically pages)
