@@ -1,0 +1,67 @@
+image: docker:stable
+
+services:
+  - docker:dind
+
+variables:
+  # When using dind service we need to instruct docker, to talk with the
+  # daemon started inside of the service. The daemon is available with
+  # a network connection instead of the default /var/run/docker.sock socket.
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+  #
+  # Note that if you're using Kubernetes executor, the variable should be set to
+  # tcp://localhost:2375 because of how Kubernetes executor connects services
+  # to the job container
+  # DOCKER_HOST: tcp://docker:2375/
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
+  PROJECT_NAME: xbo
+  VERSION_MAJOR: 0
+  VERSION_MINOR: 1
+  VERSION_PATCH: 0
+  VERSION: $VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH.$CI_PIPELINE_IID
+
+# add cache to 'node_modules' for speeding up builds
+# cache:
+#   paths:
+#     - node_modules/ # Node modules and dependencies
+#     - build/
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - ssh
+  script:
+    - docker build -f Dockerfile.server -t localhost:5000/xbo-server:dev-$VERSION .
+  only:
+    - development
+
+deploy:
+  stage: deploy
+  tags:
+    - ssh
+  script:
+    - docker stop xbo_server_dev || true
+    - docker rm xbo_server_dev || true
+    - docker run
+        -d
+        -p 6881:9000
+        --restart=always
+        --name=xbo_server_dev
+        -e DB_HOST=$DB_HOST
+        -e DB_NAME=$DB_NAME
+        -e DB_USER=$DB_USER
+        -e DB_PASSWORD=$DB_PASSWORD
+        -e PUSHBULLET_APP_CLIENT_ID=$PUSHBULLET_APP_CLIENT_ID
+        -e PUSHBULLET_APP_CLIENT_SECRET=$PUSHBULLET_APP_CLIENT_SECRET
+        -e PUSHBULLET_API_URL=$PUSHBULLET_API_URL
+        localhost:5000/xbo-server:dev-$VERSION
+  only:
+    - development
