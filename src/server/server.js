@@ -4,12 +4,10 @@ if (!process.env.NODE_ENV) {
 
 const express = require("express");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const { uri } = require("./models/mongoose.js");
 const User = require("./models/user");
 
@@ -27,12 +25,12 @@ let corsOptions = {
 
 //==============================================================
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   // console.log("serializeUser()");
   cb(null, user.id);
 });
 
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser(function (id, cb) {
   // console.log("deserializeUser()");
   User.findById(id, (err, user) => {
     if (err) {
@@ -96,6 +94,6 @@ app.use((req, res, next) => {
 app.use("/auth", require("./api/auth.js").router);
 app.use("/bookmarks", require("./api/bookmarks.js").router);
 
-app.listen(9000, function() {
+app.listen(9000, function () {
   console.log("Example app listening on port 9000!");
 });
