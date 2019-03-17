@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Untitled from "./Untitled";
+import React from 'react';
+import styled from 'styled-components';
+import Untitled from './Untitled';
 
 const Wrapper = styled.section`
   padding: 4em;
