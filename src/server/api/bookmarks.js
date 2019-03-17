@@ -31,15 +31,15 @@ const getPushbulletBookmarksQuery = queryParams => {
 
   return singleRecord
     ? Bookmark.findOne(
-        Object.assign({}, rest, {
-          provider: 'pushbullet'
-        })
-      )
+      Object.assign({}, rest, {
+        provider: 'pushbullet'
+      })
+    )
     : Bookmark.find(
-        Object.assign({}, rest, {
-          provider: 'pushbullet'
-        })
-      );
+      Object.assign({}, rest, {
+        provider: 'pushbullet'
+      })
+    );
 };
 
 // ==============================
@@ -320,8 +320,13 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   );
 };
 
-router.get('/', async (req, res) => {
-  let { type } = req.query;
+router.get("/", async (req, res, next) => {
+  const { user, query } = req;
+  const { type } = query;
+
+  if (!user) {
+    return next(new Error('You are not logged in.'))
+  }
 
   let retrieveBookmarks;
   switch (type) {
@@ -349,18 +354,6 @@ router.get('/', async (req, res) => {
     res.status(500).send('Something broke!');
   }
 });
-
-const deletePush = iden => {
-  return;
-
-  return new Promise((resolve, reject) => {
-    if (iden !== undefined) {
-      asdasdasd;
-    } else {
-      resolve(null);
-    }
-  });
-};
 
 const deletePushBullet = (bk, pushbullet) => {
   return PB_API({
