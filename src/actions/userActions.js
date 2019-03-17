@@ -29,15 +29,6 @@ export const checkUserSession = () => {
   };
 };
 
-export const logout = () => {
-  return dispatch => {
-    return API.get("/auth/logout").then(res => {
-      console.log(res);
-      dispatch({ type: "USER_LOGGED_OUT" });
-    });
-  };
-};
-
 export const login = form => {
   return async dispatch => {
     try {
