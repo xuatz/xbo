@@ -1,39 +1,39 @@
-import React, { Component } from "react";
-import { Container, Item } from "./FlexContainer";
+import React, { Component } from 'react';
+import { Container, Item } from './FlexContainer';
 
 const styles = {
   inputStyle: {
-    borderRadius: "0.25rem",
-    padding: "1rem",
-    marginBottom: "1rem"
+    borderRadius: '0.25rem',
+    padding: '1rem',
+    marginBottom: '1rem'
   },
   submitButton: {
-    padding: "0.6rem",
-    backgroundColor: "#00B9BC",
-    color: "#eee",
-    fontWeight: "bold",
-    textTransform: "uppercase"
+    padding: '0.6rem',
+    backgroundColor: '#00B9BC',
+    color: '#eee',
+    fontWeight: 'bold',
+    textTransform: 'uppercase'
   },
   mainContainer: {
-    justifyContent: "center",
-    background: "orange",
-    padding: "25px",
+    justifyContent: 'center',
+    background: 'orange',
+    padding: '25px',
     // padding: '25px 25px 18px',
-    margin: "20px",
-    borderRadius: "3px"
+    margin: '20px',
+    borderRadius: '3px'
   },
   form: {
-    flexDirection: "column",
-    borderRadius: "5px",
-    width: "300px"
+    flexDirection: 'column',
+    borderRadius: '5px',
+    width: '300px'
   }
 };
 
 class Signup extends Component {
   state = {
-    username: "",
-    password1: "",
-    password2: ""
+    username: '',
+    password1: '',
+    password2: ''
   };
 
   handleChange = event => {
@@ -49,15 +49,15 @@ class Signup extends Component {
     let errors = [];
 
     if (!username) {
-      errors.push("The username field is empty!");
+      errors.push('The username field is empty!');
     }
 
     if (!password1 || !password2) {
-      errors.push("The password field is empty!");
+      errors.push('The password field is empty!');
     }
 
     if (password1 && password2 && password1 !== password2) {
-      errors.push("The passwords are not the same!");
+      errors.push('The passwords are not the same!');
     }
 
     if (errors.length > 0) {
@@ -78,13 +78,13 @@ class Signup extends Component {
           }
 
           if (res.status === 200) {
-            console.log("signup success!");
+            console.log('signup success!');
           }
         })
         .catch(err => {
           console.log(err);
           this.setState({
-            errors: ["server error!!"]
+            errors: ['server error!!']
           });
         });
     }
@@ -92,7 +92,7 @@ class Signup extends Component {
 
   render() {
     return (
-      <Container style={styles.mainContainer}>
+      <div style={styles.mainContainer}>
         {this.state.errors &&
           this.state.errors.map((item, key) => {
             return <div key={key}>{item}</div>;
@@ -134,8 +134,8 @@ class Signup extends Component {
 
         <Container
           style={{
-            justifyContent: "space-between",
-            alignItems: "center"
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}
         >
           <span>Have an account?</span>
@@ -143,7 +143,7 @@ class Signup extends Component {
             Log In
           </button>
         </Container>
-      </Container>
+      </div>
     );
   }
 }
