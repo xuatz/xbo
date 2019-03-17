@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../actions/bookmarkActions";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../actions/bookmarkActions';
 
 const mapStateToProps = state => {
   let bookmarks = [];
@@ -41,14 +41,14 @@ class UrlAndNoteItem extends Component {
     const { title, url, type, body } = item.data;
     return (
       <div onClick={this.handleOnClick} style={style}>
-        {type === "note" ? (
+        {type === 'note' ? (
           <div>
             <h3>{title}</h3>
             <p>{body}</p>
           </div>
         ) : (
           <div>
-            <a target="_blank" href={url}>
+            <a target="_blank" rel="noopener noreferrer" href={url}>
               {title || url}
             </a>
           </div>
@@ -71,11 +71,11 @@ class Untitled extends Component {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
-    window.addEventListener("scroll", this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.onScroll, false);
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 
   onScroll = () => {
@@ -110,38 +110,38 @@ class Untitled extends Component {
                 <li key={index}>
                   <div
                     style={{
-                      background: "teal",
-                      padding: "20px"
+                      background: 'teal',
+                      padding: '20px'
                       // width: "50%"
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        background: "white",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-around"
+                        display: 'flex',
+                        background: 'white',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-around'
                         // justifyContent: "flex-start"
                       }}
                     >
                       <UrlAndNoteItem
                         style={{
-                          flex: "5"
+                          flex: '5'
                           // background: "green"
                         }}
                         item={bk}
                       />
                       <div
                         style={{
-                          flex: "1"
+                          flex: '1'
                           // background: "red"
                         }}
                       >
                         <button
                           style={{
-                            padding: "10px",
-                            textAlign: "center"
+                            padding: '10px',
+                            textAlign: 'center'
                           }}
                           onClick={() => this.handleOnDelete(bk._id)}
                         >
