@@ -31,15 +31,15 @@ const getPushbulletBookmarksQuery = queryParams => {
 
   return singleRecord
     ? Bookmark.findOne(
-        Object.assign({}, rest, {
-          provider: "pushbullet"
-        })
-      )
+      Object.assign({}, rest, {
+        provider: "pushbullet"
+      })
+    )
     : Bookmark.find(
-        Object.assign({}, rest, {
-          provider: "pushbullet"
-        })
-      );
+      Object.assign({}, rest, {
+        provider: "pushbullet"
+      })
+    );
 };
 
 // ==============================
@@ -320,29 +320,36 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   );
 };
 
-router.get("/", (req, res) => {
-  let { type } = req.query;
-  Promise.resolve()
-    .then(() => {
-      switch (type) {
-        case "magic":
-          return getMagicUncategorisedBookmarks({
-            userId: req.user.id
-          });
-        default:
-          return Bookmark.find({
-            userId: new ObjectId(req.user.id)
-          }).exec();
-      }
-    })
-    .then(bookmarks => {
-      console.log("bookmarks.length", bookmarks.length);
-      res.json(bookmarks);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).send("Something broke!");
-    });
+router.get("/", async (req, res, next) => {
+  const { user, query } = req;
+
+  if (!user) {
+    return next(new Error('You are not logged in.'))
+  }
+
+  let { type } = query;
+
+  try {
+    const bookmarks = await Promise.resolve()
+      .then(() => {
+        switch (type) {
+          case "magic":
+            return getMagicUncategorisedBookmarks({
+              userId: user.id
+            });
+          default:
+            return Bookmark.find({
+              userId: new ObjectId(user.id)
+            }).exec();
+        }
+      })
+
+    console.log("bookmarks.length", bookmarks.length);
+    res.json(bookmarks);
+  } catch (err) {
+    console.log(err);
+    return next(new Error('Something broke!'))
+  }
 });
 
 const deletePush = iden => {
