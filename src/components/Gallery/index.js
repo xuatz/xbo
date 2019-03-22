@@ -1,18 +1,16 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import moment from "moment";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import styled from 'styled-components';
 
-import Push from "./Push";
-import * as actions from "../actions/bookmarkActions";
+import Push from './Push';
+import * as actions from '../../actions/bookmarkActions';
 
 const Input = styled.input`
   padding: 10px;
   width: 40%;
 `;
-
-const empty = [];
 
 const mapStateToProps = state => {
   let bookmarks = [];
@@ -42,11 +40,11 @@ class Gallery extends Component {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
-    window.addEventListener("scroll", this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.onScroll, false);
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 
   onScroll = () => {
@@ -67,10 +65,10 @@ class Gallery extends Component {
   pushRenderer = data => {
     let { type, modified, title, url } = data;
     switch (type) {
-      case "link": {
+      case 'link': {
         return (
           <div>
-            <p>{moment.unix(modified).format("dddd, MMMM Do YYYY, h:mm a")}</p>
+            <p>{moment.unix(modified).format('dddd, MMMM Do YYYY, h:mm a')}</p>
             <p> {title} </p>
             <p> {url} </p>
           </div>
@@ -110,18 +108,18 @@ class Gallery extends Component {
                 <li key={index}>
                   <div
                     style={{
-                      background: "teal",
-                      padding: "20px"
+                      background: 'teal',
+                      padding: '20px'
                       // width: "50%"
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
-                        background: "white",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-evenly"
+                        display: 'flex',
+                        background: 'white',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly'
                       }}
                     >
                       {/* <QuickActions
@@ -131,7 +129,7 @@ class Gallery extends Component {
                       {this.pushRenderer(bk.data)}
                       <div>
                         <button
-                          style={{ padding: "10px", textAlign: "center" }}
+                          style={{ padding: '10px', textAlign: 'center' }}
                           onClick={() => this.handleOnDelete(bk._id)}
                         >
                           Delete

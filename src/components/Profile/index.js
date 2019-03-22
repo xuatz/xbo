@@ -3,11 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import * as actions from '../actions/userActions';
+import * as actions from '../../actions/userActions';
 
 const Wrapper = styled.section`
   padding: 4em;
   background: papayawhip;
+`;
+
+const Button = styled.button`
+  padding: 20px;
+  background: yellow;
 `;
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:9000';
@@ -50,17 +55,13 @@ class Profile extends Component {
           )}
         </Wrapper>
         <div>
-          <button
+          <Button
             onClick={() => {
               this.props.actions.logout();
             }}
-            style={{
-              padding: '20px',
-              background: 'yellow'
-            }}
           >
             LOGOUT
-          </button>
+          </Button>
         </div>
       </>
     );
