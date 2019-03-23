@@ -1,25 +1,29 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { Router, Link } from "@reach/router";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { Router, Link } from '@reach/router';
+import styled from 'styled-components';
 
-import SessionCheckModule from "../components/common/SessionCheckModule";
+import SessionCheckModule from '../components/common/SessionCheckModule';
 
-import MainPage from "../components/MainPage";
-import Profile from "../components/Profile";
-import Organiser from "../components/Organiser";
-import Gallery from "../components/Gallery";
+import MainPage from '../components/MainPage';
+import SummaryPage from '../components/SummaryPage';
+import Profile from '../components/Profile';
+import Organiser from '../components/Organiser';
+import Gallery from '../components/Gallery';
 
-import AboutPage from "../components/AboutPage";
+import AboutPage from '../components/AboutPage';
 
-import configureStore from "../store";
+import configureStore from '../store';
 
 let store = configureStore();
 
 const Header = () => (
   <MyNav>
-    <Link to="/">Home</Link> <Link to="gallery">Gallery</Link>{" "}
-    <Link to="profile">Profile</Link> <Link to="organiser">Organiser</Link>{" "}
+    <Link to="/">Home</Link>
+    <Link to="summary">Summary</Link>
+    <Link to="gallery">Gallery</Link>
+    <Link to="profile">Profile</Link>
+    <Link to="organiser">Organiser</Link>
   </MyNav>
 );
 
@@ -30,7 +34,9 @@ const MyNav = styled.nav`
   align-items: center;
 `;
 
-const Body = styled.div`overflow-y: auto;`;
+const Body = styled.div`
+  overflow-y: auto;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -48,6 +54,7 @@ class App extends Component {
             <Body>
               <Router>
                 <MainPage path="/" />
+                <SummaryPage path="/summary" />
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />

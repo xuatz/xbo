@@ -16,13 +16,16 @@ const mapStateToProps = state => {
   let bookmarks = [];
 
   if (state.bookmarks.sublists && state.bookmarks.sublists.gallery) {
-    bookmarks = state.bookmarks.sublists.gallery;
+    bookmarks = state.bookmarks.sublists.gallery.map(
+      id => state.bookmarks.bookmarks.entities[id]
+    );
   }
 
   return {
     bookmarks
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(actions, dispatch)

@@ -7,13 +7,15 @@ import Bookmark from './Bookmark';
 
 const mapStateToProps = state => {
   let bookmarks = [];
+  console.log(state.bookmarks.sublists);
+  console.log(state.bookmarks.bookmarks.entities);
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
-    bookmarks = bookmarks
+    bookmarks = []
       .concat(link)
       .concat(note)
-      .filter(bk => bk !== undefined)
+      .map(id => state.bookmarks.bookmarks.entities[id])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
@@ -21,6 +23,7 @@ const mapStateToProps = state => {
     bookmarks
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(actions, dispatch)
