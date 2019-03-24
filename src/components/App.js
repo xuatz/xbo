@@ -7,6 +7,7 @@ import SessionCheckModule from '../components/common/SessionCheckModule';
 
 import MainPage from '../components/MainPage';
 import SummaryPage from '../components/SummaryPage';
+import StreamPage from '../components/StreamPage';
 import Profile from '../components/Profile';
 import Organiser from '../components/Organiser';
 import Gallery from '../components/Gallery';
@@ -21,6 +22,7 @@ const Header = () => (
   <MyNav>
     <Link to="/">Home</Link>
     <Link to="summary">Summary</Link>
+    <Link to="stream">Stream</Link>
     <Link to="gallery">Gallery</Link>
     <Link to="profile">Profile</Link>
     <Link to="organiser">Organiser</Link>
@@ -55,6 +57,7 @@ class App extends Component {
               <Router>
                 <MainPage path="/" />
                 <SummaryPage path="/summary" />
+                <StreamPage path="/stream" />
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />

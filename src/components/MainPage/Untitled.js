@@ -7,8 +7,6 @@ import Bookmark from './Bookmark';
 
 const mapStateToProps = state => {
   let bookmarks = [];
-  console.log(state.bookmarks.sublists);
-  console.log(state.bookmarks.bookmarks.entities);
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
