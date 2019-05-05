@@ -6,22 +6,12 @@ const axios = require('axios');
 
 const User = require('../models/user');
 
-const { fetchFreshPushbullets } = require('./bookmarks.js');
-
 const loginTasks = (req, res) => {
   let providers = {};
   if (req.user && req.user.providers) {
     Object.keys(req.user.providers).map(key => {
       if (req.user.providers[key]) {
         providers[key] = true;
-        switch (key) {
-          case 'pushbullet': {
-            fetchFreshPushbullets({
-              userId: req.user.id,
-              access_token: req.user.providers.pushbullet.access_token
-            });
-          }
-        }
       }
     });
   }

@@ -50,69 +50,64 @@ const PB_API = axios.create({
 
 // ==============================
 
-const fetchFreshPushbullets = params => {
+let isFetchingFreshPushbullets = false;
+async function fetchFreshPushbullets(params) {
   console.log('fetchFreshPushbullets()');
-  let { userId, access_token, rebuild = false } = params;
+  console.log('isFetchingFreshPushbullets', isFetchingFreshPushbullets);
+  if (isFetchingFreshPushbullets) {
+    const error = new Error('fetchFreshPushbullets() is already running');
+    error.code = 1001;
+    throw error;
+  }
 
-  return getPushbulletBookmarksQuery({
-    userId: new ObjectId(userId),
-    singleRecord: true
-  })
-    .sort({ 'data.modified': -1 }) //SORT DESC
-    .exec()
-    .then(lastModifiedPush => {
-      // console.log('lastModifiedPush');
-      // console.log(JSON.stringify(lastModifiedPush, null, 4));
+  try {
+    isFetchingFreshPushbullets = true;
 
-      // console.log('lastUpdatedPush._id', lastUpdatedPush._id)
-      // console.log('lastUpdatedPush.createdAt', lastUpdatedPush.createdAt)
+    let { userId, access_token, rebuild = false } = params;
 
-      // console.log('lastUpdatedPush.pushBody', lastUpdatedPush.pushBody)
-      // console.log(lastUpdatedPush.pushBody.modified)
+    const lastModifiedPush = await getPushbulletBookmarksQuery({
+      userId: new ObjectId(userId),
+      singleRecord: true
+    })
+      .sort({ 'data.modified': -1 }) //SORT DESC
+      .exec();
 
-      return fetchPushesBasic({
-        access_token,
-        modified_after:
-          rebuild || !lastModifiedPush ? null : lastModifiedPush.data.modified
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      console.log('============================');
-      console.error(err.stack);
-    })
-    .then(newPushes => {
-      if (newPushes && newPushes.length > 0) {
-        return Promise.map(newPushes, newPush => {
-          //TODO xz: ideally should also check if modified is < newPush.modified
-          return Bookmark.findOneAndUpdate(
-            {
-              provider: 'pushbullet',
-              'data.iden': newPush.iden
-            },
-            {
-              $set: {
-                userId: new ObjectId(userId),
-                data: newPush
-              }
-            },
-            {
-              upsert: true
-            }
-          ).exec();
-        });
-      }
-    })
-    .then(() => {
-      console.log('fetchFreshPushbullets() done');
-      return true;
-    })
-    .catch(err => {
-      console.log('err in fetchFreshPushbullets');
-      console.log(err);
-      throw err;
+    const newPushes = await fetchPushesBasic({
+      access_token,
+      modified_after:
+        rebuild || !lastModifiedPush ? null : lastModifiedPush.data.modified
     });
-};
+
+    if (newPushes && newPushes.length > 0) {
+      return Promise.map(newPushes, newPush => {
+        //TODO xz: ideally should also check if modified is < newPush.modified
+        return Bookmark.findOneAndUpdate(
+          {
+            provider: 'pushbullet',
+            'data.iden': newPush.iden
+          },
+          {
+            $set: {
+              userId: new ObjectId(userId),
+              data: newPush
+            }
+          },
+          {
+            upsert: true
+          }
+        ).exec();
+      });
+    }
+  } catch (err) {
+    isFetchingFreshPushbullets = false;
+    throw err;
+  } finally {
+    isFetchingFreshPushbullets = false;
+    // setTimeout(function() {
+    //   isFetchingFreshPushbullets = false;
+    // }, 5000);
+  }
+}
 
 const fetchPushesBasic = params => {
   const demoLimit = 2;
@@ -225,40 +220,6 @@ const parseUrlFromBookmarks = () => {
 
 // ==============================
 
-router.get('/fetch', (req, res) => {
-  //xz: may include many sources in future
-  if (!req.user.providers) {
-    return res.json([]);
-  }
-
-  let { pushbullet } = req.user.providers;
-
-  if (pushbullet) {
-    fetchFreshPushbullets({
-      userId: new ObjectId(req.user.id),
-      access_token: pushbullet.access_token
-    })
-      .then(() => parseUrlFromBookmarks())
-      .then(() =>
-        Bookmark.find({
-          userId: new ObjectId(req.user.id)
-        }).exec()
-      )
-      .then(bookmarks => {
-        // console.log('bookmarks.length', bookmarks.length);
-        res.json(bookmarks);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).send('Something broke!');
-      });
-  } else {
-    return res.json([]);
-  }
-
-  //... and more sources in future
-});
-
 const getMagicUncategorisedBookmarks = (params = {}) => {
   let { userId } = params;
 
@@ -320,12 +281,12 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   );
 };
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   const { user, query } = req;
-  const { type } = query;
+  const { type, before } = query;
 
   if (!user) {
-    return next(new Error('You are not logged in.'))
+    return next(new Error('You are not logged in.'));
   }
 
   let retrieveBookmarks;
@@ -337,11 +298,22 @@ router.get("/", async (req, res, next) => {
         });
       break;
     default:
-      retrieveBookmarks = () =>
-        Bookmark.find({
-          userId: new ObjectId(req.user.id)
-        }).exec();
-      break;
+      if (!before) {
+        return Bookmark.find({
+          userId: new ObjectId(user.id)
+        })
+          .sort({ 'data.modified': -1 })
+          .limit(20)
+          .exec();
+      } else {
+        return Bookmark.find({
+          'data.modified': { $lte: before }
+        })
+
+          .sort('-createdOn')
+          .limit(20)
+          .exec()
+      }
   }
 
   try {
@@ -351,7 +323,7 @@ router.get("/", async (req, res, next) => {
     res.json(bookmarks);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Something broke!');
+    return next(new Error('Something broke!'));
   }
 });
 
@@ -389,9 +361,6 @@ const deletePushBullet = (bk, pushbullet) => {
 };
 
 router.delete('/:id', async (req, res) => {
-  // console.log(req.query);
-  console.log(req.params);
-
   let { pushbullet } = req.user.providers;
   try {
     let bk = await Bookmark.findById(req.params.id).exec();
@@ -431,6 +400,41 @@ router.put('/:id/tags', async (req, res) => {
     res.status(200).json(updatedBookmark);
   } catch (err) {
     res.sendStatus(500);
+  }
+});
+
+router.get('/fetch', async (req, res, next) => {
+  //xz: may include many sources in future
+  if (!req.user.providers) {
+    return res.json([]);
+  }
+
+  let { pushbullet } = req.user.providers;
+
+  try {
+    if (pushbullet) {
+      await fetchFreshPushbullets({
+        userId: new ObjectId(req.user.id),
+        access_token: pushbullet.access_token
+      });
+      // await parseUrlFromBookmarks();
+      const bookmarks = await Bookmark.find({
+        userId: new ObjectId(req.user.id)
+      }).exec();
+      res.json(bookmarks);
+    } else {
+      return res.json([]);
+    }
+    //... and more sources in future
+  } catch (err) {
+    switch (err.code) {
+      case 1001:
+        console.log(err.message);
+        break;
+      default:
+        console.log(err);
+    }
+    res.status(500).send(err.message);
   }
 });
 
