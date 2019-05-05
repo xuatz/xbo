@@ -15,7 +15,7 @@ dbConnectionString += "/" + (process.env.DB_NAME || "placeholder_db");
 // console.log("dbConnectionString", dbConnectionString);
 
 let options = {
-    useMongoClient: true
+    // useMongoClient: true
 };
 
 mongoose.connect(dbConnectionString, options);
