@@ -1,27 +1,28 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { Router, Link } from "@reach/router";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { Router, Link } from '@reach/router';
+import styled from 'styled-components';
 
-import SessionCheckModule from "../components/common/SessionCheckModule";
+import SessionCheckModule from '../components/common/SessionCheckModule';
 
-import MainPage from "../components/MainPage";
-import Profile from "../components/Profile";
-import Organiser from "../components/Organiser";
-import Gallery from "../components/Gallery";
+import MainPage from '../components/MainPage';
+import MainPageV2 from '../components/MainPageV2';
+import Profile from '../components/Profile';
+import Organiser from '../components/Organiser';
+import Gallery from '../components/Gallery';
 
-import AboutPage from "../components/AboutPage";
+import AboutPage from '../components/AboutPage';
 
-import Crypto from "../components/Crypto";
+import Crypto from '../components/Crypto';
 
-import configureStore from "../store";
+import configureStore from '../store';
 
 let store = configureStore();
 
 const Header = () => (
   <MyNav>
-    <Link to="/">Home</Link> <Link to="gallery">Gallery</Link>{" "}
-    <Link to="profile">Profile</Link> <Link to="organiser">Organiser</Link>{" "}
+    <Link to="/">Home</Link> <Link to="gallery">Gallery</Link>{' '}
+    <Link to="profile">Profile</Link> <Link to="organiser">Organiser</Link>{' '}
   </MyNav>
 );
 
@@ -52,6 +53,7 @@ class App extends Component {
             <Body>
               <Router>
                 <MainPage path="/" />
+                <MainPageV2 path="/v2" />
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />
