@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Queue from './Queue';
 import Bundle from './Bundle';
 import * as actions from '../../actions/bookmarkActions';
+import { SectionHeader } from './styles';
 
 class SummaryPage extends Component {
   componentDidMount() {
@@ -14,9 +15,9 @@ class SummaryPage extends Component {
   render() {
     return (
       <div>
-        <h2>Organise bookmarks</h2>
+        <SectionHeader>Organise bookmarks</SectionHeader>
         <Queue />
-        <h2>Check out these topics</h2>
+        <SectionHeader>Check out these topics</SectionHeader>
         <Bundle />
       </div>
     );

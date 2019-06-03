@@ -4,6 +4,46 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions/bookmarkActions';
 import { UnorganizedBookmark } from '../Bookmark';
+import { CarouselWrapper, Arrow, CarouselContent } from './styles';
+
+class Carousel extends Component {
+  state = {
+    index: 0
+  };
+
+  goLeft = () => {
+    this.setState(state => ({ index: Math.max(0, state.index - 1) }));
+  };
+
+  goRight = () => {
+    this.setState((state, props) => ({
+      index: Math.min(props.bookmarks.length - 1, state.index + 1)
+    }));
+  };
+
+  render() {
+    let { index } = this.state;
+    let { bookmarks } = this.props;
+    let currentBookmarkAtIndex = bookmarks[index];
+
+    if (!currentBookmarkAtIndex) {
+      return null;
+    }
+
+    return (
+      <CarouselWrapper>
+        <Arrow onClick={this.goLeft}>&lt;</Arrow>
+        <CarouselContent>
+          <UnorganizedBookmark
+            key={currentBookmarkAtIndex._id}
+            bk={currentBookmarkAtIndex}
+          />
+        </CarouselContent>
+        <Arrow onClick={this.goRight}>&gt;</Arrow>
+      </CarouselWrapper>
+    );
+  }
+}
 
 class Queue extends Component {
   state = {
@@ -38,13 +78,7 @@ class Queue extends Component {
       );
     }
 
-    return (
-      <div>
-        {bookmarks.map(bookmark => {
-          return <UnorganizedBookmark key={bookmark._id} bk={bookmark} />;
-        })}
-      </div>
-    );
+    return <Carousel bookmarks={bookmarks} />;
   }
 }
 
