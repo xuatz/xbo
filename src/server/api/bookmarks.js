@@ -320,29 +320,34 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   );
 };
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   let { type } = req.query;
-  Promise.resolve()
-    .then(() => {
-      switch (type) {
-        case 'magic':
-          return getMagicUncategorisedBookmarks({
-            userId: req.user.id
-          });
-        default:
-          return Bookmark.find({
-            userId: new ObjectId(req.user.id)
-          }).exec();
-      }
-    })
-    .then(bookmarks => {
-      console.log('bookmarks.length', bookmarks.length);
-      res.json(bookmarks);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).send('Something broke!');
-    });
+
+  let retrieveBookmarks;
+  switch (type) {
+    case 'magic':
+      retrieveBookmarks = () =>
+        getMagicUncategorisedBookmarks({
+          userId: req.user.id
+        });
+      break;
+    default:
+      retrieveBookmarks = () =>
+        Bookmark.find({
+          userId: new ObjectId(req.user.id)
+        }).exec();
+      break;
+  }
+
+  try {
+    let bookmarks = await retrieveBookmarks();
+
+    console.log('bookmarks.length', bookmarks.length);
+    res.json(bookmarks);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Something broke!');
+  }
 });
 
 const deletePush = iden => {
@@ -357,64 +362,63 @@ const deletePush = iden => {
   });
 };
 
-router.delete('/:id', (req, res) => {
+const deletePushBullet = (bk, pushbullet) => {
+  return PB_API({
+    method: 'delete',
+    url: '/pushes/' + bk.data.iden,
+    headers: {
+      'Access-Token': pushbullet.access_token
+    }
+  })
+    .then(pb_res => {
+      if (pb_res.status === 200) {
+        return true;
+      } else {
+        console.log(pb_res);
+        return false;
+      }
+    })
+    .catch(err => {
+      switch (err.response.status) {
+        case 404:
+          // probably deleted elsewhere like on another client
+          // or on pushbullet itself
+          return true;
+        default: {
+          console.error(err);
+          console.log(err.response.status);
+          console.log(err.response.statusText);
+          console.log(err.response.data);
+          return false;
+        }
+      }
+    });
+};
+
+router.delete('/:id', async (req, res) => {
   // console.log(req.query);
   console.log(req.params);
 
   let { pushbullet } = req.user.providers;
-
-  Bookmark.findById(req.params.id)
-    .exec()
-    .then(bk => {
-      if (bk) {
-        switch (bk.provider) {
-          case 'pushbullet': {
-            return PB_API({
-              method: 'delete',
-              url: '/pushes/' + bk.data.iden,
-              headers: {
-                'Access-Token': pushbullet.access_token
-              }
-            })
-              .then(pb_res => {
-                if (pb_res.status === 200) {
-                  return true;
-                } else {
-                  console.log(pb_res);
-                  return false;
-                }
-              })
-              .catch(err => {
-                switch (err.response.status) {
-                  case 404:
-                    // probably deleted elsewhere like on another client
-                    // or on pushbullet itself
-                    return true;
-                  default: {
-                    console.error(err);
-                    console.log(err.response.status);
-                    console.log(err.response.statusText);
-                    console.log(err.response.data);
-                    return false;
-                  }
-                }
-              })
-              .then(isDeleted => {
-                if (isDeleted) {
-                  bk.remove();
-                  res.sendStatus(200);
-                } else {
-                  res.sendStatus(400);
-                }
-              })
-              .catch(err => {
-                console.log(err);
-                res.status(500).send('Something broke!');
-              });
-          }
-        }
+  try {
+    let bk = await Bookmark.findById(req.params.id).exec();
+    let isDeleted = false;
+    if (bk) {
+      if (bk.provider === 'pushbullet') {
+        isDeleted = deletePushBullet(bk, pushbullet);
       }
-    });
+    }
+
+    if (isDeleted) {
+      bk.remove();
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Something broke!');
+  }
 });
 
 router.put('/:id/tags', async (req, res) => {
