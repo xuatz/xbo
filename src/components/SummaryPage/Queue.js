@@ -118,7 +118,9 @@ class Queue extends Component {
 
 const mapStateToProps = state => {
   return {
-    bookmarks: state.bookmarks.uncategorised
+    bookmarks: state.bookmarks.uncategorised.map(
+      id => state.bookmarks.bookmarks.entities[id]
+    )
   };
 };
 

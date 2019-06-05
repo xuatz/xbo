@@ -52,26 +52,25 @@ export default (state = initialState, action) => {
       };
     }
     case 'BOOKMARKS_UNCATEGORISED_REPLACE': {
+      let { entities, result } = action.uncategorised.reduce(
+        (res, bk) => {
+          res.entities[bk._id] = bk;
+          res.result.push(bk._id);
+          return res;
+        },
+        { entities: {}, result: [] }
+      );
       return {
         ...state,
-        uncategorised: action.uncategorised
+        bookmarks: {
+          ...state.bookmarks,
+          entities: {
+            ...state.bookmarks.entities,
+            ...entities
+          }
+        },
+        uncategorised: result
       };
-      // let { entities, result } = action.uncategorised.reduce(
-      //   (res, bk) => {
-      //     res.entities[bk._id] = bk;
-      //     res.result.push(bk._id);
-      //     return res;
-      //   },
-      //   { entities: {}, result: [] }
-      // );
-      // return {
-      //   ...state,
-      //   bookmarks: {
-      //     ...state.bookmarks,
-      //     ...entities
-      //   },
-      //   uncategorised: result
-      // };
     }
     case 'BOOKMARKS_REPLACE': {
       let all = action.bookmarks || state.bookmarks;

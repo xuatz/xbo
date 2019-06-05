@@ -77,6 +77,12 @@ export default class UnorganizedBookmark extends React.Component {
     tags: []
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.bk.tags !== nextProps.bk.tags) {
+      this.setState({ tags: nextProps.bk.tags });
+    }
+  }
+
   handleOnTagAdded = newTag => {
     this.setState(prevState => {
       let tags = !prevState.tags.includes(newTag)

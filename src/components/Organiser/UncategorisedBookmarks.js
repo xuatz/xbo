@@ -10,7 +10,10 @@ const empty = [];
 
 const mapStateToProps = state => {
   return {
-    bookmarks: state.bookmarks.uncategorised || empty
+    bookmarks:
+      state.bookmarks.uncategorised.map(
+        id => state.bookmarks.bookmarks.entities[id]
+      ) || empty
   };
 };
 

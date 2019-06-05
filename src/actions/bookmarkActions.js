@@ -66,7 +66,7 @@ export const updateBookmarkTags = (id, tags) => {
     return API.put(`/bookmarks/${id}/tags`, { tags }).then(res => {
       if (res.status === 200) {
         dispatch({
-          type: 'BOOKMAR_REPLACE',
+          type: 'BOOKMARK_REPLACE',
           uncategorised: res.data
         });
       }
