@@ -18,7 +18,9 @@ const CarouselIndicator = props => {
   return (
     <Indicator>
       {progress.map((p, i) => (
-        <IndicatorDot>{p ? <CheckmarkIcon /> : null}</IndicatorDot>
+        <IndicatorDot current={i === index}>
+          {p ? <CheckmarkIcon /> : null}
+        </IndicatorDot>
       ))}
     </Indicator>
   );
@@ -30,12 +32,15 @@ class Carousel extends Component {
   };
 
   goLeft = () => {
-    this.setState(state => ({ index: Math.max(0, state.index - 1) }));
+    this.setState(state => ({
+      index:
+        state.index === 0 ? this.props.bookmarks.length - 1 : state.index - 1
+    }));
   };
 
   goRight = () => {
     this.setState((state, props) => ({
-      index: Math.min(props.bookmarks.length - 1, state.index + 1)
+      index: Math.abs((state.index + 1) % this.props.bookmarks.length)
     }));
   };
 
@@ -63,7 +68,7 @@ class Carousel extends Component {
             bk={currentBookmarkAtIndex}
             onTagsUpdated={onTagsUpdated(currentBookmarkAtIndex._id)}
           />
-          <CarouselIndicator inedx={index} progress={progress} />
+          <CarouselIndicator index={index} progress={progress} />
         </CarouselContent>
         <Arrow onClick={this.goRight}>
           <ArrowRightIcon />

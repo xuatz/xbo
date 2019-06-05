@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
+import Code from '../common/Code';
+
 const Push = props => {
   let { data } = props;
   let { type, modified, title, url } = data;
@@ -18,7 +20,7 @@ const Push = props => {
       return (
         <div>
           <h3>unhandled type: {type}</h3>
-          <pre>{JSON.stringify(data, 0, 2)}</pre>
+          <Code>{JSON.stringify(data, 0, 2)}</Code>
         </div>
       );
     }

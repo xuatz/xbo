@@ -34,8 +34,13 @@ export const Indicator = styled.div`
 `;
 
 export const IndicatorDot = styled.span`
+  align-items: center;
+  background-color: ${props => (props.current ? '#eee' : '#fff')};
   border-radius: 50%;
-  border: 1px solid #eee;
+  border: 1px solid #555;
+  display: flex;
   height: 1rem;
+  justify-content: center;
+  margin: 0.5rem;
   width: 1rem;
 `;

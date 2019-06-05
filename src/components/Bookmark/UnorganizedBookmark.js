@@ -74,7 +74,7 @@ Tags.defaultProps = {
 // An unorganized bookmark
 export default class UnorganizedBookmark extends React.Component {
   state = {
-    tags: []
+    tags: this.props.bk.tags || []
   };
 
   componentWillReceiveProps(nextProps) {
