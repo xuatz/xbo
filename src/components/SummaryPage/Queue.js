@@ -4,7 +4,25 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../actions/bookmarkActions';
 import { UnorganizedBookmark } from '../Bookmark';
-import { CarouselWrapper, Arrow, CarouselContent } from './styles';
+import {
+  CarouselWrapper,
+  Arrow,
+  CarouselContent,
+  Indicator,
+  IndicatorDot
+} from './styles';
+import { ArrowLeftIcon, ArrowRightIcon, CheckmarkIcon } from '../common/icons';
+
+const CarouselIndicator = props => {
+  let { index, progress } = props;
+  return (
+    <Indicator>
+      {progress.map((p, i) => (
+        <IndicatorDot>{p ? <CheckmarkIcon /> : null}</IndicatorDot>
+      ))}
+    </Indicator>
+  );
+};
 
 class Carousel extends Component {
   state = {
@@ -23,23 +41,33 @@ class Carousel extends Component {
 
   render() {
     let { index } = this.state;
-    let { bookmarks } = this.props;
+    let { bookmarks, onTagsUpdated } = this.props;
     let currentBookmarkAtIndex = bookmarks[index];
 
     if (!currentBookmarkAtIndex) {
       return null;
     }
 
+    let progress = bookmarks.map(
+      bookmark => bookmark.tags && bookmark.tags.length > 0
+    );
+
     return (
       <CarouselWrapper>
-        <Arrow onClick={this.goLeft}>&lt;</Arrow>
+        <Arrow onClick={this.goLeft}>
+          <ArrowLeftIcon />
+        </Arrow>
         <CarouselContent>
           <UnorganizedBookmark
             key={currentBookmarkAtIndex._id}
             bk={currentBookmarkAtIndex}
+            onTagsUpdated={onTagsUpdated(currentBookmarkAtIndex._id)}
           />
+          <CarouselIndicator inedx={index} progress={progress} />
         </CarouselContent>
-        <Arrow onClick={this.goRight}>&gt;</Arrow>
+        <Arrow onClick={this.goRight}>
+          <ArrowRightIcon />
+        </Arrow>
       </CarouselWrapper>
     );
   }
@@ -60,6 +88,10 @@ class Queue extends Component {
     }
   }
 
+  onTagsUpdated = id => tags => {
+    this.props.actions.updateBookmarkTags(id, tags);
+  };
+
   render() {
     let { firstLoad } = this.state;
     let { bookmarks } = this.props;
@@ -78,7 +110,9 @@ class Queue extends Component {
       );
     }
 
-    return <Carousel bookmarks={bookmarks} />;
+    return (
+      <Carousel bookmarks={bookmarks} onTagsUpdated={this.onTagsUpdated} />
+    );
   }
 }
 

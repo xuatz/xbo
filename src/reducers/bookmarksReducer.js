@@ -114,6 +114,19 @@ export default (state = initialState, action) => {
         }
       };
     }
+    case 'BOOKMARK_REPLACE': {
+      let bookmark = action.bookmark;
+      return {
+        ...state,
+        bookmarks: {
+          ...state.bookmarks,
+          entities: {
+            ...state.bookmarks.entities,
+            [bookmark._id]: bookmark
+          }
+        }
+      };
+    }
     default:
       return state;
   }

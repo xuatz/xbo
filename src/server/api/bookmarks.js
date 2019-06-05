@@ -1,14 +1,14 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const _ = require("lodash");
-const axios = require("axios");
-const Promise = require("bluebird");
-const parseDomain = require("parse-domain");
-const moment = require("moment");
+const _ = require('lodash');
+const axios = require('axios');
+const Promise = require('bluebird');
+const parseDomain = require('parse-domain');
+const moment = require('moment');
 
-const Bookmark = require("../models/bookmark.js");
-const ObjectId = require("mongoose").Types.ObjectId;
+const Bookmark = require('../models/bookmark.js');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 // ============================================================
 // db.getCollection('bookmarks').find({}).sort({ 'data.created': 1 })
@@ -32,12 +32,12 @@ const getPushbulletBookmarksQuery = queryParams => {
   return singleRecord
     ? Bookmark.findOne(
         Object.assign({}, rest, {
-          provider: "pushbullet"
+          provider: 'pushbullet'
         })
       )
     : Bookmark.find(
         Object.assign({}, rest, {
-          provider: "pushbullet"
+          provider: 'pushbullet'
         })
       );
 };
@@ -45,20 +45,20 @@ const getPushbulletBookmarksQuery = queryParams => {
 // ==============================
 
 const PB_API = axios.create({
-  baseURL: "https://api.pushbullet.com/v2/"
+  baseURL: 'https://api.pushbullet.com/v2/'
 });
 
 // ==============================
 
 const fetchFreshPushbullets = params => {
-  console.log("fetchFreshPushbullets()");
+  console.log('fetchFreshPushbullets()');
   let { userId, access_token, rebuild = false } = params;
 
   return getPushbulletBookmarksQuery({
     userId: new ObjectId(userId),
     singleRecord: true
   })
-    .sort({ "data.modified": -1 }) //SORT DESC
+    .sort({ 'data.modified': -1 }) //SORT DESC
     .exec()
     .then(lastModifiedPush => {
       // console.log('lastModifiedPush');
@@ -78,7 +78,7 @@ const fetchFreshPushbullets = params => {
     })
     .catch(err => {
       console.log(err);
-      console.log("============================");
+      console.log('============================');
       console.error(err.stack);
     })
     .then(newPushes => {
@@ -87,8 +87,8 @@ const fetchFreshPushbullets = params => {
           //TODO xz: ideally should also check if modified is < newPush.modified
           return Bookmark.findOneAndUpdate(
             {
-              provider: "pushbullet",
-              "data.iden": newPush.iden
+              provider: 'pushbullet',
+              'data.iden': newPush.iden
             },
             {
               $set: {
@@ -104,11 +104,11 @@ const fetchFreshPushbullets = params => {
       }
     })
     .then(() => {
-      console.log("fetchFreshPushbullets() done");
+      console.log('fetchFreshPushbullets() done');
       return true;
     })
     .catch(err => {
-      console.log("err in fetchFreshPushbullets");
+      console.log('err in fetchFreshPushbullets');
       console.log(err);
       throw err;
     });
@@ -125,12 +125,12 @@ const fetchPushesBasic = params => {
     count = 1
   } = params;
 
-  console.log("fetchPushesBasic():count:", count);
+  console.log('fetchPushesBasic():count:', count);
 
   return PB_API.request({
-    url: "/pushes",
+    url: '/pushes',
     headers: {
-      "Access-Token": access_token
+      'Access-Token': access_token
     },
     params: {
       active: true,
@@ -143,7 +143,7 @@ const fetchPushesBasic = params => {
       let newPushes = data.pushes;
       let nextCursor = data.cursor;
 
-      console.log("newPushes.length", newPushes.length);
+      console.log('newPushes.length', newPushes.length);
 
       let mergedPushes = pushes.concat(newPushes);
 
@@ -173,9 +173,9 @@ const fetchPushesBasic = params => {
 
 const parseUrlFromBookmarks = () => {
   return Bookmark.find({
-    provider: "pushbullet",
-    "data.url": { $exists: true },
-    "stats.domain": { $exists: false }
+    provider: 'pushbullet',
+    'data.url': { $exists: true },
+    'stats.domain': { $exists: false }
   })
     .exec()
     .then(bookmarks => {
@@ -185,7 +185,7 @@ const parseUrlFromBookmarks = () => {
           data: { url }
         } = bk;
 
-        if ("magnet" == url.substring(0, 5)) {
+        if ('magnet' == url.substring(0, 5)) {
           //TODO can consider if i wan to add them to some category in future
           // for now do nothing
         } else {
@@ -225,7 +225,7 @@ const parseUrlFromBookmarks = () => {
 
 // ==============================
 
-router.get("/fetch", (req, res) => {
+router.get('/fetch', (req, res) => {
   //xz: may include many sources in future
   if (!req.user.providers) {
     return res.json([]);
@@ -250,7 +250,7 @@ router.get("/fetch", (req, res) => {
       })
       .catch(err => {
         console.log(err);
-        res.status(500).send("Something broke!");
+        res.status(500).send('Something broke!');
       });
   } else {
     return res.json([]);
@@ -263,15 +263,15 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   let { userId } = params;
 
   // let recently be 6 days, for now
-  let recently = moment().format("X") - 24 * 60 * 60 * 10;
+  let recently = moment().format('X') - 24 * 60 * 60 * 10;
 
   return (
     getPushbulletBookmarksQuery({
       userId: new ObjectId(userId)
     })
-      .sort({ "data.modified": -1 })
+      .sort({ 'data.modified': -1 })
       // .sort({ "stats.viewCount": -1 }) //SORT DESC
-      .or([{ status: undefined }, { status: "uncategorised" }])
+      .or([{ status: undefined }, { status: 'uncategorised' }])
       .exec()
       .then(bookmarks => {
         let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
@@ -300,7 +300,7 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
           return bk
             .update(
               {
-                $inc: { "stats.viewCount": 1 }
+                $inc: { 'stats.viewCount': 1 }
               },
               {
                 multi: false
@@ -320,12 +320,12 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   );
 };
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   let { type } = req.query;
   Promise.resolve()
     .then(() => {
       switch (type) {
-        case "magic":
+        case 'magic':
           return getMagicUncategorisedBookmarks({
             userId: req.user.id
           });
@@ -336,12 +336,12 @@ router.get("/", (req, res) => {
       }
     })
     .then(bookmarks => {
-      console.log("bookmarks.length", bookmarks.length);
+      console.log('bookmarks.length', bookmarks.length);
       res.json(bookmarks);
     })
     .catch(err => {
       console.log(err);
-      res.status(500).send("Something broke!");
+      res.status(500).send('Something broke!');
     });
 });
 
@@ -357,7 +357,7 @@ const deletePush = iden => {
   });
 };
 
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   // console.log(req.query);
   console.log(req.params);
 
@@ -368,12 +368,12 @@ router.delete("/:id", (req, res) => {
     .then(bk => {
       if (bk) {
         switch (bk.provider) {
-          case "pushbullet": {
+          case 'pushbullet': {
             return PB_API({
-              method: "delete",
-              url: "/pushes/" + bk.data.iden,
+              method: 'delete',
+              url: '/pushes/' + bk.data.iden,
               headers: {
-                "Access-Token": pushbullet.access_token
+                'Access-Token': pushbullet.access_token
               }
             })
               .then(pb_res => {
@@ -409,12 +409,32 @@ router.delete("/:id", (req, res) => {
               })
               .catch(err => {
                 console.log(err);
-                res.status(500).send("Something broke!");
+                res.status(500).send('Something broke!');
               });
           }
         }
       }
     });
+});
+
+router.put('/:id/tags', async (req, res) => {
+  const bookmarkId = req.params.id;
+  const tags = req.body.tags;
+
+  try {
+    const result = await Bookmark.updateOne(
+      { _id: bookmarkId },
+      {
+        $set: {
+          tags: tags
+        }
+      }
+    );
+    const updatedBookmark = await Bookmark.findById(bookmarkId).exec();
+    res.status(200).json(updatedBookmark);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = {
