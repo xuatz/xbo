@@ -15,10 +15,9 @@ const mapStateToProps = state => {
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
+    bookmarks = bookmarks.concat(link).concat(note);
     bookmarks = bookmarks
-      .concat(link)
-      .concat(note)
-      .filter(bk => bk !== undefined)
+      .map(bookmarkId => state.bookmarks.bookmarks.entities[bookmarkId])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
@@ -43,11 +42,11 @@ class PushV2 extends Component {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
-    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll, false);
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onScroll = () => {
