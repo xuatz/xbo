@@ -38,7 +38,7 @@ $ git clone ...
 $ docker-compose up -d
 ```
 
-> `$ docker-compose up --build --force-recreate -d`  
+> `$ docker-compose up --build --force-recreate -d`
 > you might need this sometimes
 
 ## Development on local machine
