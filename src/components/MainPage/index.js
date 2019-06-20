@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Push from "./PushV2";
+import React from 'react';
+import styled from 'styled-components';
+import Push from '../PushV2';
 
 const Wrapper = styled.section`
   padding: 2em 6em;

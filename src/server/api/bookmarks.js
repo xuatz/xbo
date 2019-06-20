@@ -31,15 +31,15 @@ const getPushbulletBookmarksQuery = queryParams => {
 
   return singleRecord
     ? Bookmark.findOne(
-      Object.assign({}, rest, {
-        provider: 'pushbullet'
-      })
-    )
+        Object.assign({}, rest, {
+          provider: 'pushbullet'
+        })
+      )
     : Bookmark.find(
-      Object.assign({}, rest, {
-        provider: 'pushbullet'
-      })
-    );
+        Object.assign({}, rest, {
+          provider: 'pushbullet'
+        })
+      );
 };
 
 // ==============================
@@ -299,26 +299,26 @@ router.get('/', async (req, res, next) => {
       break;
     default:
       if (!before) {
-        return Bookmark.find({
-          userId: new ObjectId(user.id)
-        })
-          .sort({ 'data.modified': -1 })
-          .limit(20)
-          .exec();
+        retrieveBookmarks = () =>
+          Bookmark.find({
+            userId: new ObjectId(user.id)
+          })
+            .sort({ 'data.modified': -1 })
+            .limit(20)
+            .exec();
       } else {
-        return Bookmark.find({
-          'data.modified': { $lte: before }
-        })
-
-          .sort('-createdOn')
-          .limit(20)
-          .exec()
+        retrieveBookmarks = () =>
+          Bookmark.find({
+            'data.modified': { $lte: before }
+          })
+            .sort('-createdOn')
+            .limit(20)
+            .exec();
       }
   }
 
   try {
     let bookmarks = await retrieveBookmarks();
-
     console.log('bookmarks.length', bookmarks.length);
     res.json(bookmarks);
   } catch (err) {
