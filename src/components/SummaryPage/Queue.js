@@ -54,7 +54,7 @@ class Carousel extends Component {
     }
 
     let progress = bookmarks.map(
-      bookmark => bookmark.tags && bookmark.tags.length > 0
+      bookmark => bookmark && bookmark.tags && bookmark.tags.length > 0
     );
 
     return (
@@ -102,8 +102,9 @@ class Queue extends Component {
     let { bookmarks } = this.props;
     let isDone =
       bookmarks.length ===
-      bookmarks.filter(bookmark => bookmark.tags && bookmark.tags.length)
-        .length;
+      bookmarks.filter(
+        bookmark => bookmark && bookmark.tags && bookmark.tags.length
+      ).length;
     if (!firstLoad && isDone) {
       return (
         <div>
