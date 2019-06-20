@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as actions from "../../actions/bookmarkActions";
-import UrlAndNoteItem from "./url-and-note";
+import * as actions from '../../actions/bookmarkActions';
+import UrlAndNoteItem from './url-and-note';
 
 const mapStateToProps = state => {
   let bookmarks = [];
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
+    bookmarks = bookmarks.concat(link).concat(note);
     bookmarks = bookmarks
-      .concat(link)
-      .concat(note)
-      .filter(bk => bk !== undefined)
+      .map(bookmarkId => state.bookmarks.bookmarks.entities[bookmarkId])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
@@ -75,11 +74,11 @@ class PushV2 extends Component {
     let sublist = this.props.bookmarks
       .filter(item => {
         const pattern = this.state.filter;
-        if (!pattern || pattern === "") {
+        if (!pattern || pattern === '') {
           return true;
         }
 
-        const { title = "", url = "", body = "" } = item.data;
+        const { title = '', url = '', body = '' } = item.data;
 
         return (
           title.toLowerCase().includes(pattern.toLowerCase()) ||
@@ -91,9 +90,9 @@ class PushV2 extends Component {
 
     return (
       <div>
-        <div style={{ padding: "20px" }}>
+        <div style={{ padding: '20px' }}>
           <input
-            style={{ padding: "5px" }}
+            style={{ padding: '5px' }}
             onChange={this.handleFilterOnChange}
             value={this.state.filter}
           />
@@ -106,38 +105,38 @@ class PushV2 extends Component {
                   <li key={index}>
                     <div
                       style={{
-                        background: "teal",
-                        padding: "20px"
+                        background: 'teal',
+                        padding: '20px'
                         // width: "50%"
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
-                          background: "white",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "space-around"
+                          display: 'flex',
+                          background: 'white',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-around'
                           // justifyContent: "flex-start"
                         }}
                       >
                         <UrlAndNoteItem
                           style={{
-                            flex: "5"
+                            flex: '5'
                             // background: "green"
                           }}
                           item={bk}
                         />
                         <div
                           style={{
-                            flex: "1"
+                            flex: '1'
                             // background: "red"
                           }}
                         >
                           <button
                             style={{
-                              padding: "10px",
-                              textAlign: "center"
+                              padding: '10px',
+                              textAlign: 'center'
                             }}
                             onClick={() => this.handleOnDelete(bk._id)}
                           >
