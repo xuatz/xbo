@@ -18,7 +18,7 @@ const CarouselIndicator = props => {
   return (
     <Indicator>
       {progress.map((p, i) => (
-        <IndicatorDot current={i === index}>
+        <IndicatorDot key={i} current={i === index}>
           {p ? <CheckmarkIcon /> : null}
         </IndicatorDot>
       ))}

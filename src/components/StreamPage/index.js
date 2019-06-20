@@ -30,9 +30,9 @@ class StreamPage extends Component {
       <div>
         <Tabs />
         <div>
-          {bookmarks.map(bookmark => {
-            return <Bookmark bookmark={bookmark} />;
-          })}
+          {bookmarks.map((bookmark, index) => (
+            <Bookmark key={index} bookmark={bookmark} />
+          ))}
         </div>
       </div>
     );
