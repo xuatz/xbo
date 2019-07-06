@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Code from '../common/Code';
+import Code from '../../components/common/Code';
 
 class UrlAndNoteItem extends Component {
   state = {
@@ -16,6 +16,9 @@ class UrlAndNoteItem extends Component {
 
   render() {
     const { item, style } = this.props;
+    if (!item) {
+      return null;
+    }
     const { title, url, type, body } = item.data;
     return (
       <div onClick={this.handleOnClick} style={style}>

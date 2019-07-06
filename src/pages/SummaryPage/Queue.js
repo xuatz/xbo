@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as actions from '../../actions/bookmarkActions';
-import { UnorganizedBookmark } from '../Bookmark';
+import * as actions from 'src/actions/bookmarkActions';
+import { UnorganizedBookmark } from 'src/components/Bookmark';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckmarkIcon
+} from 'src/components/common/icons';
 import {
   CarouselWrapper,
   Arrow,
@@ -11,7 +16,6 @@ import {
   Indicator,
   IndicatorDot
 } from './styles';
-import { ArrowLeftIcon, ArrowRightIcon, CheckmarkIcon } from '../common/icons';
 
 const CarouselIndicator = props => {
   let { index, progress } = props;

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as actions from '../../actions/bookmarkActions';
-import { Bookmark } from '../Bookmark';
+import * as actions from 'src/actions/bookmarkActions';
+import { Bookmark } from 'src/components/Bookmark';
 
 const Tabs = props => {
   return (

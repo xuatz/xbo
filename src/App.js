@@ -3,21 +3,17 @@ import { Provider } from 'react-redux';
 import { Router, Link } from '@reach/router';
 import styled from 'styled-components';
 
-import SessionCheckModule from '../components/common/SessionCheckModule';
+import SessionCheckModule from './components/common/SessionCheckModule';
 
-import MainPage from '../components/MainPage';
-import SummaryPage from '../components/SummaryPage';
-import StreamPage from '../components/StreamPage';
+import MainPage from 'src/pages/MainPage';
+import SummaryPage from 'src/pages/SummaryPage';
+import StreamPage from 'src/pages/StreamPage';
+import Profile from 'src/pages/Profile';
+import Organiser from 'src/pages/Organiser';
+import Gallery from 'src/pages/Gallery';
 import MainPageV2 from '../components/MainPageV2';
-import Profile from '../components/Profile';
-import Organiser from '../components/Organiser';
-import Gallery from '../components/Gallery';
 
-import AboutPage from '../components/AboutPage';
-
-import Crypto from '../components/Crypto';
-
-import configureStore from '../store';
+import configureStore from './store';
 
 let store = configureStore();
 
@@ -65,7 +61,6 @@ class App extends Component {
                 <Gallery path="/gallery" />
                 <Profile path="/profile" />
                 <Organiser path="/organiser" />
-                <Crypto path="/crypto" />
               </Router>
             </Body>
           </Container>

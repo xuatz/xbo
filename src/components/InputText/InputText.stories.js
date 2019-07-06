@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, select } from '@storybook/addon-knobs';
 
-import FieldText from './FieldText';
+import InputText from './InputText';
 
-const stories = storiesOf('FieldText', module);
+const stories = storiesOf('InputText', module);
 stories.addDecorator(withKnobs);
 
 stories.add('with props', () => {
@@ -15,14 +15,14 @@ stories.add('with props', () => {
     variant: select('Variant', ['default', 'full-width'])
   };
 
-  return <FieldText {...props} />;
+  return <InputText {...props} />;
 });
 
 stories.add('multiple', () => {
   return (
     <>
-      <FieldText label="Field 1" placeholder="Placeholder for field 1" />
-      <FieldText label="Field 2" placeholder="Placeholder for field 2" />
+      <InputText label="Field 1" placeholder="Placeholder for field 1" />
+      <InputText label="Field 2" placeholder="Placeholder for field 2" />
     </>
   );
 });

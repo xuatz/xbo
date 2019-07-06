@@ -87,7 +87,12 @@ export default (state = initialState, action) => {
         { entities: {}, result: [] }
       );
 
-      let sublists = {};
+      let sublists = {
+        link: [],
+        note: [],
+        file: [],
+        gallery: []
+      };
       all.forEach(bk => {
         if (!sublists[bk.data.type]) {
           sublists[bk.data.type] = [];

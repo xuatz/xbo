@@ -49,7 +49,7 @@ const InvisibleInput = styled.input`
   outline: none;
 `;
 
-class FieldText extends Component {
+class InputText extends Component {
   constructor(props) {
     super(props);
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -83,7 +83,7 @@ class FieldText extends Component {
   }
 }
 
-FieldText.propTypes = {
+InputText.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string,
   label: PropTypes.string.isRequired,
@@ -93,7 +93,7 @@ FieldText.propTypes = {
   variant: PropTypes.oneOf(['default', 'invisible'])
 };
 
-FieldText.defaultProps = {
+InputText.defaultProps = {
   disabled: false,
   id: null,
   onChange: () => {},
@@ -102,4 +102,4 @@ FieldText.defaultProps = {
   variant: 'default'
 };
 
-export default FieldText;
+export default InputText;

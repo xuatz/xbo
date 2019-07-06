@@ -69,6 +69,7 @@ class Untitled extends Component {
       Math.min(this.state.listSize, this.props.bookmarks.length - 1)
     );
 
+    console.log(this.props.bookmarks, sublist);
     return (
       <div>
         <ul>
