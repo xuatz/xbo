@@ -1,27 +1,18 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 
-import * as actions from '../../actions/userActions';
-
-const Wrapper = styled.section`
-  padding: 4em;
-  background: papayawhip;
-`;
-
-const Button = styled.button`
-  padding: 20px;
-  background: yellow;
-`;
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:9000';
-
-// TODO xz: pretty sure i can just ask for this URL from the server
-const PUSHBULLET_CLIENT_ID =
-  process.env.REACT_APP_PUSHBULLET_APP_CLIENT_ID ||
-  '2TXDmPJN0tukzOqu19qvwNCju16SyMb7';
-const url = `https://www.pushbullet.com/authorize?client_id=${PUSHBULLET_CLIENT_ID}&redirect_uri=${API_URL}/auth/connect/pushbullet/callback&response_type=code`;
+import * as actions from 'src/actions/userActions';
+import Button from 'src/components/Button/Button';
+import {
+  Page,
+  ProviderContainer,
+  Provider,
+  ProviderLogo,
+  ProfileSettings,
+  Header
+} from './styles';
+import PushbulletLogo from './PushbulletLogo.png';
 
 const mapStateToProps = state => {
   let providers = {};
@@ -42,28 +33,29 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Profile extends Component {
+  renderPushbulletProvider() {
+    return (
+      <Provider onClick={this.props.actions.connectPushbulletProvider}>
+        <ProviderLogo src={PushbulletLogo} />
+        <div onClick={this.props.actions.connectPushbulletProvider}>
+          {this.props.providers && this.props.providers.pushbullet
+            ? 'Connected with Pushbullet!'
+            : 'Connect with Pushbullet'}
+        </div>
+      </Provider>
+    );
+  }
+
   render() {
     return (
-      <>
-        <Wrapper>
-          {this.props.providers && this.props.providers.pushbullet ? (
-            'Connected with Pushbullet!'
-          ) : (
-              <a href={encodeURI(url)}>
-                <button>Connect with pushbullet</button>
-              </a>
-            )}
-        </Wrapper>
-        <div>
-          <Button
-            onClick={() => {
-              this.props.actions.logout();
-            }}
-          >
-            LOGOUT
-          </Button>
-        </div>
-      </>
+      <Page>
+        <Header>Manage Providers</Header>
+        <ProviderContainer>{this.renderPushbulletProvider()}</ProviderContainer>
+        <Header>Manage Profile</Header>
+        <ProfileSettings>
+          <Button onClick={this.props.actions.logout}>Logout</Button>
+        </ProfileSettings>
+      </Page>
     );
   }
 }

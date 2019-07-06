@@ -43,13 +43,15 @@ const Button = props => {
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['default', 'full-width']),
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func,
+  variant: PropTypes.oneOf(['default', 'full-width'])
 };
 
 Button.defaultProps = {
-  variant: 'default',
-  disabled: false
+  disabled: false,
+  onClick: () => {},
+  variant: 'default'
 };
 
 export default Button;

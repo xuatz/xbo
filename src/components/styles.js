@@ -19,7 +19,8 @@ const BLACK = '#111';
 
 const NEUTRAL = {
   LIGHTER: '#cfcfcf',
-  NORMAL: '#b6b6b6'
+  NORMAL: '#b6b6b6',
+  DARKER: '#838383'
 };
 
 export const COLOR = {
