@@ -30,6 +30,11 @@
     "styled-components": "^2.1.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-knobs": "^5.1.9",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
+    "@storybook/react": "^5.1.9",
     "mocha": "6.1.4",
     "nodemon": "1.19.0",
     "prettier": "1.17.0",
@@ -46,7 +51,9 @@
     "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
     "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "npm run start",
-    "dev:server": "nodemon src/server/server.js"
+    "dev:server": "nodemon src/server/server.js",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "prettier": {
     "singleQuote": true,
