@@ -2,10 +2,6 @@ import styled from 'styled-components';
 
 import { COLOR, FONT } from 'src/components/styles';
 
-export const Page = styled.div`
-  margin: 3rem;
-`;
-
 export const ProviderContainer = styled.section`
   display: flex;
   margin-bottom: 1rem;

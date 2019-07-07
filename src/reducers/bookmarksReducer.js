@@ -7,6 +7,10 @@ const initialState = {
     entities: {},
     result: []
   },
+  categories: {
+    groupByDomain: {},
+    groupByHashtag: {}
+  },
   uncategorised: [],
   sublists: {
     link: [],
@@ -25,13 +29,16 @@ export default (state = initialState, action) => {
     case 'BOOKMARKS_REMOVE_BY_ID': {
       return {
         ...state,
-        bookmarks: state.bookmarks.result.filter(id => id !== action.id),
-        uncategorised: state.categories.result.filter(id => id !== action.id),
-        sublist: {
-          link: state.sublist.link.result.filter(id => id !== action.id),
-          note: state.sublist.note.result.filter(id => id !== action.id),
-          file: state.sublist.file.result.filter(id => id !== action.id),
-          gallery: state.sublist.gallery.result.filter(id => id !== action.id)
+        bookmarks: {
+          entities: state.bookmarks.entities,
+          result: state.bookmarks.result.filter(id => id !== action.id)
+        },
+        uncategorised: state.uncategorised.filter(id => id !== action.id),
+        sublists: {
+          link: state.sublists.link.filter(id => id !== action.id),
+          note: state.sublists.note.filter(id => id !== action.id),
+          file: state.sublists.file.filter(id => id !== action.id),
+          gallery: state.sublists.gallery.filter(id => id !== action.id)
         },
         categories: {
           groupByDomain: fromEntries(

@@ -18,7 +18,10 @@ const WHITE = '#fff';
 const BLACK = '#111';
 
 const NEUTRAL = {
-  LIGHTER: '#cfcfcf',
+  LIGHTEST: '#f6f6f6',
+  LIGHTERER: '#e9e9e9',
+  LIGHTER: '#dcdcdc',
+  LIGHT: '#c3c3c3',
   NORMAL: '#b6b6b6',
   DARKER: '#838383'
 };

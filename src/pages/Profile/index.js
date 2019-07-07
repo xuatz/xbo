@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import * as actions from 'src/actions/userActions';
 import Button from 'src/components/Button/Button';
+import Page from 'src/components/Page';
 import {
-  Page,
   ProviderContainer,
   Provider,
   ProviderLogo,
