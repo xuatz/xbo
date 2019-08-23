@@ -13,7 +13,7 @@
     "date-fns": "^2.0.0-alpha.27",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
-    "lodash": "4.17.11",
+    "lodash": "4.17.12",
     "moment": "2.22.2",
     "moment-timezone": "0.5.23",
     "mongoose": "5.5.1",
@@ -27,7 +27,8 @@
     "react-scripts": "3.0.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^2.1.2"
+    "styled-components": "^2.1.2",
+    "snyk": "^1.217.3"
   },
   "devDependencies": {
     "mocha": "6.1.4",
@@ -46,7 +47,9 @@
     "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
     "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "npm run start",
-    "dev:server": "nodemon src/server/server.js"
+    "dev:server": "nodemon src/server/server.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "prettier": {
     "singleQuote": true,
@@ -67,5 +70,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "snyk": true
 }
