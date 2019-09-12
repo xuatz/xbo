@@ -13,7 +13,7 @@
     "date-fns": "^2.0.0-alpha.27",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "moment": "2.22.2",
     "moment-timezone": "0.5.23",
     "mongoose": "5.5.1",
