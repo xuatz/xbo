@@ -16,7 +16,7 @@
     "lodash": "4.17.15",
     "moment": "2.22.2",
     "moment-timezone": "0.5.23",
-    "mongoose": "5.5.1",
+    "mongoose": "5.7.5",
     "parse-domain": "^1.1.0",
     "passport": "^0.3.2",
     "passport-http": "0.3.0",
