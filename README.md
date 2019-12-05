@@ -51,6 +51,23 @@ You know the drill
 
 # Roadmap
 
+## 2019
+* Proper zero to full sync strategy
+  * should save to database on each page load
+  * migrate to use CockroachDB
+  * should have a way to keep track of sync progress
+    * timestamp of push?
+    * sync token
+  * should be able to resume sync gracefully
+* setup a message queue to push updates for clients to receive updates
+  * setup RabbitMQ server
+  * setup RabbitMQ client
+* setup GraphQL server
+* setup WatermelonDB for the client
+  * client should subscribe to changes and fetch changes
+  * client should implement lazy loading
+
+## 2018 (will revist and update the list here according before the end of 2019)
 - Server
   - I don’t want to any changes to the backend code anymore until i reach some milestone for the frontend
   - I have confirmed that xbo#master is working fine
