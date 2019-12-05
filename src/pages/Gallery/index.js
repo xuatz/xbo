@@ -79,11 +79,11 @@ const GalleryPage = props => {
     window.addEventListener('scroll', onScroll, false);
 
     return () => window.removeEventListener('scroll', onScroll, false);
-  }, []);
+  }, [bookmarks.length, listSize]);
 
   useEffect(() => {
     actions.fetchBookmarks();
-  }, []);
+  }, [actions]);
 
   const sublist = bookmarks.slice(0, listSize);
 

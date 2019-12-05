@@ -9,7 +9,7 @@ import { Bookmark } from 'src/components/Bookmark';
 
 class Bundle extends Component {
   render() {
-    let { groupByDomain, groupByHashtag } = this.props;
+    let { groupByDomain } = this.props;
 
     return (
       <div>
@@ -41,16 +41,6 @@ const mapStateToProps = state => {
           ];
         })
     )
-    // groupByHashtag: fromEntries(
-    //   Object.entries(state.bookmarks.stats.groupByHashtag).map(
-    //     ([domain, bookmarks]) => {
-    //       return [
-    //         domain,
-    //         bookmarks.map(id => state.bookmarks.bookmarks.entities[id])
-    //       ];
-    //     }
-    //   )
-    // )
   };
 };
 

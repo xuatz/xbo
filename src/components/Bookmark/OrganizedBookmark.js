@@ -4,7 +4,7 @@ import { Wrapper, Title, Url, ActionToolbar } from './styles';
 
 // An organized bookmark
 const Bookmark = props => {
-  const { title, url, type, body } = props.bookmark.data;
+  const { title, url } = props.bookmark.data;
   return (
     <Wrapper>
       <Title>{title}</Title>

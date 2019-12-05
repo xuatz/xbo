@@ -11,7 +11,7 @@ import StreamPage from 'src/pages/StreamPage';
 import Profile from 'src/pages/Profile';
 import Organiser from 'src/pages/Organiser';
 import Gallery from 'src/pages/Gallery';
-import MainPageV2 from '../components/MainPageV2';
+import MainPageV2 from './components/MainPageV2';
 
 import configureStore from './store';
 

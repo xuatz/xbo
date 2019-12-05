@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  // format,
-  // formatDistance,
-  // formatRelative,
-  // toDate,
-  fromUnixTime
-} from "date-fns";
+import React, { useState } from 'react';
+import { fromUnixTime } from 'date-fns';
 
 const UrlAndNoteItem = props => {
-  // const initialData = [];
-  // const [data, setData] = useState(initialData);
   const [isOpen, setIsOpen] = useState(false);
 
   const { item, style } = props;
@@ -20,14 +12,14 @@ const UrlAndNoteItem = props => {
     <div style={style}>
       <div onClick={() => setIsOpen(!isOpen)}>
         <p>{modifiedAt.toString()}</p>
-        {type === "note" ? (
+        {type === 'note' ? (
           <div>
             <h3>{title}</h3>
             <p>{body}</p>
           </div>
         ) : (
           <div>
-            <a target="_blank" href={url}>
+            <a target="_blank" rel="noopener noreferrer" href={url}>
               {title || url}
             </a>
           </div>
