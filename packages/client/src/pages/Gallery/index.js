@@ -1,21 +1,22 @@
+import * as actions from 'src/actions/bookmarkActions';
+
+import {
+  ActionButton as Button,
+  DateTime,
+  Filename,
+  Image,
+  ImageBookmarkWrapper,
+  ImageDetails,
+  Link,
+  Padding
+} from './styles';
 import React, { useEffect, useState } from 'react';
+
+import Page from 'src/components/Page';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import throttle from 'lodash/throttle';
-
-import * as actions from 'src/actions/bookmarkActions';
-import Page from 'src/components/Page';
-import {
-  Padding,
-  ImageBookmarkWrapper,
-  Link,
-  Image,
-  ImageDetails,
-  Filename,
-  DateTime,
-  ActionButton as Button
-} from './styles';
 
 const mapStateToProps = state => {
   const { bookmarks } = state;

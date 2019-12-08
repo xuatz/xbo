@@ -1,36 +1,36 @@
 if (!process.env.NODE_ENV) {
-  require("dotenv").config();
+  require('dotenv').config();
 }
 
-const express = require("express");
-const passport = require("passport");
-const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const { uri } = require("./models/mongoose.js");
-const User = require("./models/user");
+const express = require('express');
+const passport = require('passport');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const { uri } = require('./models/mongoose');
+const User = require('./models/user');
 
 let corsOptions = {
   credentials: true,
   origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002",
-    "https://xbo.xuatz.com"
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'https://xbo.xuatz.com'
   ],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: true
 };
 
 //==============================================================
 
-passport.serializeUser(function (user, cb) {
+passport.serializeUser(function(user, cb) {
   // console.log("serializeUser()");
   cb(null, user.id);
 });
 
-passport.deserializeUser(function (id, cb) {
+passport.deserializeUser(function(id, cb) {
   // console.log("deserializeUser()");
   User.findById(id, (err, user) => {
     if (err) {
@@ -50,21 +50,21 @@ let app = express();
 let sessionOptions = {
   store: new MongoDBStore({
     uri,
-    collection: "sessions"
+    collection: 'sessions'
   }),
-  secret: "truly a secretive secret",
+  secret: 'truly a secretive secret',
   resave: true,
   saveUninitialized: true,
   cookie: {}
 };
 
-if (app.get("env") === "production") {
+if (app.get('env') === 'production') {
   sessionOptions.cookie.secure = true; // serve secure cookies
 }
 
 //==============================================================
 
-app.set("trust proxy", true); //for express to trust nginx for https delivery
+app.set('trust proxy', true); //for express to trust nginx for https delivery
 app.use(cors(corsOptions));
 
 // app.use(require('morgan')('combined'));
@@ -76,13 +76,13 @@ app.use(passport.session());
 
 //==============================================================
 
-app.all("*", (req, res, next) => {
-  console.log(req.method + " " + req.url);
+app.all('*', (req, res, next) => {
+  console.log(req.method + ' ' + req.url);
   next();
 });
 
 app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     next();
   } else {
     next();
@@ -91,9 +91,9 @@ app.use((req, res, next) => {
 
 //==============================================================
 
-app.use("/auth", require("./api/auth.js").router);
-app.use("/bookmarks", require("./api/bookmarks.js").router);
+app.use('/auth', require('./api/auth').router);
+app.use('/bookmarks', require('./api/bookmarks').router);
 
-app.listen(9000, function () {
-  console.log("Example app listening on port 9000!");
+app.listen(9000, function() {
+  console.log('Example app listening on port 9000!');
 });

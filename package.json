@@ -1,79 +1,21 @@
 {
-  "name": "xbo2",
-  "version": "0.1.0",
+  "name": "xbo",
+  "version": "1.0.1",
   "private": true,
-  "dependencies": {
-    "@reach/router": "1.2.1",
-    "axios": "0.19.0",
-    "bcryptjs": "2.4.3",
-    "bluebird": "3.5.4",
-    "body-parser": "^1.17.2",
-    "connect-mongodb-session": "2.2.0",
-    "cors": "2.8.5",
-    "date-fns": "^2.0.0-alpha.27",
-    "express": "^4.15.3",
-    "express-session": "^1.15.3",
-    "lodash": "4.17.15",
-    "moment": "2.22.2",
-    "moment-timezone": "0.5.23",
-    "mongoose": "5.7.5",
-    "parse-domain": "^1.1.0",
-    "passport": "^0.3.2",
-    "passport-http": "0.3.0",
-    "prop-types": "^15.7.2",
-    "react": "16.8.4",
-    "react-dom": "16.8.4",
-    "react-redux": "^5.0.5",
-    "react-scripts": "3.2.0",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "styled-components": "^2.1.2"
-  },
-  "devDependencies": {
-    "@storybook/addon-actions": "^5.1.9",
-    "@storybook/addon-knobs": "^5.1.9",
-    "@storybook/addon-links": "^5.1.9",
-    "@storybook/addons": "^5.1.9",
-    "@storybook/react": "^5.1.9",
-    "eslint-plugin-react-hooks": "^1.5.1",
-    "mocha": "6.1.4",
-    "nodemon": "1.19.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "1.17.0",
-    "should": "13.2.3"
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start:client": "react-scripts start",
-    "start:server": "node src/server/server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "test:node": "mocha -w './src/server/**/*.test.js'",
-    "eject": "react-scripts eject",
-    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
-    "dev": "npm-run-all --parallel start:client start:server",
-    "dev:server": "nodemon src/server/server.js",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "client": "yarn workspace client start",
+    "server": "yarn workspace server start",
+    "server:dev": "yarn workspace server start:dev"
   },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 2
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "plugins": [
-      "react-hooks"
-    ],
-    "rules": {
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn"
-    }
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "@types/react": "16.9.11",
+    "@types/react-native": "0.60.22",
+    "concurrently": "5.0.0",
+    "typescript": "^3.8.3"
+  }
 }

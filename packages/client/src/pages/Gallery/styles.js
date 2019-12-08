@@ -1,6 +1,7 @@
-import styled from 'styled-components';
 import { COLOR, FONT_SIZE } from 'src/components/styles';
+
 import Button from 'src/components/Button/Button';
+import styled from 'styled-components';
 
 export const Padding = styled.div`
   box-sizing: border-box;

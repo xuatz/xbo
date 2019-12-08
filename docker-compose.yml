@@ -8,12 +8,12 @@ services:
     image: localhost:5000/xbo-web:local
     build:
       context: .
-      dockerfile: ./resources/Dockerfile.dev
-    command: npm start
+      dockerfile: ./packages/client/Dockerfile
+    command: yarn start
     container_name: xbo-web-dev
     restart: always
     volumes:
-      - ./src:/code/src
+      - ./packages/client/src:/code/src
     environment:
       - REACT_APP_API_URL=http://localhost:9000
       - REACT_APP_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
@@ -23,12 +23,12 @@ services:
     image: localhost:5000/xbo-server:local
     build:
       context: .
-      dockerfile: ./resources/Dockerfile.dev
-    command: npm run start:server # npm run dev:server
+      dockerfile: ./packages/server/Dockerfile
+    command: yarn start # npm run start:dev
     container_name: xbo-server
     restart: always
     volumes:
-      - ./src:/code/src
+      - ./packages/server/src:/code/src
     ports:
       - 9000:9000
     environment:
@@ -42,6 +42,6 @@ services:
     container_name: mongo-xbo
     restart: always
     ports:
-      - 27017
+      - 27017:27017
     volumes:
       - mongo-xbo:/data/db

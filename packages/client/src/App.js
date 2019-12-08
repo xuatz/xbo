@@ -1,19 +1,17 @@
+import { Link, Router } from '@reach/router';
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import { Router, Link } from '@reach/router';
-import styled from 'styled-components';
 
-import SessionCheckModule from './components/common/SessionCheckModule';
-
-import MainPage from 'src/pages/MainPage';
-import SummaryPage from 'src/pages/SummaryPage';
-import StreamPage from 'src/pages/StreamPage';
-import Profile from 'src/pages/Profile';
-import Organiser from 'src/pages/Organiser';
 import Gallery from 'src/pages/Gallery';
+import MainPage from 'src/pages/MainPage';
 import MainPageV2 from './components/MainPageV2';
-
+import Organiser from 'src/pages/Organiser';
+import Profile from 'src/pages/Profile';
+import { Provider } from 'react-redux';
+import SessionCheckModule from './components/common/SessionCheckModule';
+import StreamPage from 'src/pages/StreamPage';
+import SummaryPage from 'src/pages/SummaryPage';
 import configureStore from './store';
+import styled from 'styled-components';
 
 let store = configureStore();
 

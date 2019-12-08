@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { FONT } from 'src/components/styles';
+import styled from 'styled-components';
 
 export const SectionHeader = styled.h2`
   font-family: ${FONT.TITLE};

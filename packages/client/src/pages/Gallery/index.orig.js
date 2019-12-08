@@ -1,10 +1,11 @@
+import * as actions from 'src/actions/bookmarkActions';
+
 import React, { Component } from 'react';
+
+import Push from './Push';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-
-import * as actions from 'src/actions/bookmarkActions';
-import Push from './Push';
 
 const mapStateToProps = state => {
   const { bookmarks } = state;

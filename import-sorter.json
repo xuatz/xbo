@@ -1,0 +1,12 @@
+{
+  "generalConfiguration.sortOnBeforeSave": true,
+  "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
+  "importStringConfiguration.tabSize": 2,
+  "importStringConfiguration.trailingComma": "multiline",
+  "sortConfiguration": {
+    "customOrderingRules": {
+      "defaultNumberOfEmptyLinesAfterGroup": 0
+    }
+  }
+}

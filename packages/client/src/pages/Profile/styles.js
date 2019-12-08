@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-
 import { COLOR, FONT } from 'src/components/styles';
+
+import styled from 'styled-components';
 
 export const ProviderContainer = styled.section`
   display: flex;

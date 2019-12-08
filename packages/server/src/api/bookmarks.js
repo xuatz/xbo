@@ -7,7 +7,7 @@ const Promise = require('bluebird');
 const parseDomain = require('parse-domain');
 const moment = require('moment');
 
-const Bookmark = require('../models/bookmark.js');
+const Bookmark = require('../models/bookmark');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 // ============================================================

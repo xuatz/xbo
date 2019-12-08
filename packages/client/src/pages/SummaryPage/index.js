@@ -1,11 +1,12 @@
+import * as actions from 'src/actions/bookmarkActions';
+
 import React, { Component } from 'react';
+
+import Bundle from './Bundle';
+import Queue from './Queue';
+import { SectionHeader } from './styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import * as actions from 'src/actions/bookmarkActions';
-import Queue from './Queue';
-import Bundle from './Bundle';
-import { SectionHeader } from './styles';
 
 class SummaryPage extends Component {
   componentDidMount() {

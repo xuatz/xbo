@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
 import * as actions from 'src/actions/userActions';
+
+import {
+  Header,
+  ProfileSettings,
+  Provider,
+  ProviderContainer,
+  ProviderLogo
+} from './styles';
+import React, { Component } from 'react';
+
 import Button from 'src/components/Button/Button';
 import Page from 'src/components/Page';
-import {
-  ProviderContainer,
-  Provider,
-  ProviderLogo,
-  ProfileSettings,
-  Header
-} from './styles';
 import PushbulletLogo from './PushbulletLogo.png';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
   let providers = {};

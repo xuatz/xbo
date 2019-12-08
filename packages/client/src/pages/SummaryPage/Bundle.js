@@ -1,11 +1,12 @@
+import * as actions from 'src/actions/bookmarkActions';
+
 import React, { Component } from 'react';
+
+import { Bookmark } from 'src/components/Bookmark';
+import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-
-import * as actions from 'src/actions/bookmarkActions';
 import fromEntries from 'src/utils/fromEntries';
-import { Bookmark } from 'src/components/Bookmark';
 
 class Bundle extends Component {
   render() {
