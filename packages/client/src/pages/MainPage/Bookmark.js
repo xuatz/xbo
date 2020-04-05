@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 import Code from '../../components/common/Code';
+import styled from 'styled-components';
 
 class UrlAndNoteItem extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   handleOnClick = () => {
     this.setState(prevState => ({
-      isOpen: !prevState.isOpen
+      isOpen: !prevState.isOpen,
     }));
   };
 
@@ -29,7 +29,7 @@ class UrlAndNoteItem extends Component {
           </div>
         ) : (
           <div>
-            <a target="_blank" href={url}>
+            <a target="_blank" rel="noopener noreferrer" href={url}>
               {title || url}
             </a>
           </div>
@@ -74,7 +74,7 @@ const Bookmark = props => {
       <ListItem>
         <UrlAndNoteItem
           style={{
-            flex: '5'
+            flex: '5',
             // background: "green"
           }}
           item={bk}

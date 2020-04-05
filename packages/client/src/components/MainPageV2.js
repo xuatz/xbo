@@ -1,9 +1,10 @@
+import * as actions from '../actions/bookmarkActions';
+
 import React, { Component } from 'react';
-import styled from 'styled-components';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import * as actions from '../actions/bookmarkActions';
+import styled from 'styled-components';
 
 const Wrapper = styled.section`
   padding: 2em 6em;
@@ -15,26 +16,27 @@ const mapStateToProps = state => {
 
   if (state.bookmarks.sublists) {
     const { link, note } = state.bookmarks.sublists;
-    bookmarks = bookmarks.concat(link).concat(note);
     bookmarks = bookmarks
-      .map(bookmarkId => state.bookmarks.bookmarks.entities[bookmarkId])
+      .concat(link)
+      .concat(note)
+      .filter(bk => bk !== undefined)
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
   return {
-    bookmarks
+    bookmarks,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
 class PushV2 extends Component {
   state = {
     listSize: 10,
-    lastLoadTime: Date.now()
+    lastLoadTime: Date.now(),
   };
 
   componentDidMount() {
@@ -42,11 +44,11 @@ class PushV2 extends Component {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.onScroll, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 
   onScroll = () => {
@@ -59,7 +61,7 @@ class PushV2 extends Component {
       // console.log(now, this.state.lastLoadTime);
       this.setState(prevState => ({
         lastLoadTime: now,
-        listSize: prevState.listSize + 10
+        listSize: prevState.listSize + 10,
       }));
     }
   };
@@ -71,7 +73,7 @@ class PushV2 extends Component {
     // console.log(e.target);
     // console.log(e.target.value);
     this.setState({
-      filter: e.target.value
+      filter: e.target.value,
     });
   };
 
@@ -102,7 +104,7 @@ class PushV2 extends Component {
                 key={index}
                 style={{
                   background: 'teal',
-                  padding: '20px'
+                  padding: '20px',
                   // width: "50%"
                 }}
               >
@@ -112,20 +114,20 @@ class PushV2 extends Component {
                     background: 'white',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'space-around'
+                    justifyContent: 'space-around',
                     // justifyContent: "flex-start"
                   }}
                 >
                   <div
                     style={{
-                      flex: '1'
+                      flex: '1',
                       // background: "red"
                     }}
                   >
                     <button
                       style={{
                         padding: '10px',
-                        textAlign: 'center'
+                        textAlign: 'center',
                       }}
                       onClick={() => this.handleOnDelete(bk._id)}
                     >
@@ -143,7 +145,7 @@ class PushV2 extends Component {
 
 const Monster = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PushV2);
 
 const MainPageV2 = props => {

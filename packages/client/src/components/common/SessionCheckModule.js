@@ -1,27 +1,29 @@
+import * as actions from '../../actions/userActions';
+
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import { Container } from './FlexContainer';
 import Login from './Login';
 import Signup from './Signup';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as actions from '../../actions/userActions';
+const skipLogin = false;
 
 const mapStateToProps = state => {
   return {
     isCheckingSession: state.session.isCheckingSession,
-    isLoggedIn: state.session.isLoggedIn
+    isLoggedIn: state.session.isLoggedIn,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actions, dispatch)
+  actions: bindActionCreators(actions, dispatch),
 });
 
 class SessionCheckModule extends Component {
   state = {
-    login: true
+    login: true,
   };
 
   componentDidMount() {
@@ -30,7 +32,7 @@ class SessionCheckModule extends Component {
 
   changeMode = () => {
     this.setState({
-      login: !this.state.login
+      login: !this.state.login,
     });
   };
 
@@ -61,5 +63,5 @@ class SessionCheckModule extends Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SessionCheckModule);
