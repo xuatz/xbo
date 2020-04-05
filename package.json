@@ -10,7 +10,8 @@
   "scripts": {
     "client": "yarn workspace client start",
     "server": "yarn workspace server start",
-    "server:dev": "yarn workspace server start:dev"
+    "server:dev": "yarn workspace server start:dev",
+    "server3:dev": "yarn workspace server3 dev"
   },
   "devDependencies": {
     "@types/react": "16.9.11",
