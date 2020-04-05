@@ -141,44 +141,59 @@ router.get('/logout', (req, res) => {
 
 // ======
 
-router.get('/connect/pushbullet/callback', (req, res) => {
-  axios
-    .request({
-      url: 'https://api.pushbullet.com/oauth2/token',
-      method: 'post',
-      data: {
-        grant_type: 'authorization_code',
-        client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
-        client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
-        code: req.query.code
-      }
-    })
-    .then(resp => {
-      // console.log("resp.status", resp.status);
-      // console.log("resp.headers", resp.headers);
-      // console.log("resp.data", resp.data);
-      return User.findOne({
-        _id: req.user.id
-      })
-        .exec()
-        .then(user => {
-          if (!user.providers) {
-            user.providers = {};
-          }
-          user.providers.pushbullet = resp.data;
-          return user.save();
-        });
-    })
-    .then(user => {
-      // console.log(user);
-      // let access_token = user.providers.pushbullet.access_token;
-      //todo fetch pushbullets
-      res.redirect('http://localhost:3000/profile');
-    })
-    .catch(err => {
-      console.log(err);
-      res.redirect('http://localhost:3000');
+router.get('/connect/pushbullet/callback', async (req, res) => {
+  console.log('hey');
+
+  console.log(
+    'process.env.PUSHBULLET_APP_CLIENT_ID',
+    process.env.PUSHBULLET_APP_CLIENT_ID
+  );
+  console.log(
+    'process.env.PUSHBULLET_APP_CLIENT_SECRET',
+    process.env.PUSHBULLET_APP_CLIENT_SECRET
+  );
+
+  let response;
+  try {
+    response = await axios.post('https://api.pushbullet.com/oauth2/token', {
+      grant_type: 'authorization_code',
+      client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
+      client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
+      code: req.query.code
     });
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+  }
+
+  // console.log('response.status', response.status);
+  // console.log('response.headers', response.headers);
+  // console.log('response.data', response.data);
+
+  const user = await User.findOne({
+    _id: req.user.id
+  }).exec();
+  if (!user.providers) {
+    user.providers = {};
+  }
+  user.providers.pushbullet = resp.data;
+  user.save();
+
+  return res.redirect('http://localhost:3000/profile');
 });
 
 module.exports = { router };
