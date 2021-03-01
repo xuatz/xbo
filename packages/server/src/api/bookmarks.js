@@ -403,29 +403,12 @@ router.put('/:id/tags', async (req, res) => {
   }
 });
 
-router.get('/fetch', async (req, res, next) => {
-  //xz: may include many sources in future
-  if (!req.user.providers) {
-    return res.json([]);
-  }
-
-  let { pushbullet } = req.user.providers;
-
+router.get('/all', async (req, res, next) => {
   try {
-    if (pushbullet) {
-      await fetchFreshPushbullets({
-        userId: new ObjectId(req.user.id),
-        access_token: pushbullet.access_token
-      });
-      // await parseUrlFromBookmarks();
-      const bookmarks = await Bookmark.find({
-        userId: new ObjectId(req.user.id)
-      }).exec();
-      res.json(bookmarks);
-    } else {
-      return res.json([]);
-    }
-    //... and more sources in future
+    const bookmarks = await Bookmark.find({
+      userId: new ObjectId(req.user.id),
+    }).exec();
+    res.json(bookmarks);
   } catch (err) {
     switch (err.code) {
       case 1001:
@@ -434,6 +417,20 @@ router.get('/fetch', async (req, res, next) => {
       default:
         console.log(err);
     }
+    res.status(500).send(err.message);
+  }
+})
+
+router.get('/fetch', async (req, res, next) => {
+  let { pushbullet } = req.user.providers;
+
+  try {
+    fetchFreshPushbullets({
+      userId: new ObjectId(req.user.id),
+      access_token: pushbullet.access_token,
+    });
+    res.sendStatus(200);
+  } catch (err) {
     res.status(500).send(err.message);
   }
 });

@@ -97,3 +97,5 @@ app.use('/bookmarks', require('./api/bookmarks').router);
 app.listen(9000, function() {
   console.log('Example app listening on port 9000!');
 });
+
+require('./cronjobs');
