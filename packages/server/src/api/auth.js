@@ -16,7 +16,7 @@ const loginTasks = (req, res) => {
     });
   }
   res.send({
-    providers
+    providers,
   });
 };
 
@@ -33,22 +33,22 @@ passport.use(
 
     User.findOne(
       {
-        username: username
+        username: username,
       },
-      '-password'
+      '-password',
     )
       .exec()
       .then(user => {
         if (user) {
           console.log('Username already taken');
           return done(null, false, {
-            message: 'Username already taken'
+            message: 'Username already taken',
           });
         }
 
         return User.create({
           username,
-          password
+          password,
         });
       })
       .then(newUser => {
@@ -63,7 +63,7 @@ passport.use(
       .catch(err => {
         return done(err);
       });
-  })
+  }),
 );
 
 passport.use(
@@ -78,13 +78,13 @@ passport.use(
     }
 
     User.findOne({
-      username: username
+      username: username,
     })
       .exec()
       .then(user => {
         if (!user) {
           return done(null, false, {
-            message: 'No user found'
+            message: 'No user found',
           });
         } else {
           user.comparePassword(password, (err, isMatch) => {
@@ -96,7 +96,7 @@ passport.use(
               return done(null, user);
             } else {
               return done(null, false, {
-                message: 'Password is wrong'
+                message: 'Password is wrong',
               });
             }
           });
@@ -105,15 +105,15 @@ passport.use(
       .catch(err => {
         return done(err);
       });
-  })
+  }),
 );
 
 router.get('/user', (req, res) => {
-  // console.log("req.session", req.session);
+  // console.log('req.session', req.session);
   // console.log('req.session.cookie', req.session.cookie);
   // console.log('req.session.id', req.session.id);
   // console.log('req.sessionID', req.sessionID);
-  // console.log("req.user", req.user);
+  // console.log('req.user', req.user);
   if (req.user) {
     loginTasks(req, res);
   } else {
@@ -141,44 +141,44 @@ router.get('/logout', (req, res) => {
 
 // ======
 
-router.get('/connect/pushbullet/callback', (req, res) => {
-  axios
-    .request({
-      url: 'https://api.pushbullet.com/oauth2/token',
-      method: 'post',
-      data: {
-        grant_type: 'authorization_code',
-        client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
-        client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
-        code: req.query.code
-      }
-    })
-    .then(resp => {
-      // console.log("resp.status", resp.status);
-      // console.log("resp.headers", resp.headers);
-      // console.log("resp.data", resp.data);
-      return User.findOne({
-        _id: req.user.id
-      })
-        .exec()
-        .then(user => {
-          if (!user.providers) {
-            user.providers = {};
-          }
-          user.providers.pushbullet = resp.data;
-          return user.save();
-        });
-    })
-    .then(user => {
-      // console.log(user);
-      // let access_token = user.providers.pushbullet.access_token;
-      //todo fetch pushbullets
-      res.redirect('http://localhost:3000/profile');
-    })
-    .catch(err => {
-      console.log(err);
-      res.redirect('http://localhost:3000');
+router.get('/connect/pushbullet/callback', async (req, res) => {
+  let response;
+  try {
+    response = await axios.post('https://api.pushbullet.com/oauth2/token', {
+      grant_type: 'authorization_code',
+      client_id: process.env.PUSHBULLET_APP_CLIENT_ID,
+      client_secret: process.env.PUSHBULLET_APP_CLIENT_SECRET,
+      code: req.query.code,
     });
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+  }
+
+  const user = await User.findOne({
+    _id: req.user.id,
+  }).exec();
+  if (!user.providers) {
+    user.providers = {};
+  }
+  user.providers.pushbullet = response.data;
+  user.save();
+
+  return res.redirect('http://localhost:3000/profile');
 });
 
 module.exports = { router };
