@@ -16,6 +16,6 @@
     "@types/react": "16.9.11",
     "@types/react-native": "0.60.22",
     "concurrently": "5.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "3.8.3"
   }
 }
