@@ -17,10 +17,11 @@ let corsOptions = {
     'http://localhost:3000',
     'http://localhost:3001',
     'http://localhost:3002',
-    'https://xbo.xuatz.com'
+    'http://localhost:7881',
+    'https://xbo.xuatz.com',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: true
+  preflightContinue: true,
 };
 
 //==============================================================
@@ -50,12 +51,12 @@ let app = express();
 let sessionOptions = {
   store: new MongoDBStore({
     uri,
-    collection: 'sessions'
+    collection: 'sessions',
   }),
   secret: 'truly a secretive secret',
   resave: true,
   saveUninitialized: true,
-  cookie: {}
+  cookie: {},
 };
 
 if (app.get('env') === 'production') {
