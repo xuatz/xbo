@@ -1,9 +1,10 @@
+const Promise = require('bluebird')
 const ObjectId = require('mongoose').Types.ObjectId;
 const Bookmark = require('../../models/bookmark');
 const {
   getPushbulletBookmarksQuery,
 } = require('./getPushbulletBookmarksQuery');
-const { fetchPushesBasic } = require('./fetchPushesBasic');
+const { fetchPushesBasic } = require('./fetchPushesBasic.ts');
 
 let isFetchingFreshPushbullets = false;
 async function fetchFreshPushbullets(params) {
