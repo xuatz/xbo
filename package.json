@@ -8,14 +8,8 @@
     ]
   },
   "scripts": {
-    "client": "yarn workspace client start",
-    "server": "yarn workspace server start",
-    "server:dev": "yarn workspace server start:dev"
-  },
-  "devDependencies": {
-    "@types/react": "16.9.11",
-    "@types/react-native": "0.60.22",
-    "concurrently": "5.0.0",
-    "typescript": "3.8.3"
+    "client": "pnpm start --filter ./packages/client",
+    "server": "pnpm start --filter ./packages/server",
+    "server:dev": "pnpm start:dev --filter ./packages/server"
   }
 }
