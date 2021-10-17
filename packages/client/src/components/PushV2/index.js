@@ -1,161 +1,147 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as actions from '../../actions/bookmarkActions';
 import UrlAndNoteItem from './url-and-note';
 
-const mapStateToProps = state => {
+const useBookmarks = () => {
   let bookmarks = [];
 
-  if (state.bookmarks.sublists) {
-    const { link, note } = state.bookmarks.sublists;
+  const bookmarkSublists = useSelector(state => state.bookmarks.sublists);
+  const bookmarkEntities = useSelector(
+    state => state.bookmarks.bookmarks.entities,
+  );
+
+  if (bookmarkSublists) {
+    const { link, note } = bookmarkSublists;
     bookmarks = bookmarks.concat(link).concat(note);
     bookmarks = bookmarks
-      .map(bookmarkId => state.bookmarks.bookmarks.entities[bookmarkId])
+      .map(bookmarkId => bookmarkEntities[bookmarkId])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
-  return {
-    bookmarks
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
+  return bookmarks;
 };
 
-class PushV2 extends Component {
-  state = {
-    listSize: 10,
-    lastLoadTime: Date.now()
-  };
+const PushV2 = () => {
+  const dispatch = useDispatch();
+  const [listSize, setListSize] = useState(10);
+  const [lastLoadTime, setLastLoadTime] = useState(Date.now());
 
-  componentDidMount() {
-    this.props.actions.fetchBookmarks().then(res => {
-      // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
-    });
+  const bookmarks = useBookmarks();
 
-    window.addEventListener('scroll', this.onScroll, false);
-  }
+  const sublist = bookmarks
+    .filter(item => {
+      const pattern = filter;
+      if (!pattern || pattern === '') {
+        return true;
+      }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll, false);
-  }
+      const { title = '', url = '', body = '' } = item.data;
 
-  onScroll = () => {
+      return (
+        title.toLowerCase().includes(pattern.toLowerCase()) ||
+        url.toLowerCase().includes(pattern.toLowerCase()) ||
+        body.toLowerCase().includes(pattern.toLowerCase())
+      );
+    })
+    .slice(0, Math.min(listSize, bookmarks.length - 1));
+
+  const onScroll = () => {
     const now = Date.now();
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 900 &&
-      this.props.bookmarks.length &&
-      now - this.state.lastLoadTime > 0.25 * 1000
+      bookmarks.length &&
+      now - lastLoadTime > 0.25 * 1000
     ) {
-      // console.log(now, this.state.lastLoadTime);
-      this.setState(prevState => ({
-        lastLoadTime: now,
-        listSize: prevState.listSize + 10
-      }));
+      setLastLoadTime(now)
+      setListSize(listSize + 10)
     }
   };
 
-  handleOnDelete = id => this.props.actions.deleteBookmark(id);
-
-  handleFilterOnChange = e => {
-    // console.log(e);
-    // console.log(e.target);
-    // console.log(e.target.value);
-    this.setState({
-      filter: e.target.value
-    });
+  const handleOnDelete = id => {
+    dispatch(actions.deleteBookmark(id));
   };
 
-  render() {
-    let sublist = this.props.bookmarks
-      .filter(item => {
-        const pattern = this.state.filter;
-        if (!pattern || pattern === '') {
-          return true;
-        }
+  const [filter, setFilter] = useState('');
+  const handleFilterOnChange = e => {
+    setFilter(e.target.value);
+  };
 
-        const { title = '', url = '', body = '' } = item.data;
+  useEffect(() => {
+    dispatch(actions.fetchBookmarks());
+  }, [dispatch]);
 
-        return (
-          title.toLowerCase().includes(pattern.toLowerCase()) ||
-          url.toLowerCase().includes(pattern.toLowerCase()) ||
-          body.toLowerCase().includes(pattern.toLowerCase())
-        );
-      })
-      .slice(0, Math.min(this.state.listSize, this.props.bookmarks.length - 1));
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll, false);
 
-    return (
+    return () => {
+      window.removeEventListener('scroll', onScroll, false);
+    };
+  }, [onScroll]);
+
+  
+
+  
+
+  return (
+    <div>
+      <div style={{ padding: '20px' }}>
+        <input
+          style={{ padding: '5px' }}
+          onChange={handleFilterOnChange}
+          value={filter}
+        />
+      </div>
       <div>
-        <div style={{ padding: '20px' }}>
-          <input
-            style={{ padding: '5px' }}
-            onChange={this.handleFilterOnChange}
-            value={this.state.filter}
-          />
-        </div>
-        <div>
-          <ul>
-            {sublist &&
-              sublist.map((bk, index) => {
-                return (
-                  <li key={index}>
+        <ul>
+          {sublist &&
+            sublist.map((bk, index) => {
+              return (
+                <li key={index}>
+                  <div
+                    style={{
+                      background: 'teal',
+                      padding: '20px',
+                      // width: "50%"
+                    }}
+                  >
                     <div
                       style={{
-                        background: 'teal',
-                        padding: '20px'
-                        // width: "50%"
+                        display: 'flex',
+                        background: 'white',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        // justifyContent: "flex-start"
                       }}
                     >
+                      <UrlAndNoteItem style={{ flex: '5' }} item={bk} />
                       <div
                         style={{
-                          display: 'flex',
-                          background: 'white',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-around'
-                          // justifyContent: "flex-start"
+                          flex: '1',
+                          // background: "red"
                         }}
                       >
-                        <UrlAndNoteItem
+                        <button
                           style={{
-                            flex: '5'
-                            // background: "green"
+                            padding: '10px',
+                            textAlign: 'center',
                           }}
-                          item={bk}
-                        />
-                        <div
-                          style={{
-                            flex: '1'
-                            // background: "red"
-                          }}
+                          onClick={() => handleOnDelete(bk._id)}
                         >
-                          <button
-                            style={{
-                              padding: '10px',
-                              textAlign: 'center'
-                            }}
-                            onClick={() => this.handleOnDelete(bk._id)}
-                          >
-                            Delete
-                          </button>
-                        </div>
+                          Delete
+                        </button>
                       </div>
                     </div>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
+                  </div>
+                </li>
+              );
+            })}
+        </ul>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PushV2);
+export default PushV2;

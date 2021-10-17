@@ -44,19 +44,24 @@ export const fetchBookmarks = () => {
     //'api.xbo.xuatz.com'
     return API.get('/bookmarks')
       .then(res => {
-        dispatch({
-          type: 'BOOKMARKS_REPLACE',
-          bookmarks: res.data || []
-        });
+        if (res.data !== 'OK') {
+          dispatch({
+            type: 'BOOKMARKS_REPLACE',
+            bookmarks: res.data || [],
+          });
+        }
+          
         return API.get('/bookmarks/fetch', {
           timeout: 0
         });
       })
       .then(res => {
-        dispatch({
-          type: 'BOOKMARKS_REPLACE',
-          bookmarks: res.data || []
-        });
+        if (res.data !== 'OK') {
+          dispatch({
+            type: 'BOOKMARKS_REPLACE',
+            bookmarks: res.data || [],
+          });
+        }
       });
   };
 };

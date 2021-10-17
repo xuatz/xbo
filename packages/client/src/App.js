@@ -1,5 +1,5 @@
 import { Link, Router } from '@reach/router';
-import React, { Component } from 'react';
+import * as React from 'react';
 
 import Gallery from 'src/pages/Gallery';
 import MainPage from 'src/pages/MainPage';
@@ -43,29 +43,27 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <SessionCheckModule>
-          <Container>
-            <Header />
-            <Body>
-              <Router>
-                <MainPage path="/" />
-                <MainPageV2 path="/v2" />
-                <SummaryPage path="/summary" />
-                <StreamPage path="/stream" />
-                <Gallery path="/gallery" />
-                <Profile path="/profile" />
-                <Organiser path="/organiser" />
-              </Router>
-            </Body>
-          </Container>
-        </SessionCheckModule>
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <SessionCheckModule>
+        <Container>
+          <Header />
+          <Body>
+            <Router>
+              <MainPage path="/" />
+              <MainPageV2 path="/v2" />
+              <SummaryPage path="/summary" />
+              <StreamPage path="/stream" />
+              <Gallery path="/gallery" />
+              <Profile path="/profile" />
+              <Organiser path="/organiser" />
+            </Router>
+          </Body>
+        </Container>
+      </SessionCheckModule>
+    </Provider>
+  );
+};
 
 export default App;

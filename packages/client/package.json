@@ -9,9 +9,7 @@
     "test": "react-scripts test --env=jsdom",
     "test:node": "mocha -w './src/**/*.test.js'",
     "eject": "react-scripts eject",
-    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'"
   },
   "browserslist": [
     ">0.2%",
@@ -31,32 +29,26 @@
   },
   "dependencies": {
     "@reach/router": "1.2.1",
-    "axios": "0.21.1",
-    "date-fns": "2.0.0-alpha.27",
-    "lodash": "4.17.19",
-    "moment": "2.22.2",
-    "moment-timezone": "0.5.23",
+    "axios": "0.23.0",
+    "date-fns": "2.25.0",
+    "lodash": "4.17.21",
+    "moment": "2.29.1",
+    "moment-timezone": "0.5.33",
     "prop-types": "15.7.2",
-    "react": "16.8.4",
-    "react-dom": "16.8.4",
-    "react-redux": "5.0.5",
-    "react-scripts": "3.4.1",
-    "redux": "3.7.2",
-    "redux-thunk": "2.2.0",
-    "styled-components": "2.1.2",
-    "typescript": "3.8.3"
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "7.2.5",
+    "react-scripts": "4.0.3",
+    "redux": "4.1.1",
+    "redux-thunk": "2.3.0",
+    "styled-components": "2.1.2"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "5.1.9",
-    "@storybook/addon-knobs": "5.1.9",
-    "@storybook/addon-links": "5.1.9",
-    "@storybook/addons": "5.1.9",
-    "@storybook/react": "5.1.9",
     "eslint-plugin-react-hooks": "1.5.1",
     "mocha": "6.1.4",
-    "nodemon": "1.19.0",
     "npm-run-all": "4.1.5",
-    "prettier": "1.17.0",
-    "should": "13.2.3"
+    "prettier": "2.4.1",
+    "should": "13.2.3",
+    "typescript": "^4.4.0"
   }
 }
