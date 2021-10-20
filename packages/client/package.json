@@ -3,13 +3,13 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "start:client": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "start": "craco start",
+    "start:client": "craco start",
+    "build": "craco build",
+    "test": "craco test --env=jsdom",
     "test:node": "mocha -w './src/**/*.test.js'",
-    "eject": "react-scripts eject",
-    "prettier": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.js'"
+    "eject": "craco eject",
+    "format": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.(js|jsx|ts|tsx)'"
   },
   "browserslist": [
     ">0.2%",
@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@craco/craco": "^6.3.0",
     "@reach/router": "1.2.1",
     "axios": "0.23.0",
     "date-fns": "2.25.0",
@@ -38,12 +39,17 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "7.2.5",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "redux": "4.1.1",
     "redux-thunk": "2.3.0",
-    "styled-components": "2.1.2"
+    "styled-components": "2.1.2",
+    "supertokens-auth-react": "^0.16.0"
   },
   "devDependencies": {
+    "@tsconfig/create-react-app": "^1.0.2",
+    "@types/react-router-dom": "^5.3.1",
+    "craco-alias": "^3.0.1",
     "eslint-plugin-react-hooks": "1.5.1",
     "mocha": "6.1.4",
     "npm-run-all": "4.1.5",
