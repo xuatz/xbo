@@ -14,6 +14,7 @@ const { supertokens } = require('./supertoken')
 let {
   verifySession,
 } = require('supertokens-node/recipe/session/framework/express')
+const Session = require('supertokens-node/recipe/session')
 let {
   middleware: supertokenMiddleware,
   errorHandler: supertokenErrorHandler,
@@ -37,7 +38,7 @@ const corsOptions = {
 
 // passport.serializeUser(function (user, cb) {
 //   // console.log("serializeUser()");
-//   cb(null, user.id)
+//   cb(null, user._id)
 // })
 
 // passport.deserializeUser(function (id, cb) {
@@ -104,7 +105,7 @@ app.use((req, res, next) => {
 // api routes
 //==============================================================
 
-// app.use('/auth', require('./api/auth').router)
+app.use('/myauth', require('./api/auth').router)
 app.use('/bookmarks', require('./api/bookmarks').router)
 
 app.get('/sessioninfo', verifySession(), async (req, res) => {
@@ -115,6 +116,14 @@ app.get('/sessioninfo', verifySession(), async (req, res) => {
     userId: session.getUserId(),
     jwtPayload: session.getJWTPayload(),
     sessionData: await session.getSessionData(),
+  })
+})
+
+app.post('/debug/create-new-session', async (req, res) => {
+  const XZLOW10_USER_ID = 'ba5cb9ee-185d-4dbc-9281-440b8084558f'
+  await Session.createNewSession(res, XZLOW10_USER_ID, {}, {})
+  res.send({
+    message: 'New user session created',
   })
 })
 

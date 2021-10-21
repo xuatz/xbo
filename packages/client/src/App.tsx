@@ -1,9 +1,9 @@
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom'
-import Gallery from 'src/pages/Gallery'
 import MainPage from 'src/pages/MainPage'
-import Organiser from 'src/pages/Organiser'
+import Gallery from 'src/pages/Gallery'
 import Profile from 'src/pages/Profile'
+import Organiser from 'src/pages/Organiser'
 import StreamPage from 'src/pages/StreamPage'
 import SummaryPage from 'src/pages/SummaryPage'
 import styled from 'styled-components'
@@ -81,7 +81,7 @@ const App = () => {
               <Container>
                 <Header />
                 <Body>
-                  <Route path="/">
+                  <Route exact path="/">
                     <MainPage />
                   </Route>
                   <Route path="/v2">
@@ -89,6 +89,12 @@ const App = () => {
                   </Route>
                   <Route path="/v3">
                     <MainPageV3 />
+                  </Route>
+                  <Route path="/gallery">
+                    <Gallery />
+                  </Route>
+                  <Route path="/profile">
+                    <Profile />
                   </Route>
                 </Body>
               </Container>
