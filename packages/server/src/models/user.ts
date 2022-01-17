@@ -14,7 +14,7 @@ let UserSchema = new Schema(
   {
     timestamps: true,
     strict: false,
-  }
+  },
 )
 
 const saltRounds = 10

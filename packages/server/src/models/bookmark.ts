@@ -12,7 +12,7 @@ var BookmarkSchema = new Schema(
   {
     timestamps: true,
     strict: false,
-  }
+  },
 )
 
 export const Bookmark = mongoose.model('Bookmark', BookmarkSchema)

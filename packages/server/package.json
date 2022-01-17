@@ -5,9 +5,9 @@
   "license": "MIT",
   "main": "src.js",
   "scripts": {
-    "start": "ts-node src/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.js",
-    "format": "prettier --jsx-bracket-same-line --tab-width 4 --write 'src/**/**/*.(js|jsx|ts|tsx)'"
+    "start": "ts-node src/server.ts",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "format": "prettier --write '**/*.(js|jsx|ts|tsx)'"
   },
   "dependencies": {
     "axios": "0.23.0",
@@ -31,9 +31,10 @@
     "@tsconfig/node14": "1.0.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.36",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "14.14.20",
-    "prettier": "2.4.1",
+    "prettier": "2.5.1",
     "ts-node": "10.3.0",
     "ts-node-dev": "1.1.8",
     "typescript": "^4.4.0"

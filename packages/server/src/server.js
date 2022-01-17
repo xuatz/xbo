@@ -10,7 +10,7 @@ const express = require('express')
 const cors = require('cors')
 const { uri } = require('./models/mongoose')
 const User = require('./models/user')
-const { supertokens } = require('./supertoken')
+const { supertokens } = require('./supertokens')
 let {
   verifySession,
 } = require('supertokens-node/recipe/session/framework/express')
@@ -19,20 +19,6 @@ let {
   middleware: supertokenMiddleware,
   errorHandler: supertokenErrorHandler,
 } = require('supertokens-node/framework/express')
-
-const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:7881',
-    'https://xbo.xuatz.com',
-  ],
-  allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  // preflightContinue: true,
-}
 
 //==============================================================
 

@@ -326,7 +326,7 @@ interface IUserRequest extends Request {
 async function getCurrentUser(
   req: IUserRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   console.log('hi1')
 
@@ -371,7 +371,7 @@ router.get(
     } else {
       res.sendStatus(500)
     }
-  }
+  },
 )
 
 module.exports = {

@@ -44,7 +44,7 @@ async function savePushesToHasura({
           affected_rows
         }
       }
-    `
+    `,
   )
   return data
 

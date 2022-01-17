@@ -10,12 +10,12 @@ const getPushbulletBookmarksQuery = (queryParams) => {
     ? Bookmark.findOne(
         Object.assign({}, rest, {
           provider: 'pushbullet',
-        })
+        }),
       )
     : Bookmark.find(
         Object.assign({}, rest, {
           provider: 'pushbullet',
-        })
+        }),
       )
 }
 

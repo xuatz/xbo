@@ -34,7 +34,7 @@ async function fetchFreshPushbullets(params) {
 
     console.log(
       'fetchPushesBasic is complete: newPushes.length:',
-      newPushes.length
+      newPushes.length,
     )
 
     if (newPushes && newPushes.length > 0) {
@@ -53,7 +53,7 @@ async function fetchFreshPushbullets(params) {
           },
           {
             upsert: true,
-          }
+          },
         ).exec()
       })
     }

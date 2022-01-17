@@ -203,7 +203,7 @@ router.get(
         //   pushbullet: response?.data,
         // },
       },
-      { upsert: true }
+      { upsert: true },
     ).exec()
 
     if (!user?.providers) {
@@ -215,7 +215,7 @@ router.get(
     }
 
     return res.redirect('http://localhost:3000/profile')
-  }
+  },
 )
 
 module.exports = { router }
