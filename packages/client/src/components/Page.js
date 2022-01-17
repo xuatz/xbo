@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const Page = styled.div`
   margin: 3rem;
-`;
+`
 
-export default Page;
+export default Page

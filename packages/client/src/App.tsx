@@ -1,11 +1,8 @@
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom'
-import MainPage from 'src/pages/MainPage'
+import * as ReactRouterDom from 'react-router-dom'
 import Gallery from 'src/pages/Gallery'
+import MainPage from 'src/pages/MainPage'
 import Profile from 'src/pages/Profile'
-import Organiser from 'src/pages/Organiser'
-import StreamPage from 'src/pages/StreamPage'
-import SummaryPage from 'src/pages/SummaryPage'
 import styled from 'styled-components'
 import SuperTokens, {
   getSuperTokensRoutesForReactRouterDom,
@@ -16,6 +13,8 @@ import Session from 'supertokens-auth-react/recipe/session'
 import MainPageV2 from './components/MainPageV2'
 import MainPageV3 from './components/MainPageV3'
 import configureStore from './store'
+
+const { BrowserRouter: Router, Link, Route, Switch } = ReactRouterDom
 
 const MyNav = styled.nav`
   display: flex;
@@ -68,7 +67,7 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Switch>
-          {getSuperTokensRoutesForReactRouterDom(require('react-router-dom'))}
+          {getSuperTokensRoutesForReactRouterDom({ ...ReactRouterDom })}
           <Route>
             {/* This protects the "/" route so that it shows 
                 <Home /> only if the user is logged in.

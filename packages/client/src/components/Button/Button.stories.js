@@ -1,11 +1,11 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs, text, boolean, select } from '@storybook/addon-knobs';
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { withKnobs, text, boolean, select } from '@storybook/addon-knobs'
 
-import Button from './Button';
+import Button from './Button'
 
-const stories = storiesOf('Button', module);
-stories.addDecorator(withKnobs);
+const stories = storiesOf('Button', module)
+stories.addDecorator(withKnobs)
 
 stories.add('overview', () => {
   return (
@@ -16,15 +16,15 @@ stories.add('overview', () => {
       <Button variant="text">Text</Button>
       <Button fullWidth>Default Full Width</Button>
     </>
-  );
-});
+  )
+})
 
 stories.add('with props', () => {
   const props = {
     disabled: boolean('Disabled', false),
     variant: select('Variant', ['default', 'secondary', 'text']),
-    fullWidth: boolean('Full width', false)
-  };
+    fullWidth: boolean('Full width', false),
+  }
 
-  return <Button {...props}>{text('Label', 'Label')}</Button>;
-});
+  return <Button {...props}>{text('Label', 'Label')}</Button>
+})

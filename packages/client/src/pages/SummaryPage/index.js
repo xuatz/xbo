@@ -1,16 +1,16 @@
-import * as actions from 'src/actions/bookmarkActions';
+import * as actions from 'src/actions/bookmarkActions'
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import Bundle from './Bundle';
-import Queue from './Queue';
-import { SectionHeader } from './styles';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import Bundle from './Bundle'
+import Queue from './Queue'
+import { SectionHeader } from './styles'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 class SummaryPage extends Component {
   componentDidMount() {
-    this.props.actions.fetchBookmarks();
+    this.props.actions.fetchBookmarks()
   }
 
   render() {
@@ -21,17 +21,14 @@ class SummaryPage extends Component {
         <SectionHeader>Check out these topics</SectionHeader>
         <Bundle />
       </div>
-    );
+    )
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SummaryPage);
+export default connect(null, mapDispatchToProps)(SummaryPage)

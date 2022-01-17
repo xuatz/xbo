@@ -1,11 +1,15 @@
 {
-  "extends": "@tsconfig/create-react-app/tsconfig.json",
+  "extends": "@tsconfig/vite-react/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"]
     },
-    "preserveConstEnums": true
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    "target": "ESNext",
+    "types": ["node", "vite/client", "vite-plugin-svgr/client"],
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

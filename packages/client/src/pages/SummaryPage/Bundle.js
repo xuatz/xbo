@@ -1,16 +1,16 @@
-import * as actions from 'src/actions/bookmarkActions';
+import * as actions from 'src/actions/bookmarkActions'
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { Bookmark } from 'src/components/Bookmark';
-import _ from 'lodash';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import fromEntries from 'src/utils/fromEntries';
+import { Bookmark } from 'src/components/Bookmark'
+import _ from 'lodash'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import fromEntries from 'src/utils/fromEntries'
 
 class Bundle extends Component {
   render() {
-    let { groupByDomain } = this.props;
+    let { groupByDomain } = this.props
 
     return (
       <div>
@@ -18,18 +18,18 @@ class Bundle extends Component {
           return (
             <div key={domain}>
               <div>{domain}</div>
-              {bookmarks.map(bookmark => (
+              {bookmarks.map((bookmark) => (
                 <Bookmark key={bookmark._id} bookmark={bookmark} />
               ))}
             </div>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     // TODO: denormalize at lower level to avoid performance issues
     groupByDomain: fromEntries(
@@ -38,20 +38,17 @@ const mapStateToProps = state => {
         .map(([domain, bookmarks]) => {
           return [
             domain,
-            bookmarks.map(id => state.bookmarks.bookmarks.entities[id])
-          ];
-        })
-    )
-  };
-};
+            bookmarks.map((id) => state.bookmarks.bookmarks.entities[id]),
+          ]
+        }),
+    ),
+  }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bundle);
+export default connect(mapStateToProps, mapDispatchToProps)(Bundle)

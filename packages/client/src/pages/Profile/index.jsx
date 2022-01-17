@@ -1,37 +1,37 @@
-import * as actions from 'src/actions/userActions';
+import * as actions from 'src/actions/userActions'
 
 import {
   Header,
   ProfileSettings,
   Provider,
   ProviderContainer,
-  ProviderLogo
-} from './styles';
-import React, { Component } from 'react';
+  ProviderLogo,
+} from './styles'
+import React, { Component } from 'react'
 
-import Button from 'src/components/Button/Button';
-import Page from 'src/components/Page';
-import PushbulletLogo from './PushbulletLogo.png';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import Button from 'src/components/Button/Button'
+import Page from 'src/components/Page'
+import PushbulletLogo from './PushbulletLogo.png'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-const mapStateToProps = state => {
-  let providers = {};
+const mapStateToProps = (state) => {
+  let providers = {}
   // TODO xz: im pretty sure this can be avoided with some better data model design
   if (state.session) {
     if (state.session.user) {
-      providers = state.session.user.providers;
+      providers = state.session.user.providers
     }
   }
 
   return {
-    providers
-  };
-};
+    providers,
+  }
+}
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actions, dispatch)
-});
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch),
+})
 
 class Profile extends Component {
   renderPushbulletProvider() {
@@ -44,7 +44,7 @@ class Profile extends Component {
             : 'Connect with Pushbullet'}
         </div>
       </Provider>
-    );
+    )
   }
 
   render() {
@@ -57,11 +57,8 @@ class Profile extends Component {
           <Button onClick={this.props.actions.logout}>Logout</Button>
         </ProfileSettings>
       </Page>
-    );
+    )
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

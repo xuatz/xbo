@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const InvisibleInput = styled.input`
   border: none;
@@ -8,6 +8,6 @@ const InvisibleInput = styled.input`
   -moz-box-shadow: none;
   box-shadow: none;
   outline: none;
-`;
+`
 
-export default InvisibleInput;
+export default InvisibleInput

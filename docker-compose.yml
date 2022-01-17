@@ -29,8 +29,8 @@ services:
     volumes:
       - ./packages/client/src:/client/src
     environment:
-      - REACT_APP_API_URL=http://localhost:9000
-      - REACT_APP_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
+      - VITE_API_URL=http://localhost:9000
+      - VITE_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
     ports:
       - 3000:3000
   server:

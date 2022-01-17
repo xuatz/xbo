@@ -1,11 +1,11 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react'
+import moment from 'moment'
 
-import Code from '../common/Code';
+import Code from '../common/Code'
 
-const Push = props => {
-  let { data } = props;
-  let { type, modified, title, url } = data;
+const Push = (props) => {
+  let { data } = props
+  let { type, modified, title, url } = data
   switch (type) {
     case 'link': {
       return (
@@ -14,7 +14,7 @@ const Push = props => {
           <p> {title} </p>
           <p> {url} </p>
         </div>
-      );
+      )
     }
     default: {
       return (
@@ -22,9 +22,9 @@ const Push = props => {
           <h3>unhandled type: {type}</h3>
           <Code>{JSON.stringify(data, 0, 2)}</Code>
         </div>
-      );
+      )
     }
   }
-};
+}
 
-export default Push;
+export default Push

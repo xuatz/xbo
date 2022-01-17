@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { fromUnixTime } from 'date-fns';
+import React, { useState } from 'react'
+import { fromUnixTime } from 'date-fns'
 
-const UrlAndNoteItem = props => {
-  const [isOpen, setIsOpen] = useState(false);
+const UrlAndNoteItem = (props) => {
+  const [isOpen, setIsOpen] = useState(false)
 
-  const { item, style } = props;
-  const { title, url, type, body } = item.data;
-  const modifiedAt = fromUnixTime(Math.round(item.data.modified));
+  const { item, style } = props
+  const { title, url, type, body } = item.data
+  const modifiedAt = fromUnixTime(Math.round(item.data.modified))
 
   return (
     <div style={style}>
@@ -27,7 +27,7 @@ const UrlAndNoteItem = props => {
       </div>
       {isOpen && <pre>{JSON.stringify(item.data, 0, 2)}</pre>}
     </div>
-  );
-};
+  )
+}
 
-export default UrlAndNoteItem;
+export default UrlAndNoteItem

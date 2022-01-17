@@ -1,64 +1,64 @@
-import * as actions from 'src/actions/bookmarkActions';
+import * as actions from 'src/actions/bookmarkActions'
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import Push from './Push';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import moment from 'moment';
+import Push from './Push'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import moment from 'moment'
 
-const mapStateToProps = state => {
-  const { bookmarks } = state;
+const mapStateToProps = (state) => {
+  const { bookmarks } = state
   const gallery = bookmarks.sublists.gallery.map(
-    id => bookmarks.bookmarks.entities[id]
-  );
+    (id) => bookmarks.bookmarks.entities[id],
+  )
 
   return {
-    bookmarks: gallery
-  };
-};
+    bookmarks: gallery,
+  }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
 class Gallery extends Component {
   state = {
     listSize: 10,
-    lastLoadTime: Date.now()
-  };
+    lastLoadTime: Date.now(),
+  }
 
   componentDidMount() {
-    this.props.actions.fetchBookmarks().then(res => {
+    this.props.actions.fetchBookmarks().then((res) => {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
-    });
+    })
 
-    window.addEventListener('scroll', this.onScroll, false);
+    window.addEventListener('scroll', this.onScroll, false)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.onScroll, false);
+    window.removeEventListener('scroll', this.onScroll, false)
   }
 
   onScroll = () => {
-    const now = Date.now();
+    const now = Date.now()
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 600 &&
       this.props.bookmarks.length &&
       now - this.state.lastLoadTime > 0.25 * 1000
     ) {
       // console.log(now, this.state.lastLoadTime);
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         lastLoadTime: now,
-        listSize: prevState.listSize + 10
-      }));
+        listSize: prevState.listSize + 10,
+      }))
     }
-  };
+  }
 
-  pushRenderer = data => {
-    let { type, modified, title, url } = data;
+  pushRenderer = (data) => {
+    let { type, modified, title, url } = data
     switch (type) {
       case 'link': {
         return (
@@ -67,7 +67,7 @@ class Gallery extends Component {
             <p> {title} </p>
             <p> {url} </p>
           </div>
-        );
+        )
       }
       default: {
         return (
@@ -75,7 +75,7 @@ class Gallery extends Component {
             {/* <pre>{JSON.stringify(data, 0, 2)}</pre> */}
             <Push data={data} />
           </div>
-        );
+        )
         // return (
         //   <div>
         //     <h3>unhandled type: {type}</h3>
@@ -84,15 +84,15 @@ class Gallery extends Component {
         // );
       }
     }
-  };
+  }
 
-  handleOnDelete = id => this.props.actions.deleteBookmark(id);
+  handleOnDelete = (id) => this.props.actions.deleteBookmark(id)
 
   render() {
     let sublist = this.props.bookmarks.slice(
       0,
-      Math.min(this.state.listSize, this.props.bookmarks.length - 1)
-    );
+      Math.min(this.state.listSize, this.props.bookmarks.length - 1),
+    )
 
     return (
       <div>
@@ -104,7 +104,7 @@ class Gallery extends Component {
                   <div
                     style={{
                       background: 'teal',
-                      padding: '20px'
+                      padding: '20px',
                       // width: "50%"
                     }}
                   >
@@ -114,7 +114,7 @@ class Gallery extends Component {
                         background: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        justifyContent: 'space-evenly'
+                        justifyContent: 'space-evenly',
                       }}
                     >
                       {/* <QuickActions
@@ -124,7 +124,10 @@ class Gallery extends Component {
                       {this.pushRenderer(bk.data)}
                       <div>
                         <button
-                          style={{ padding: '10px', textAlign: 'center' }}
+                          style={{
+                            padding: '10px',
+                            textAlign: 'center',
+                          }}
                           onClick={() => this.handleOnDelete(bk._id)}
                         >
                           Delete
@@ -133,15 +136,12 @@ class Gallery extends Component {
                     </div>
                   </div>
                 </li>
-              );
+              )
             })}
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Gallery);
+export default connect(mapStateToProps, mapDispatchToProps)(Gallery)

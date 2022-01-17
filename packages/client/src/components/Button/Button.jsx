@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import { COLOR } from '../styles';
+import { COLOR } from '../styles'
 
 const StyledButton = styled.button`
   border: none;
@@ -18,13 +18,13 @@ const StyledButton = styled.button`
     transform: scale(1.05, 1.05);
   }
 
-  ${props =>
+  ${(props) =>
     props.fullWidth &&
     `
       width: fill-available;
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'default' &&
     `
     background-color: ${COLOR.PRIMARY.NORMAL};
@@ -36,7 +36,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'secondary' &&
     `
     background-color: ${COLOR.NEUTRAL.LIGHTERER};
@@ -48,7 +48,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'text' &&
     `
     background-color: transparent;
@@ -60,7 +60,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.disabled &&
     `
       background-color: ${COLOR.NEUTRAL.LIGHTER};
@@ -72,26 +72,26 @@ const StyledButton = styled.button`
         background-color: ${COLOR.NEUTRAL.NORMAL};
       }
   `}
-`;
+`
 
-const Button = props => {
-  const { children } = props;
-  return <StyledButton {...props}>{children}</StyledButton>;
-};
+const Button = (props) => {
+  const { children } = props
+  return <StyledButton {...props}>{children}</StyledButton>
+}
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
-  variant: PropTypes.oneOf(['default', 'text', 'secondary'])
-};
+  variant: PropTypes.oneOf(['default', 'text', 'secondary']),
+}
 
 Button.defaultProps = {
   disabled: false,
   fullWidth: false,
   onClick: () => {},
-  variant: 'default'
-};
+  variant: 'default',
+}
 
-export default Button;
+export default Button

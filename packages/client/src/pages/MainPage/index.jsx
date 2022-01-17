@@ -1,19 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import UncategorisedBookmarks from './UncategorisedBookmarks'
+import Push from '../../components/PushV2'
 
 const Wrapper = styled.section`
-  padding: 4em;
+  padding: 2em 6em;
   background: papayawhip;
 `
 
-const Organiser = (props) => {
+const MainPage = (props) => {
   return (
     <Wrapper>
-      <UncategorisedBookmarks />
+      <Push />
     </Wrapper>
   )
 }
 
-export default Organiser
+export default MainPage

@@ -1,15 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Push from './Push';
+import Push from './Push'
 
 const Input = styled.input`
   padding: 10px;
   width: 40%;
-`;
+`
 
-const Bookmark = props => {
-  let { bk } = props;
+const Bookmark = (props) => {
+  let { bk } = props
   return (
     <li>
       <Push data={bk.data} />
@@ -20,15 +20,15 @@ const Bookmark = props => {
         />
         <button>Archive</button>
         <button
-          onClick={event => {
-            this.props.actions.deleteBookmark(bk._id);
+          onClick={(event) => {
+            this.props.actions.deleteBookmark(bk._id)
           }}
         >
           Delete
         </button>
       </div>
     </li>
-  );
-};
+  )
+}
 
-export default Bookmark;
+export default Bookmark

@@ -1,25 +1,25 @@
-import * as actions from 'src/actions/bookmarkActions';
+import * as actions from 'src/actions/bookmarkActions'
 
 import {
   Arrow,
   CarouselContent,
   CarouselWrapper,
   Indicator,
-  IndicatorDot
-} from './styles';
+  IndicatorDot,
+} from './styles'
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
-  CheckmarkIcon
-} from 'src/components/common/icons';
-import React, { Component } from 'react';
+  CheckmarkIcon,
+} from 'src/components/common/icons'
+import React, { Component } from 'react'
 
-import { UnorganizedBookmark } from 'src/components/Bookmark';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { UnorganizedBookmark } from 'src/components/Bookmark'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-const CarouselIndicator = props => {
-  let { index, progress } = props;
+const CarouselIndicator = (props) => {
+  let { index, progress } = props
   return (
     <Indicator>
       {progress.map((p, i) => (
@@ -28,39 +28,39 @@ const CarouselIndicator = props => {
         </IndicatorDot>
       ))}
     </Indicator>
-  );
-};
+  )
+}
 
 class Carousel extends Component {
   state = {
-    index: 0
-  };
+    index: 0,
+  }
 
   goLeft = () => {
-    this.setState(state => ({
+    this.setState((state) => ({
       index:
-        state.index === 0 ? this.props.bookmarks.length - 1 : state.index - 1
-    }));
-  };
+        state.index === 0 ? this.props.bookmarks.length - 1 : state.index - 1,
+    }))
+  }
 
   goRight = () => {
     this.setState((state, props) => ({
-      index: Math.abs((state.index + 1) % this.props.bookmarks.length)
-    }));
-  };
+      index: Math.abs((state.index + 1) % this.props.bookmarks.length),
+    }))
+  }
 
   render() {
-    let { index } = this.state;
-    let { bookmarks, onTagsUpdated } = this.props;
-    let currentBookmarkAtIndex = bookmarks[index];
+    let { index } = this.state
+    let { bookmarks, onTagsUpdated } = this.props
+    let currentBookmarkAtIndex = bookmarks[index]
 
     if (!currentBookmarkAtIndex) {
-      return null;
+      return null
     }
 
     let progress = bookmarks.map(
-      bookmark => bookmark && bookmark.tags && bookmark.tags.length > 0
-    );
+      (bookmark) => bookmark && bookmark.tags && bookmark.tags.length > 0,
+    )
 
     return (
       <CarouselWrapper>
@@ -79,37 +79,37 @@ class Carousel extends Component {
           <ArrowRightIcon />
         </Arrow>
       </CarouselWrapper>
-    );
+    )
   }
 }
 
 class Queue extends Component {
   state = {
-    firstLoad: true // temporary - ideally would be something like a daily flag
-  };
+    firstLoad: true, // temporary - ideally would be something like a daily flag
+  }
 
   componentDidMount() {
-    this.props.actions.getBookmarksUncategorised();
+    this.props.actions.getBookmarksUncategorised()
   }
 
   componentDidUpdate() {
     if (this.state.firstLoad) {
-      this.setState({ firstLoad: false });
+      this.setState({ firstLoad: false })
     }
   }
 
-  onTagsUpdated = id => tags => {
-    this.props.actions.updateBookmarkTags(id, tags);
-  };
+  onTagsUpdated = (id) => (tags) => {
+    this.props.actions.updateBookmarkTags(id, tags)
+  }
 
   render() {
-    let { firstLoad } = this.state;
-    let { bookmarks } = this.props;
+    let { firstLoad } = this.state
+    let { bookmarks } = this.props
     let isDone =
       bookmarks.length ===
       bookmarks.filter(
-        bookmark => bookmark && bookmark.tags && bookmark.tags.length
-      ).length;
+        (bookmark) => bookmark && bookmark.tags && bookmark.tags.length,
+      ).length
     if (!firstLoad && isDone) {
       return (
         <div>
@@ -118,30 +118,25 @@ class Queue extends Component {
           <button>View organizer</button>
           <button>View feed</button>
         </div>
-      );
+      )
     }
 
-    return (
-      <Carousel bookmarks={bookmarks} onTagsUpdated={this.onTagsUpdated} />
-    );
+    return <Carousel bookmarks={bookmarks} onTagsUpdated={this.onTagsUpdated} />
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bookmarks: state.bookmarks.uncategorised.map(
-      id => state.bookmarks.bookmarks.entities[id]
-    )
-  };
-};
+      (id) => state.bookmarks.bookmarks.entities[id],
+    ),
+  }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Queue);
+export default connect(mapStateToProps, mapDispatchToProps)(Queue)

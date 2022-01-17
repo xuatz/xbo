@@ -1,11 +1,11 @@
-import { COLOR, FONT } from 'src/components/styles';
+import { COLOR, FONT } from 'src/components/styles'
 
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const ProviderContainer = styled.section`
   display: flex;
   margin-bottom: 1rem;
-`;
+`
 
 export const Provider = styled.div`
   align-items: center;
@@ -26,20 +26,20 @@ export const Provider = styled.div`
     color: ${COLOR.BLACK};
     transform: scale(1.05, 1.05);
   }
-`;
+`
 
 export const ProviderLogo = styled.img`
   width: 100px;
   height: 100px;
   padding-bottom: 1rem;
-`;
+`
 
 export const ProfileSettings = styled.section`
   margin: 1rem;
-`;
+`
 
 export const Header = styled.header`
   font-family: ${FONT.TITLE};
   font-size: 1.5rem;
   font-weight: 400;
-`;
+`

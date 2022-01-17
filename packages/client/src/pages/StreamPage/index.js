@@ -1,12 +1,12 @@
-import * as actions from 'src/actions/bookmarkActions';
+import * as actions from 'src/actions/bookmarkActions'
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { Bookmark } from 'src/components/Bookmark';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { Bookmark } from 'src/components/Bookmark'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-const Tabs = props => {
+const Tabs = (props) => {
   return (
     <ul>
       <li>All bookmarks</li>
@@ -17,16 +17,16 @@ const Tabs = props => {
         </ul>
       </li>
     </ul>
-  );
-};
+  )
+}
 
 class StreamPage extends Component {
   componentDidMount() {
-    this.props.actions.fetchBookmarks();
+    this.props.actions.fetchBookmarks()
   }
 
   render() {
-    let { bookmarks } = this.props;
+    let { bookmarks } = this.props
     return (
       <div>
         <Tabs />
@@ -36,25 +36,22 @@ class StreamPage extends Component {
           ))}
         </div>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bookmarks: state.bookmarks.bookmarks.result.map(
-      id => state.bookmarks.bookmarks.entities[id]
-    )
-  };
-};
+      (id) => state.bookmarks.bookmarks.entities[id],
+    ),
+  }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StreamPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StreamPage)
