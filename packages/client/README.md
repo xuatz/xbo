@@ -51,7 +51,9 @@ You know the drill
 
 ## Roadmap
 
-### 2019
+### 2022
+- revamp fetch pushbullet pushes and store it with hasura
+### 2019 (will revist and update the list here according before the end of ~~2019~~ 2022 lul)
 
 - Proper zero to full sync strategy
   - should save to database on each page load
@@ -68,7 +70,7 @@ You know the drill
   - client should subscribe to changes and fetch changes
   - client should implement lazy loading
 
-### 2018 (will revist and update the list here according before the end of 2019)
+### 2018 (will revist and update the list here according before the end of ~~2019~~ 2022 lul)
 
 - Server
   - I don’t want to any changes to the backend code anymore until i reach some milestone for the frontend
