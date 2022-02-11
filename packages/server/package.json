@@ -5,8 +5,8 @@
   "license": "MIT",
   "main": "src.js",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start": "ts-node src/server.ts",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "format": "prettier --write '**/*.(js|jsx|ts|tsx)'"
   },
   "dependencies": {
@@ -25,7 +25,7 @@
     "mongoose": "6.0.11",
     "node-schedule": "2.0.0",
     "parse-domain": "1.1.0",
-    "supertokens-node": "7.3.1"
+    "supertokens-node": "8.6.0"
   },
   "devDependencies": {
     "@tsconfig/node14": "1.0.1",

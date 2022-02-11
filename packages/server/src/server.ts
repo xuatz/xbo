@@ -1,13 +1,13 @@
-import cors from 'cors'
-import * as dotenv from 'dotenv'
-import express from 'express'
+import './supertokens';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
+import express from 'express';
+import { getAllCORSHeaders } from 'supertokens-node';
 import {
-  Session,
-  supertokenErrorHandler,
-  supertokenMiddleware,
-  supertokens,
-  verifySession,
-} from './supertokens'
+    errorHandler as supertokenErrorHandler, middleware as supertokenMiddleware
+} from 'supertokens-node/framework/express';
+import * as Session from 'supertokens-node/recipe/session';
+import { verifySession } from 'supertokens-node/recipe/session/framework/express';
 
 import type { SessionRequest } from 'supertokens-node/framework/express'
 
@@ -21,7 +21,7 @@ const corsOptions = {
     'http://localhost:7881',
     'https://xbo.xuatz.com',
   ],
-  allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+  allowedHeaders: ['content-type', ...getAllCORSHeaders()],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   // preflightContinue: true,
@@ -61,7 +61,6 @@ app.use((req, res, next) => {
 
 app.use('/myauth', require('./api/auth').router)
 app.use('/bookmarks', require('./api/bookmarks').router)
-
 app.get('/sessioninfo', verifySession(), async (req: SessionRequest, res) => {
   const { session } = req
 

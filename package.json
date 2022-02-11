@@ -2,14 +2,21 @@
   "name": "xbo-workspace",
   "version": "1.0.1",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "client": "pnpm start --filter ./packages/client",
-    "server": "pnpm start --filter ./packages/server",
-    "server:dev": "pnpm start:dev --filter ./packages/server"
-  }
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^1.1.2"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@6.27.1"
 }

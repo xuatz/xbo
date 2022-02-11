@@ -1,13 +1,8 @@
-import * as supertokens from 'supertokens-node'
+import * as Supertokens from 'supertokens-node'
 import * as Session from 'supertokens-node/recipe/session'
 import * as EmailPassword from 'supertokens-node/recipe/emailpassword'
-import {
-  middleware as supertokenMiddleware,
-  errorHandler as supertokenErrorHandler,
-} from 'supertokens-node/framework/express'
-import { verifySession } from 'supertokens-node/recipe/session/framework/express'
 
-supertokens.init({
+Supertokens.init({
   framework: 'express',
   supertokens: {
     connectionURI: 'https://someone.xuatz.com',
@@ -17,13 +12,12 @@ supertokens.init({
     apiDomain: 'localhost:9000',
     websiteDomain: 'localhost:3000',
   },
-  recipeList: [EmailPassword.init(), Session.init()],
+  recipeList: [
+    EmailPassword.init(),
+    Session.init({
+      jwt: {
+        enable: true,
+      }
+    }),
+  ],
 })
-
-export {
-  supertokens,
-  supertokenMiddleware,
-  supertokenErrorHandler,
-  verifySession,
-  Session,
-}
