@@ -26,3 +26,10 @@ yarn-error.log*
 dumps
 
 .turbo
+
+.cache
+# **/functions/[[path]].js
+# functions/[[path]].js
+# packages/remix/functions/[[path]].js
+packages/remix/functions
+**/public/build
