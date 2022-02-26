@@ -1,7 +1,4 @@
-image: docker:stable
-
-services:
-  - docker:dind
+image: docker
 
 variables:
   # When using dind service we need to instruct docker, to talk with the
@@ -23,6 +20,11 @@ variables:
   VERSION_MINOR: 1
   VERSION_PATCH: 0
   VERSION: $VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH.$CI_PIPELINE_IID
+  # CI_REGISTRY: gitlab-registry.xuatz.com
+  # CI_REGISTRY_USER: xuatz
+  # CI_REGISTRY_PASSWORD:
+  CI_REGISTRY_IMAGE: gitlab-registry.xuatz.com/xuatz/xbo/server
+  # CI_COMMIT_TAG:
 
 # add cache to 'node_modules' for speeding up builds
 # cache:
@@ -32,16 +34,32 @@ variables:
 
 stages:
   - build
-  # - deploy
+  - deploy
+# build:
+#   stage: build
+#   script:
+#     - cd ./packages/server
+#     - docker build -t gitlab-registry.xuatz.com/xuatz/xbo/server:develop .
+#     - docker push gitlab-registry.xuatz.com/xuatz/xbo/server:develop
+#   only:
+#     - develop
 
-build:
-  stage: build
-  script:
-    - cd ./packages/server
-    - docker build -t gitlab-registry.xuatz.com/xuatz/xbo/server:develop .
-    - docker push gitlab-registry.xuatz.com/xuatz/xbo/server:develop
-  only:
-    - develop
+# build:
+#   stage: build
+#   image:
+#     name: gcr.io/kaniko-project/executor:debug
+#     entrypoint: ['']
+#   script:
+#     - mkdir -p /kaniko/.docker
+#     - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+#     - >-
+#       /kaniko/executor
+#       --context "${CI_PROJECT_DIR}"
+#       --dockerfile "${CI_PROJECT_DIR}/packages/server/Dockerfile"
+#       --destination "${CI_REGISTRY_IMAGE}:develop"
+#   only:
+#     - develop
+
 # deploy:
 #   stage: deploy
 #   tags:
