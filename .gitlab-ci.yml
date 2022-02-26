@@ -32,36 +32,37 @@ variables:
 
 stages:
   - build
-  - deploy
+  # - deploy
 
 build:
   stage: build
   tags:
     - ssh
   script:
-    - docker build -f Dockerfile.server -t localhost:5000/xbo-server:dev-$VERSION .
+    - cd ./packages/server
+    - docker build -t gitlab-registry.xuatz.com/xuatz/xbo/server:develop .
+    - docker push gitlab-registry.xuatz.com/xuatz/xbo/server:develop
   only:
-    - development
-
-deploy:
-  stage: deploy
-  tags:
-    - ssh
-  script:
-    - docker stop xbo_server_dev || true
-    - docker rm xbo_server_dev || true
-    - docker run
-        -d
-        -p 6881:9000
-        --restart=always
-        --name=xbo_server_dev
-        -e DB_HOST=$DB_HOST
-        -e DB_NAME=$DB_NAME
-        -e DB_USER=$DB_USER
-        -e DB_PASSWORD=$DB_PASSWORD
-        -e PUSHBULLET_APP_CLIENT_ID=$PUSHBULLET_APP_CLIENT_ID_DEV
-        -e PUSHBULLET_APP_CLIENT_SECRET=$PUSHBULLET_APP_CLIENT_SECRET_DEV
-        -e PUSHBULLET_API_URL=$PUSHBULLET_API_URL
-        localhost:5000/xbo-server:dev-$VERSION
-  only:
-    - development
+    - develop
+# deploy:
+#   stage: deploy
+#   tags:
+#     - ssh
+#   script:
+#     - docker stop xbo_server_dev || true
+#     - docker rm xbo_server_dev || true
+#     - docker run
+#         -d
+#         -p 6881:9000
+#         --restart=always
+#         --name=xbo_server_dev
+#         -e DB_HOST=$DB_HOST
+#         -e DB_NAME=$DB_NAME
+#         -e DB_USER=$DB_USER
+#         -e DB_PASSWORD=$DB_PASSWORD
+#         -e PUSHBULLET_APP_CLIENT_ID=$PUSHBULLET_APP_CLIENT_ID_DEV
+#         -e PUSHBULLET_APP_CLIENT_SECRET=$PUSHBULLET_APP_CLIENT_SECRET_DEV
+#         -e PUSHBULLET_API_URL=$PUSHBULLET_API_URL
+#         localhost:5000/xbo-server:dev-$VERSION
+#   only:
+#     - development

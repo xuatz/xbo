@@ -1,13 +1,14 @@
-import './supertokens';
-import cors from 'cors';
-import * as dotenv from 'dotenv';
-import express from 'express';
-import { getAllCORSHeaders } from 'supertokens-node';
+import './supertokens'
+import cors from 'cors'
+import * as dotenv from 'dotenv'
+import express from 'express'
+import { getAllCORSHeaders } from 'supertokens-node'
 import {
-    errorHandler as supertokenErrorHandler, middleware as supertokenMiddleware
-} from 'supertokens-node/framework/express';
-import * as Session from 'supertokens-node/recipe/session';
-import { verifySession } from 'supertokens-node/recipe/session/framework/express';
+  errorHandler as supertokenErrorHandler,
+  middleware as supertokenMiddleware,
+} from 'supertokens-node/framework/express'
+import * as Session from 'supertokens-node/recipe/session'
+import { verifySession } from 'supertokens-node/recipe/session/framework/express'
 
 import type { SessionRequest } from 'supertokens-node/framework/express'
 
@@ -59,18 +60,25 @@ app.use((req, res, next) => {
 // api routes
 //==============================================================
 
+app.get('/', (_req, res) => {
+  res.send('hello world')
+})
+
 app.use('/myauth', require('./api/auth').router)
 app.use('/bookmarks', require('./api/bookmarks').router)
-app.get('/sessioninfo', verifySession(), async (req: SessionRequest, res) => {
-  const { session } = req
+app.get(
+  '/sessioninfo',
+  verifySession(),
+  async (req: SessionRequest, res: any) => {
+    const { session } = req
 
-  res.send({
-    sessionHandle: session?.getHandle(),
-    userId: session?.getUserId(),
-    jwtPayload: session?.getJWTPayload(),
-    sessionData: await session?.getSessionData(),
-  })
-})
+    res.send({
+      sessionHandle: session?.getHandle(),
+      userId: session?.getUserId(),
+      sessionData: await session?.getSessionData(),
+    })
+  },
+)
 
 app.post('/debug/create-new-session', async (req, res) => {
   const XZLOW10_USER_ID = 'ba5cb9ee-185d-4dbc-9281-440b8084558f'
