@@ -36,8 +36,6 @@ stages:
 
 build:
   stage: build
-  tags:
-    - ssh
   script:
     - cd ./packages/server
     - docker build -t gitlab-registry.xuatz.com/xuatz/xbo/server:develop .

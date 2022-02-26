@@ -1,0 +1,15 @@
+name: Mirror to GitLab
+
+on: [push, delete]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Git Push
+        run: |
+          git remote add gitlab https://xuatz:${{ secrets.GITLAB_PASSWORD }}@gitlab.xuatz.com/xuatz/xbo.git
+          git push --tags --force --prune gitlab "refs/remotes/origin/*:refs/heads/*"
