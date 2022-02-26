@@ -1,9 +1,23 @@
 import type { LinksFunction, MetaFunction } from 'remix'
-import { Links, LiveReload, Outlet, useCatch, Meta, Scripts } from 'remix'
-
-import globalStylesUrl from './styles/global.css'
-import globalMediumStylesUrl from './styles/global-medium.css'
+import { Links, LiveReload, Meta, Outlet, Scripts, useCatch } from 'remix'
+import SuperTokens from 'supertokens-auth-react'
+import EmailPassword from 'supertokens-auth-react/recipe/emailpassword'
+import Session from 'supertokens-auth-react/recipe/session'
 import globalLargeStylesUrl from './styles/global-large.css'
+import globalMediumStylesUrl from './styles/global-medium.css'
+import globalStylesUrl from './styles/global.css'
+
+if (typeof window !== 'undefined') {
+  SuperTokens.init({
+    // learn more about this on https://supertokens.com/docs/emailpassword/appinfo
+    appInfo: {
+      appName: 'xbo-dev',
+      apiDomain: 'localhost:9000',
+      websiteDomain: 'localhost:3000',
+    },
+    recipeList: [EmailPassword.init(), Session.init()],
+  })
+}
 
 export const links: LinksFunction = () => {
   return [

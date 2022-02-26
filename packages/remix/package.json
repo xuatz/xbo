@@ -1,17 +1,18 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "remix",
   "description": "",
   "license": "",
   "dependencies": {
     "@prisma/client": "^3.9.2",
-    "@remix-run/react": "^1.2.1",
-    "@remix-run/serve": "^1.2.1",
+    "@remix-run/react": "^1.2.2",
+    "@remix-run/serve": "^1.2.2",
     "bcryptjs": "2.4.3",
     "cross-env": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.2.1"
+    "remix": "^1.2.2",
+    "supertokens-auth-react": "0.18.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.1",

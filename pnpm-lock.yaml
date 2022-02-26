@@ -85,8 +85,8 @@ importers:
     specifiers:
       '@prisma/client': ^3.9.2
       '@remix-run/dev': ^1.2.1
-      '@remix-run/react': ^1.2.1
-      '@remix-run/serve': ^1.2.1
+      '@remix-run/react': ^1.2.2
+      '@remix-run/serve': ^1.2.2
       '@types/bcryptjs': ^2.4.2
       '@types/react': ^17.0.24
       '@types/react-dom': ^17.0.9
@@ -97,17 +97,19 @@ importers:
       prisma: ^3.9.2
       react: ^17.0.2
       react-dom: ^17.0.2
-      remix: ^1.2.1
+      remix: ^1.2.2
+      supertokens-auth-react: 0.18.0
       typescript: ^4.1.2
     dependencies:
       '@prisma/client': 3.9.2_prisma@3.9.2
-      '@remix-run/react': 1.2.1_react-dom@17.0.2+react@17.0.2
-      '@remix-run/serve': 1.2.1_react-dom@17.0.2+react@17.0.2
+      '@remix-run/react': 1.2.2_react-dom@17.0.2+react@17.0.2
+      '@remix-run/serve': 1.2.2_react-dom@17.0.2+react@17.0.2
       bcryptjs: 2.4.3
       cross-env: 7.0.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      remix: 1.2.1
+      remix: 1.2.2
+      supertokens-auth-react: 0.18.0_7510db4ec16e957d3f42221e7066b6f6
     devDependencies:
       '@remix-run/dev': 1.2.1_react-dom@17.0.2+react@17.0.2
       '@types/bcryptjs': 2.4.2
@@ -517,6 +519,29 @@ packages:
     resolution: {integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==}
     dev: false
 
+  /@emotion/react/11.5.0_0d9ae6029f9b6856f7d6fb45bd27ecc7:
+    resolution: {integrity: sha512-MYq/bzp3rYbee4EMBORCn4duPQfgpiEB5XzrZEBnUZAL80Qdfr7CEv/T80jwaTl/dnZmt9SnTa8NkTrwFNpLlw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@emotion/cache': 11.5.0
+      '@emotion/serialize': 1.0.2
+      '@emotion/sheet': 1.0.3
+      '@emotion/utils': 1.0.0
+      '@emotion/weak-memoize': 0.2.5
+      '@types/react': 17.0.30
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+    dev: false
+
   /@emotion/react/11.5.0_react@17.0.2:
     resolution: {integrity: sha512-MYq/bzp3rYbee4EMBORCn4duPQfgpiEB5XzrZEBnUZAL80Qdfr7CEv/T80jwaTl/dnZmt9SnTa8NkTrwFNpLlw==}
     peerDependencies:
@@ -687,23 +712,23 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@remix-run/express/1.2.1_7d7d58cb12e5375810022547109f543f:
-    resolution: {integrity: sha512-X0bRnPUin6maFyAnt37dDsxZXOh6obFPfWl6KbtPYZrc+dVJnX78GFKOL160Qbqwqb7nvSFsBmewkWnyaU0Tpw==}
+  /@remix-run/express/1.2.2_7d7d58cb12e5375810022547109f543f:
+    resolution: {integrity: sha512-ayO38B4siwFom53ZcK3JWyknhwExyTHztjji8NqZrVrSXGkD0WdHcSef3n1DBGasZnj+nvh4Z2ibZfBpP8wCHw==}
     peerDependencies:
       express: ^4.17.1
     dependencies:
-      '@remix-run/node': 1.2.1_react-dom@17.0.2+react@17.0.2
-      '@remix-run/server-runtime': 1.2.1_react-dom@17.0.2+react@17.0.2
+      '@remix-run/node': 1.2.2_react-dom@17.0.2+react@17.0.2
+      '@remix-run/server-runtime': 1.2.2_react-dom@17.0.2+react@17.0.2
       express: 4.17.1
     transitivePeerDependencies:
       - react
       - react-dom
     dev: false
 
-  /@remix-run/node/1.2.1_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-T1+2UOoACniVBAiJBH1vnqeGokidLBd547vLHcaqxqy4iNG3/IVOdf1XsHQAc7H0ql93tIun940QMSY4OBTN5w==}
+  /@remix-run/node/1.2.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-ZTPrR4RCAJZFLGp9dTkUFAWbD+bvHVb07cODQ2gmFeKwozRM3oFOG882flNcBkwZ4jO5XmLA7Rha8qDMpIWIGQ==}
     dependencies:
-      '@remix-run/server-runtime': 1.2.1_react-dom@17.0.2+react@17.0.2
+      '@remix-run/server-runtime': 1.2.2_react-dom@17.0.2+react@17.0.2
       '@types/busboy': 0.3.2
       '@types/node-fetch': 2.6.1
       '@web-std/file': 3.0.2
@@ -713,14 +738,14 @@ packages:
       cookie-signature: 1.2.0
       form-data: 4.0.0
       node-fetch: 2.6.1
-      source-map: 0.7.3
+      source-map-support: 0.5.21
     transitivePeerDependencies:
       - react
       - react-dom
     dev: false
 
-  /@remix-run/react/1.2.1_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-s+3dvT+LaRCj0AR47LxXjbgArbAWcgUCZi4NPA+B2M8bKMoSFkHDBshuDmUm4squLrRk6JSvC6QiKvrxeyuuQg==}
+  /@remix-run/react/1.2.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-A+g/Y4QnT4ldZovjbP4sNJ29ZZt+oDP152pN8oYOHoQuqqrlc+CnLSMKCN1D+EljBfJx66553TwMIS5kCwdNzg==}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
@@ -731,11 +756,11 @@ packages:
       react-router-dom: 6.2.1_react-dom@17.0.2+react@17.0.2
     dev: false
 
-  /@remix-run/serve/1.2.1_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-gFfmnhifubDdmLN9yLU+n1FzieKRnwp3q+BOp0TjQVVXu0I45tvqwM2/0i3xC6Nus2ihZwszFtCQO5qDzeCD8Q==}
+  /@remix-run/serve/1.2.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-9Fs4EtiyPsC5kYJ7xwUoTUgytVILF0b3GeN2eqHlruuZBn4cMrCYK9gB3hliBJRMrIUGvEwjXcOW/h8dSUJMVQ==}
     hasBin: true
     dependencies:
-      '@remix-run/express': 1.2.1_7d7d58cb12e5375810022547109f543f
+      '@remix-run/express': 1.2.2_7d7d58cb12e5375810022547109f543f
       compression: 1.7.4
       express: 4.17.1
       morgan: 1.10.0
@@ -758,6 +783,23 @@ packages:
       react-router-dom: 6.2.1_react-dom@17.0.2+react@17.0.2
       set-cookie-parser: 2.4.8
       source-map: 0.7.3
+    dev: true
+
+  /@remix-run/server-runtime/1.2.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-muTsmeRVK9/spvsHfc6XiKMrH3kgsMUU4+LF4tA7DYLK+QsHbaNrjAOgQglvtYl8bylNstQjiGsuNsiM0KEHuw==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@types/cookie': 0.4.1
+      cookie: 0.4.1
+      jsesc: 3.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-router-dom: 6.2.1_react-dom@17.0.2+react@17.0.2
+      set-cookie-parser: 2.4.8
+      source-map: 0.7.3
+    dev: false
 
   /@rollup/pluginutils/4.1.2:
     resolution: {integrity: sha512-ROn4qvkxP9SyPeHaf7uQC/GPFY6L/OWy9+bd9AwcjOAWQwxRscoEyAUD8qCY5o5iL4jqQwoLk2kaTKJPb/HwzQ==}
@@ -1531,7 +1573,6 @@ packages:
 
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-    dev: true
 
   /buffer/5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -4926,6 +4967,26 @@ packages:
       history: 5.2.0
       react: 17.0.2
 
+  /react-select/5.2.2_7510db4ec16e957d3f42221e7066b6f6:
+    resolution: {integrity: sha512-miGS2rT1XbFNjduMZT+V73xbJEeMzVkJOz727F6MeAr2hKE0uUSA8Ff7vD44H32x2PD3SRB6OXTY/L+fTV3z9w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+    dependencies:
+      '@babel/runtime': 7.15.4
+      '@emotion/cache': 11.5.0
+      '@emotion/react': 11.5.0_0d9ae6029f9b6856f7d6fb45bd27ecc7
+      '@types/react-transition-group': 4.4.4
+      memoize-one: 5.2.1
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/react'
+    dev: false
+
   /react-select/5.2.2_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-miGS2rT1XbFNjduMZT+V73xbJEeMzVkJOz727F6MeAr2hKE0uUSA8Ff7vD44H32x2PD3SRB6OXTY/L+fTV3z9w==}
     peerDependencies:
@@ -5140,8 +5201,8 @@ packages:
       unified: 10.1.1
     dev: true
 
-  /remix/1.2.1:
-    resolution: {integrity: sha512-DKq5dj01qziy+VU+tuzG8CjogbraeXntHKDSCWJ6yiCwWqu3NMecKKjAcclsfmn2JRwh/CQ5RFPtr4SFJUJe5w==}
+  /remix/1.2.2:
+    resolution: {integrity: sha512-gVYuBzKYcSmtp/U/q8CK+yFUbcI72KdFEDMVWlKwck/dAQwH7x9PJp/IRiIzkj9/7S/2oLCG7yyJtykE2JNnlw==}
     dependencies:
       fs-extra: 10.0.0
     dev: false
@@ -5391,6 +5452,13 @@ packages:
       source-map: 0.6.1
     dev: true
 
+  /source-map-support/0.5.21:
+    resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
+    dependencies:
+      buffer-from: 1.1.2
+      source-map: 0.6.1
+    dev: false
+
   /source-map/0.5.6:
     resolution: {integrity: sha1-dc449SvwczxafwwRjYEzSiu19BI=}
     engines: {node: '>=0.10.0'}
@@ -5574,6 +5642,27 @@ packages:
 
   /stylis/4.0.10:
     resolution: {integrity: sha512-m3k+dk7QeJw660eIKRRn3xPF6uuvHs/FFzjX3HQ5ove0qYsiygoAhwn5a3IYKaZPo5LrYD0rfVmtv1gNY1uYwg==}
+    dev: false
+
+  /supertokens-auth-react/0.18.0_7510db4ec16e957d3f42221e7066b6f6:
+    resolution: {integrity: sha512-ElfiYN7euJ9E/XukBsd97IoskkGabD8b9L094aaB9CLxIAvpp+cYCJFBx4ZR/CRjwL8o818gcxLy4Yb7H5KK6Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      '@emotion/react': 11.5.0_0d9ae6029f9b6856f7d6fb45bd27ecc7
+      chroma-js: 2.1.2
+      libphonenumber-js: 1.9.44
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-phone-number-input: 3.1.44_react-dom@17.0.2+react@17.0.2
+      react-select: 5.2.2_7510db4ec16e957d3f42221e7066b6f6
+      react-shadow: 19.0.2_9bdd65c2b60ce8638444b80b396a481b
+      supertokens-js-override: 0.0.4
+      supertokens-website: 10.0.7
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/react'
+      - react-dom
     dev: false
 
   /supertokens-auth-react/0.18.0_react-dom@17.0.2+react@17.0.2:
