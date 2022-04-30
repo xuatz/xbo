@@ -4,37 +4,35 @@
   "description": "",
   "license": "",
   "dependencies": {
-    "@prisma/client": "^3.9.2",
-    "@remix-run/react": "^1.2.2",
-    "@remix-run/serve": "^1.2.2",
+    "@remix-run/react": "^1.4.3",
+    "@remix-run/serve": "^1.4.3",
+    "@remix-run/node": "^1.4.3",
+    "@xbo/prisma-client": "workspace:*",
+    "axios": "^0.27.2",
     "bcryptjs": "2.4.3",
+    "bullmq": "^1.81.1",
     "cross-env": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.2.2",
+    "remix": "^1.4.3",
     "supertokens-auth-react": "0.18.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.2.1",
+    "@remix-run/dev": "^1.4.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "esbuild": "0.13.15",
     "esbuild-register": "^3.3.2",
     "prisma": "^3.9.2",
-    "typescript": "^4.1.2"
+    "typescript": "^4.6.3"
   },
   "engines": {
     "node": ">=14"
   },
   "sideEffects": false,
-  "prisma": {
-    "seed": "node --require esbuild-register prisma/seed.ts"
-  },
   "scripts": {
     "postinstall": "remix setup node",
-    "prisma:seed": "npx prisma db seed",
-    "prisma:schema:update": "npx prisma db push",
     "build": "cross-env NODE_ENV=production remix build",
     "dev": "cross-env NODE_ENV=development remix dev",
     "start": "cross-env NODE_ENV=production remix-serve build"

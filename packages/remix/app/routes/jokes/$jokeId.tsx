@@ -4,7 +4,7 @@ import { db } from '~/utils/db.server'
 import { getUserId, requireUserId } from '~/utils/session.server'
 
 import type { LoaderFunction, ActionFunction, MetaFunction } from 'remix'
-import type { Joke } from '@prisma/client'
+import type { Joke } from '@xbo/prisma-client'
 
 export const meta: MetaFunction = ({
   data,

@@ -1,6 +1,6 @@
 import type { LoaderFunction } from 'remix'
 import { useLoaderData, Link, useCatch } from 'remix'
-import type { Joke } from '@prisma/client'
+import type { Joke } from '@xbo/prisma-client'
 
 import { db } from '~/utils/db.server'
 

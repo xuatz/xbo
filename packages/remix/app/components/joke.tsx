@@ -1,5 +1,5 @@
 import { Link, Form } from 'remix'
-import type { Joke } from '@prisma/client'
+import type { Joke } from '@xbo/prisma-client'
 
 export function JokeDisplay({
   joke,
