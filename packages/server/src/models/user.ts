@@ -8,7 +8,7 @@ let UserSchema = new Schema(
     _id: { type: String },
     // username: { type: String, required: true, unique: true },
     // password: { type: String, required: true },
-    providers: { type: Object },
+    providers: { type: Object }, // @todo i should type this
     roles: [String],
   },
   {

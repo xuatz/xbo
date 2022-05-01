@@ -1,11 +1,10 @@
-import axios from 'axios'
-import { timeout } from '../../utils/timeout'
-import { GET_PUSHES_PARAMS, Push, getPushes } from './getPushes'
+import { GET_PUSHES_PARAMS, getPushes } from './getPushes'
 import { request, gql } from 'graphql-request'
+// import ... from '@xbo/prisma-client'
 
 const endpoint = 'http://localhost:8080/v1/graphql'
 
-type FetchPushesBasicParams = GET_PUSHES_PARAMS & {
+export type FetchPushesBasicParams = GET_PUSHES_PARAMS & {
   userId: string
   pushes?: unknown[]
   count?: number // @todo rename to runCount
@@ -58,103 +57,73 @@ export async function populateWithFreshPushes({
   modified_after,
   count = 1,
   emptyCount = 0,
-  ttl,
+  ttl = 2,
   dryRun,
-}: FetchPushesBasicParams): Promise<boolean> {
+}: FetchPushesBasicParams) {
   try {
-    // - check if there is an ongoing process
-    //   - if yes, continue
-    //   - if no, start a new process
-    const queryCursor = cursor || getPushesCursorByUserId(userId)
-
     const params = {
       access_token,
-      cursor: queryCursor,
+      // - check if there is an ongoing process
+      //   - if yes, continue
+      //   - if no, start a new process
+      cursor: cursor || getPushesCursorByUserId(userId),
       modified_after,
     }
 
-    console.log('params', params)
-
-    const { pushes, cursor: nextCursor } = await getPushes({
-      access_token,
-      cursor: queryCursor,
-      modified_after,
-    })
-
-    // console.log('pushes', pushes)
-
-    console.log('nextCursor', nextCursor)
+    const { pushes, cursor: nextCursor } = await getPushes(params)
 
     if (!dryRun) {
-      savePushesToHasura({ pushes, userId, cursor: nextCursor })
+      // savePushesToHasura({ pushes, userId, cursor: nextCursor })
+      savePushesToPrisma({ pushes, userId, cursor: nextCursor })
     }
 
-    if (!!ttl && ttl > 0 && nextCursor && emptyCount < 10) {
-      await timeout(10000)
-
+    /**
+     * sometimes some cursor will return empty results
+     * but it there are actually still more results
+     * if i make more requests.
+     *
+     * so for a naive workaround, i will keep trying
+     * until i get 10 empty results to determine there is nothing left
+     */
+    if (ttl > 0 && nextCursor && emptyCount < 10) {
       const isThisCursorResultsEmpty = pushes.length === 0
-      return populateWithFreshPushes({
-        userId,
-        access_token,
-        cursor: nextCursor,
-        count: ++count,
-        modified_after,
-        ...(isThisCursorResultsEmpty && {
-          emptyCount: ++emptyCount,
-        }),
-        ...(!!isThisCursorResultsEmpty && {
+      return {
+        status: 'in-progress',
+        args: {
+          userId,
+          access_token,
+          cursor: nextCursor,
+          count: ++count,
+          modified_after,
+          ...(isThisCursorResultsEmpty
+            ? {
+                emptyCount: ++emptyCount,
+              }
+            : {
+                emptyCount: 0,
+              }),
           ttl: --ttl,
-        }),
-        dryRun,
-      })
+          dryRun,
+        },
+      }
     }
 
-    return true
+    return {
+      status: 'done',
+    }
   } catch (error) {
-    console.error(error)
-    return false
+    return {
+      status: 'error',
+      error,
+    }
+  } finally {
+    console.log('end of populateWithFreshPushes')
   }
 }
-
-// export const fetchPushesBasic = async ({
-//   access_token,
-//   cursor,
-//   modified_after,
-//   pushes = [],
-//   count = 1,
-//   emptyCount = 0,
-// }: FetchPushesBasicParams): Promise<Push[]> => {
-//   const demoLimit = 2
-
-//   console.log('fetchPushesBasic():count:', count)
-//   console.log('cursor:', cursor)
-//   console.log('modified_after:', modified_after)
-
-//   const { pushes: newPushes, cursor: nextCursor } = await getPushes({
-//     access_token,
-//     cursor,
-//     modified_after,
-//   })
-//   console.log('newPushes.length', newPushes.length)
-
-//   const mergedPushes = pushes.concat(newPushes)
-
-//   // if (nextCursor && count < demoLimit) {
-//   if (nextCursor && emptyCount < 10) {
-//     await timeout(10000)
-
-//     const isThisCursorResultsEmpty = newPushes.length === 0
-//     return fetchPushesBasic({
-//       access_token,
-//       cursor: nextCursor,
-//       pushes: mergedPushes,
-//       count: ++count,
-//       modified_after,
-//       ...(isThisCursorResultsEmpty && {
-//         emptyCount: emptyCount + 1,
-//       }),
-//     })
-//   } else {
-//     return mergedPushes
-//   }
-// }
+function savePushesToPrisma(arg0: {
+  pushes: unknown[]
+  userId: string
+  cursor: string | undefined
+}) {
+  throw new Error('Function not implemented.')
+}

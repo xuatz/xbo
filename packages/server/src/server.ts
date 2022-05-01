@@ -9,6 +9,8 @@ import {
 } from 'supertokens-node/framework/express'
 import * as Session from 'supertokens-node/recipe/session'
 import { verifySession } from 'supertokens-node/recipe/session/framework/express'
+import bookmarks from './api/bookmarks'
+import './bullmq'
 
 import type { SessionRequest } from 'supertokens-node/framework/express'
 
@@ -65,7 +67,7 @@ app.get('/', (_req, res) => {
 })
 
 app.use('/myauth', require('./api/auth').router)
-app.use('/bookmarks', require('./api/bookmarks').router)
+app.use('/bookmarks', bookmarks)
 app.get(
   '/sessioninfo',
   verifySession(),

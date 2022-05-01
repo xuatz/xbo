@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response, Router } from 'express'
 import Session from 'supertokens-node/recipe/session'
+import {
+  addToQueryPushbulletQueue,
+  queryPushbulletQueue,
+} from '../../bullmq/QueryPushbulletQueue'
+import { queryPushbulletWorker } from '../../bullmq/QueryPushbulletWorker'
+import { User } from '../../models/user'
 import { populateWithFreshPushes } from './fetchPushesBasic'
 
 const router = Router()
 
-// const _ = require('lodash')
-// const axios = require('axios')
-// const Promise = require('bluebird')
-// const parseDomain = require('parse-domain')
-// const moment = require('moment')
-
-const { User } = require('../../models/user')
+// const { User } = require('../../models/user')
 // const { Bookmark } = require('../../models/bookmark')
 // const ObjectId = require('mongoose').Types.ObjectId
 
@@ -329,53 +329,62 @@ async function getCurrentUser(
   next: NextFunction,
 ) {
   console.log('hi1')
+  try {
+    const sessionData = await Session.getSession(req, res)
+    const user = await User.findById(sessionData?.getUserId()).exec()
 
-  const sessionData = await Session.getSession(req, res)
-  const user = await User.findById(sessionData?.getUserId()).exec()
+    console.log('hi2')
+    if (user) {
+      console.log('hi3')
+      req.user = user
+    }
 
-  console.log('hi2')
-  if (user) {
-    console.log('hi3')
-    req.user = user
+    console.log('hi4')
+    next()
+  } catch (error) {
+    next(error)
   }
-
-  console.log('hi4')
-  next()
 }
 
-router.get(
+router.post(
   '/populate',
-  getCurrentUser,
+  // getCurrentUser,
   async (req: IUserRequest, res, next) => {
-    console.log('hi11')
-    // let { pushbullet } = req?.user?.providers
-    if (!req?.user) {
-      res.status(403).send('No session user found')
-      return
-    }
+    // console.log('hi11')
+    // // let { pushbullet } = req?.user?.providers
+    // console.log('xz:req', req)
+    // if (!req?.user) {
+    //   console.log('hi12')
+    //   res.status(403).send('No session user found')
+    //   return
+    // }
 
-    if (!req.user.providers?.pushbullet?.access_token) {
-      res.status(403).send('No pushbullet access_token in user profile')
-      return
-    }
+    // console.log('hi13')
+    // if (!req.user.providers?.pushbullet?.access_token) {
+    //   console.log('hi14')
+    //   res.status(403).send('No pushbullet access_token in user profile')
+    //   return
+    // }
 
-    const success = await populateWithFreshPushes({
-      userId: req.user._id,
-      access_token: req.user.providers?.pushbullet?.access_token,
-      ttl: 0,
-      dryRun: true,
-    })
+    // console.log('hi15')
+    // res.json(req.user)
 
-    if (success) {
+    // const success = await populateWithFreshPushes({
+    //   // userId: req.user._id,
+    //   // access_token: req.user.providers?.pushbullet?.access_token,
+    //   userId: 'ba5cb9ee-185d-4dbc-9281-440b8084558f',
+    //   access_token: 'o.HlGR8O2piulU28GqWAWYzuRfN6UsB9vv',
+    //   dryRun: true,
+    // })
+
+    try {
+      addToQueryPushbulletQueue({ userId: req.body?.userId })
       res.sendStatus(200)
-    } else {
+    } catch (error) {
+      console.error(error)
       res.sendStatus(500)
     }
   },
 )
 
-module.exports = {
-  router,
-  // getMagicUncategorisedBookmarks,
-  // fetchFreshPushbullets,
-}
+export default router
