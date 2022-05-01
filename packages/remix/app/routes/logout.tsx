@@ -1,10 +1,9 @@
 import type { ActionFunction, LoaderFunction } from 'remix'
 import { redirect } from 'remix'
-
-import { logout } from '~/utils/session.server'
+import { signOut } from 'supertokens-auth-react/recipe/emailpassword'
 
 export const action: ActionFunction = async ({ request }) => {
-  return logout(request)
+  await signOut()
 }
 
 export const loader: LoaderFunction = async () => {

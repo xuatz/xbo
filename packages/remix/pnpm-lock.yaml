@@ -15,7 +15,6 @@ specifiers:
   cross-env: ^7.0.3
   esbuild: 0.13.15
   esbuild-register: ^3.3.2
-  prisma: ^3.9.2
   react: ^17.0.2
   react-dom: ^17.0.2
   remix: ^1.4.3
@@ -43,7 +42,6 @@ devDependencies:
   '@types/react-dom': 17.0.11
   esbuild: 0.13.15
   esbuild-register: 3.3.2_esbuild@0.13.15
-  prisma: 3.10.0
   typescript: 4.6.4
 
 packages:
@@ -651,11 +649,6 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     dependencies:
       json-parse-even-better-errors: 2.3.1
-    dev: true
-
-  /@prisma/engines/3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86:
-    resolution: {integrity: sha512-LjRssaWu9w2SrXitofnutRIyURI7l0veQYIALz7uY4shygM9nMcK3omXcObRm7TAcw3Z+9ytfK1B+ySOsOesxQ==}
-    requiresBuild: true
     dev: true
 
   /@remix-run/dev/1.4.3_react-dom@17.0.2+react@17.0.2:
@@ -4690,15 +4683,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       parse-ms: 2.1.0
-    dev: true
-
-  /prisma/3.10.0:
-    resolution: {integrity: sha512-dAld12vtwdz9Rz01nOjmnXe+vHana5PSog8t0XGgLemKsUVsaupYpr74AHaS3s78SaTS5s2HOghnJF+jn91ZrA==}
-    engines: {node: '>=12.6'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      '@prisma/engines': 3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86
     dev: true
 
   /process-nextick-args/2.0.1:

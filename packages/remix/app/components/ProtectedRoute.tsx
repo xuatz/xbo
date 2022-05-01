@@ -1,7 +1,6 @@
-import { ReactNode } from 'react'
 import { EmailPasswordAuth } from 'supertokens-auth-react/recipe/emailpassword'
 
-const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   if (typeof window === 'undefined') {
     return null
   }
