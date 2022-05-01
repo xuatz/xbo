@@ -14,15 +14,22 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.4.3",
-    "supertokens-auth-react": "0.18.0"
+    "styled-components": "^5.3.3",
+    "supertokens-auth-react": "0.20.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.1.6",
     "@remix-run/dev": "^1.4.3",
+    "@remix-run/server-runtime": "^1.4.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "@types/styled-components": "^5.1.20",
     "esbuild": "0.13.15",
     "esbuild-register": "^3.3.2",
+    "mocha": "9.0.0",
+    "react-is": "^17.0.2",
     "typescript": "^4.6.3"
   },
   "engines": {

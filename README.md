@@ -53,6 +53,7 @@ You know the drill
 
 ### 2022
 - revamp fetch pushbullet pushes and store it with hasura
+- add authentication for hasura graphql mutations at least
 ### 2019 (will revist and update the list here according before the end of ~~2019~~ 2022 lul)
 
 - Proper zero to full sync strategy
