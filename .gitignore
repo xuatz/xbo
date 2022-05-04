@@ -33,3 +33,4 @@ dumps
 # packages/remix/functions/[[path]].js
 packages/remix/functions
 **/public/build
+dist

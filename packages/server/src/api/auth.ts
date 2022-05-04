@@ -1,9 +1,10 @@
-import * as express from 'express'
 import axios, { AxiosError } from 'axios'
-
+import { MutationInsertUserProvidersOne } from 'common'
+import * as express from 'express'
 import * as EmailPassword from 'supertokens-node/recipe/emailpassword'
 import * as Session from 'supertokens-node/recipe/session'
 import * as SessionExpress from 'supertokens-node/recipe/session/framework/express'
+import { client } from '../graphql'
 import { User } from '../models/user'
 
 const router = express.Router()
@@ -194,28 +195,17 @@ router.get(
 
     // console.log('userInfo', userInfo)
 
-    const user = await User.findByIdAndUpdate(
-      {
-        _id: sessionData?.getUserId(),
-      },
-      {
-        // providers: {
-        //   pushbullet: response?.data,
-        // },
-      },
-      { upsert: true },
-    ).exec()
+    console.log('xz:response.data', response?.data)
 
-    if (!user?.providers) {
-      user.providers = {}
+    // @todo may want to reconsider in future if i want to make the distinction of token type
+    const variables = {
+      userId: sessionData?.getUserId(),
+      token: response?.data?.access_token,
     }
-    if (response?.data) {
-      user.providers.pushbullet = response.data
-      user.save()
-    }
+    await client.request(MutationInsertUserProvidersOne, variables)
 
     return res.redirect('http://localhost:3000/profile')
   },
 )
 
-module.exports = { router }
+export default router

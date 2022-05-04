@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2015"],
+    "module": "ESNext",
+    "target": "ES6",
+    "jsx": "react-jsx",
+    "moduleResolution": "node"
+  },
+  "include": ["src", "../remix/apollo.ts"],
+  "exclude": ["dist", "build", "node_modules"]
+}

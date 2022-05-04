@@ -1,23 +1,12 @@
+import { MutationInsertUsersOne } from 'common'
 import * as Supertokens from 'supertokens-node'
-import * as Session from 'supertokens-node/recipe/session'
 import * as EmailPassword from 'supertokens-node/recipe/emailpassword'
-import { GraphQLClient, gql } from 'graphql-request'
+import * as Session from 'supertokens-node/recipe/session'
+import { client } from './graphql'
 
-const mutation = gql`
-  mutation MyMutation($id: uuid!) {
-    insert_users_one(object: { id: $id }) {
-      id
-    }
-  }
-`
-
-const client = new GraphQLClient('http://localhost:8080/v1/graphql')
-
-async function doSomething(id: string) {
-  const variables = {
-    id,
-  }
-  const data = await client.request(mutation, variables)
+async function saveSuperTokenUserIdToHasura(id: string) {
+  const variables = { id }
+  await client.request(MutationInsertUsersOne, variables)
 }
 
 Supertokens.init({
@@ -36,31 +25,27 @@ Supertokens.init({
         apis: (originalImplementation) => {
           return {
             ...originalImplementation,
-            signInPOST: async function (input) {
-              console.log('xz:signInPOST')
+            // signInPOST: async function (input) {
+            //   console.log('xz:signInPOST')
 
-              if (originalImplementation.signInPOST === undefined) {
-                throw Error('Should never come here')
-              }
+            //   if (originalImplementation.signInPOST === undefined) {
+            //     throw Error('Should never come here')
+            //   }
 
-              // First we call the original implementation of signInPOST.
-              let response = await originalImplementation.signInPOST(input)
+            //   // First we call the original implementation of signInPOST.
+            //   let response = await originalImplementation.signInPOST(input)
 
-              // Post sign up response, we check if it was successful
-              if (response.status === 'OK') {
-                let { id, email } = response.user
+            //   // Post sign up response, we check if it was successful
+            //   if (response.status === 'OK') {
+            //     let { id, email } = response.user
 
-                // These are the input form fields values that the user used while signing in
-                let formFields = input.formFields
-                // TODO: post sign in logic
-
-                await doSomething(id)
-              }
-              return response
-            },
+            //     // These are the input form fields values that the user used while signing in
+            //     let formFields = input.formFields
+            //     // TODO: post sign in logic
+            //   }
+            //   return response
+            // },
             signUpPOST: async function (input) {
-              console.log('xz:signUpPOST')
-
               if (originalImplementation.signUpPOST === undefined) {
                 throw Error('Should never come here')
               }
@@ -70,13 +55,9 @@ Supertokens.init({
 
               // Post sign up response, we check if it was successful
               if (response.status === 'OK') {
-                let { id, email } = response.user
+                let { id } = response.user
 
-                // // These are the input form fields values that the user used while signing up
-                let formFields = input.formFields
-                // TODO: post sign up logic
-
-                await doSomething(id)
+                await saveSuperTokenUserIdToHasura(id)
               }
               return response
             },

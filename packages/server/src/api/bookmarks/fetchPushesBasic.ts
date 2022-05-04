@@ -1,6 +1,4 @@
 import { GET_PUSHES_PARAMS, getPushes } from './getPushes'
-import { request, gql } from 'graphql-request'
-// import ... from '@xbo/prisma-client'
 
 const endpoint = 'http://localhost:8080/v1/graphql'
 
@@ -27,26 +25,6 @@ async function savePushesToHasura({
   userId,
   cursor,
 }: Partial<FetchPushesBasicParams>) {
-  const {
-    posts: { data },
-  } = await request(
-    endpoint,
-    gql`
-      mutation MyMutation {
-        insert_pushbullets(
-          objects: [
-            { data: { age: 123 }, id: "1", userId: "" }
-            { data: "", id: "", userId: "" }
-          ]
-          on_conflict: { constraint: pushbullets_pkey }
-        ) {
-          affected_rows
-        }
-      }
-    `,
-  )
-  return data
-
   // @todo
 }
 

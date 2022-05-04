@@ -1,8 +1,25 @@
-import type { LinksFunction, MetaFunction } from 'remix'
-import { Links, LiveReload, Meta, Outlet, Scripts, useCatch } from 'remix'
+import {
+  Links,
+  LinksFunction,
+  LiveReload,
+  Meta,
+  MetaFunction,
+  Outlet,
+  Scripts,
+  useCatch,
+  useNavigate,
+} from 'remix'
 import SuperTokens from 'supertokens-auth-react'
-import EmailPassword from 'supertokens-auth-react/recipe/emailpassword'
-import Session from 'supertokens-auth-react/recipe/session'
+import EmailPassword, {
+  signOut,
+} from 'supertokens-auth-react/recipe/emailpassword'
+import Session, {
+  useSessionContext,
+} from 'supertokens-auth-react/recipe/session'
+import { tw } from 'twind'
+import { ApolloProvider } from '@apollo/client'
+import { apolloClient } from './apollo'
+import ProtectedRoute from './components/ProtectedRoute'
 import globalLargeStylesUrl from './styles/global-large.css'
 import globalMediumStylesUrl from './styles/global-medium.css'
 import globalStylesUrl from './styles/global.css'
@@ -76,37 +93,42 @@ function Document({
   )
 }
 
+const Content = () => {
+  const { userId, accessTokenPayload, doesSessionExist } = useSessionContext()
+  let navigate = useNavigate()
+
+  return (
+    <div className={tw`container bg-yellow-800 py-2`}>
+      <div className={tw`flex justify-between items-center py-4`}>
+        <h1 className={tw`bg-pink-800 text-5xl`}>Xuatz Bookmark Manager</h1>
+        <button
+          className={tw`rounded-full bg-purple-700 px-6 py-1`}
+          onClick={async () => {
+            if (doesSessionExist) {
+              await signOut()
+            } else {
+              return navigate('/auth')
+            }
+          }}
+        >
+          {doesSessionExist ? 'Logout' : 'Login'}
+        </button>
+      </div>
+      <div>
+        <Outlet />
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   return (
     <Document>
-      <Outlet />
-    </Document>
-  )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-
-  return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
-      <div className="error-container">
-        <h1>
-          {caught.status} {caught.statusText}
-        </h1>
-      </div>
-    </Document>
-  )
-}
-
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error)
-
-  return (
-    <Document title="Uh-oh!">
-      <div className="error-container">
-        <h1>App Error</h1>
-        <pre>{error.message}</pre>
-      </div>
+      <ApolloProvider client={apolloClient}>
+        <ProtectedRoute requireAuth={false}>
+          <Content />
+        </ProtectedRoute>
+      </ApolloProvider>
     </Document>
   )
 }
