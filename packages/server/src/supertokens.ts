@@ -1,8 +1,7 @@
-import { MutationInsertUsersOne } from 'common'
+import { MutationInsertUsersOne, client } from 'common'
 import * as Supertokens from 'supertokens-node'
 import * as EmailPassword from 'supertokens-node/recipe/emailpassword'
 import * as Session from 'supertokens-node/recipe/session'
-import { client } from './graphql'
 
 async function saveSuperTokenUserIdToHasura(id: string) {
   const variables = { id }

@@ -1,19 +1,12 @@
-import { useEffect, useState } from 'react'
-import { json, Link, LinksFunction, useLoaderData } from 'remix'
+import { json, LinksFunction, useLoaderData } from 'remix'
 import styled from 'styled-components'
 import { useSessionContext } from 'supertokens-auth-react/recipe/session'
 import { tw } from 'twind'
 import ProtectedRoute from '~/components/ProtectedRoute'
+import { useGetUserById } from '~/queries/useGetUserById'
 import stylesUrl from '~/styles/index.css'
 import PushbulletLogo from '../../../public/assets/PushbulletLogo.png'
 import { COLOR, FONT } from '../../components/styles'
-/**
- * @todo what if i want to do
- * import { QueryUser } from 'common/queries/user' ?
- * how can i do it?
- */
-import { QueryUser } from 'common'
-import { useQuery } from '@apollo/client'
 
 export const ProviderContainer = styled.section`
   display: flex;
@@ -81,24 +74,15 @@ export async function loader() {
 
 const Content = () => {
   const { PUSHBULLET_URL } = useLoaderData()
-  const { userId, accessTokenPayload, doesSessionExist } = useSessionContext()
+  const { userId } = useSessionContext()
 
-  const [isLoggedInToPushbullet, setIsLoggedInToPushbullet] = useState(false)
-
-  const { loading, error, data, refetch } = useQuery(QueryUser, {
-    variables: {
-      id: userId,
-    },
-  })
-
-  useEffect(() => {
-    if (userId) {
-      refetch()
-    }
-  }, [userId])
+  const variables = {
+    id: userId,
+  }
+  const { data: user } = useGetUserById({ variables })
+  const isLoggedInToPushbullet = Boolean(user?.providers?.pushbullet?.token)
 
   const connectPushbulletProvider = () => {
-    // window.location.href = 'https://google.com'
     window.location.href = PUSHBULLET_URL
   }
 

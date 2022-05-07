@@ -1,12 +1,11 @@
+import { QueryClient, QueryClientProvider } from 'react-query'
 import {
   Links,
-  LinksFunction,
   LiveReload,
   Meta,
   MetaFunction,
   Outlet,
   Scripts,
-  useCatch,
   useNavigate,
 } from 'remix'
 import SuperTokens from 'supertokens-auth-react'
@@ -17,12 +16,7 @@ import Session, {
   useSessionContext,
 } from 'supertokens-auth-react/recipe/session'
 import { tw } from 'twind'
-import { ApolloProvider } from '@apollo/client'
-import { apolloClient } from './apollo'
 import ProtectedRoute from './components/ProtectedRoute'
-import globalLargeStylesUrl from './styles/global-large.css'
-import globalMediumStylesUrl from './styles/global-medium.css'
-import globalStylesUrl from './styles/global.css'
 
 if (typeof window !== 'undefined') {
   SuperTokens.init({
@@ -34,25 +28,6 @@ if (typeof window !== 'undefined') {
     },
     recipeList: [EmailPassword.init(), Session.init()],
   })
-}
-
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: 'stylesheet',
-      href: globalStylesUrl,
-    },
-    {
-      rel: 'stylesheet',
-      href: globalMediumStylesUrl,
-      media: 'print, (min-width: 640px)',
-    },
-    {
-      rel: 'stylesheet',
-      href: globalLargeStylesUrl,
-      media: 'screen and (min-width: 1024px)',
-    },
-  ]
 }
 
 export const meta: MetaFunction = () => {
@@ -94,7 +69,7 @@ function Document({
 }
 
 const Content = () => {
-  const { userId, accessTokenPayload, doesSessionExist } = useSessionContext()
+  const { doesSessionExist } = useSessionContext()
   let navigate = useNavigate()
 
   return (
@@ -121,14 +96,16 @@ const Content = () => {
   )
 }
 
+const queryClient = new QueryClient()
+
 export default function App() {
   return (
     <Document>
-      <ApolloProvider client={apolloClient}>
+      <QueryClientProvider client={queryClient}>
         <ProtectedRoute requireAuth={false}>
           <Content />
         </ProtectedRoute>
-      </ApolloProvider>
+      </QueryClientProvider>
     </Document>
   )
 }

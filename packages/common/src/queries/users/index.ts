@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from 'graphql-request'
 
 export const QueryUser = gql`
   query QueryUser($id: uuid) {
@@ -23,13 +23,14 @@ export const MutationInsertUsersOne = gql`
 `
 
 export const MutationInsertUserProvidersOne = gql`
-  mutation MutationInsertUserProvidersOne($userId: uuid!, $token: String!) {
+  mutation MutationInsertUserProvidersOne(
+    $userId: uuid!
+    $providerId: uuid!
+    $token: String!
+  ) {
     insert_userProviders_one(
-      object: {
-        userId: $userId
-        providerId: "7bc2a47c-d98c-44f1-98c6-a1a9e6469924"
-        token: $token
-      }
+      object: { userId: $userId, providerId: $providerId, token: $token }
+      on_conflict: { constraint: userProviders_pkey, update_columns: [token] }
     ) {
       userId
       providerId

@@ -1,4 +1,3 @@
-import * as graphql from './generated/graphql'
-
+export * from './generated/graphql'
 export * from './queries/users'
-export { graphql }
+export * from './client'
