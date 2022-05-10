@@ -28,6 +28,9 @@ if (typeof window !== 'undefined') {
     },
     recipeList: [EmailPassword.init(), Session.init()],
   })
+
+  const { worker } = require('../bleublanc/mocks/browser')
+  worker.start()
 }
 
 export const meta: MetaFunction = () => {

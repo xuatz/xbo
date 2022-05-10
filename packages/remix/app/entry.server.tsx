@@ -2,6 +2,9 @@ import type { EntryContext } from 'remix'
 import { renderToString } from 'react-dom/server'
 import { RemixServer } from 'remix'
 
+const { server } = require('../bleublanc/mocks/node')
+server.listen()
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,

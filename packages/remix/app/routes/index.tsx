@@ -54,5 +54,17 @@ const Content = () => {
 }
 
 export default function Index() {
-  return <p>placeholder content</p>
+  return (
+    <div>
+      <p>placeholder content</p>
+      <ol>
+        <li>
+          <a href="/bookmarks">Go to Bookmarks</a>
+        </li>
+        <li>
+          <a href="/profile">Go to Profile</a>
+        </li>
+      </ol>
+    </div>
+  )
 }
