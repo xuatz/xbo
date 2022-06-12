@@ -17,8 +17,11 @@ import Session, {
 } from 'supertokens-auth-react/recipe/session'
 import { tw } from 'twind'
 import ProtectedRoute from './components/ProtectedRoute'
+import { commitSession, destroySession, getSession } from './session'
 
-if (typeof window !== 'undefined') {
+const isBrowser = typeof window !== 'undefined'
+
+if (isBrowser) {
   SuperTokens.init({
     // learn more about this on https://supertokens.com/docs/emailpassword/appinfo
     appInfo: {
@@ -105,9 +108,7 @@ export default function App() {
   return (
     <Document>
       <QueryClientProvider client={queryClient}>
-        <ProtectedRoute requireAuth={false}>
-          <Content />
-        </ProtectedRoute>
+        <Content />
       </QueryClientProvider>
     </Document>
   )

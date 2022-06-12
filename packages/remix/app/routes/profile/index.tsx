@@ -80,6 +80,7 @@ const Content = () => {
     id: userId,
   }
   const { data: user } = useGetUserById({ variables })
+  console.log('xz:user', user)
   const isLoggedInToPushbullet = Boolean(user?.providers?.pushbullet?.token)
 
   const connectPushbulletProvider = () => {
@@ -100,10 +101,27 @@ const Content = () => {
     </div>
   )
 }
+
+interface IResponse<T> {
+  data: T
+}
+
+interface IUserResponse {
+  id: string;
+  name: string;
+}
+
+const userResponse: IResponse<IUserResponse> = {
+  data: {
+    id: '1',
+    name: 'Pikachu'
+  }
+}
+
+userResponse.data.
+
+
+
 export default function Index() {
-  return (
-    <ProtectedRoute>
-      <Content />
-    </ProtectedRoute>
-  )
+  return <Content />
 }

@@ -4,6 +4,7 @@ volumes:
   mongo-xbo:
   redis:
   postgres-db:
+  mailhog-vol:
 
 services:
   redis:
@@ -25,22 +26,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secure-admin-password
-  # client:
-  #   image: localhost:5000/xbo-client:local
-  #   build:
-  #     context: .
-  #     dockerfile: ./packages/client/Dockerfile
-  #   command: yarn start
-  #   stdin_open: true
-  #   container_name: xbo-client-dev
-  #   restart: always
-  #   volumes:
-  #     - ./packages/client/src:/client/src
-  #   environment:
-  #     - VITE_API_URL=http://localhost:9000
-  #     - VITE_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
-  #   ports:
-  #     - 3000:3000
   # server:
   #   image: localhost:5000/xbo-server:local
   #   build:
@@ -60,8 +45,8 @@ services:
   #     - DB_USER=xbo_user
   #     - DB_PASSWORD=secure-xbo-password
   #     - DB_PG=xbo_dev_hasura
-  #     - PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
-  #     - PUSHBULLET_APP_CLIENT_SECRET=IlQ1SBBY9fRnWLRVEFSQMxkB5UIS9Rxt
+  #     - PUSHBULLET_APP_CLIENT_ID=${PUSHBULLET_APP_CLIENT_ID}
+  #     - PUSHBULLET_APP_CLIENT_SECRET=${PUSHBULLET_APP_CLIENT_SECRET}
   postgres:
     image: postgres:12
     restart: always
@@ -78,9 +63,9 @@ services:
     restart: always
     environment:
       ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:amazing-postgres-password@postgres:5432/postgres
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
       ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      PG_DATABASE_URL: postgres://postgres:amazing-postgres-password@postgres:5432/postgres
+      PG_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
@@ -89,3 +74,33 @@ services:
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
+  hasura-auth:
+    image: nhost/hasura-auth:latest
+    depends_on:
+      - postgres
+      - graphql-engine
+    # env_file:
+    #   - .env
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+      AUTH_SMTP_HOST: mailhog
+      AUTH_SMTP_PORT: 1025
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./email-templates:/app/email-templates
+  mailhog:
+    image: mailhog/mailhog
+    environment:
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_PASS: ${AUTH_SMTP_PASS}
+      SMTP_USER: ${AUTH_SMTP_USER}
+      SMTP_SECURE: '${AUTH_SMTP_SECURE}'
+      SMTP_SENDER: ${AUTH_SMTP_SENDER}
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    volumes:
+      - mailhog-vol:/maildir
