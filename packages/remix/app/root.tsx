@@ -19,6 +19,11 @@ import { tw } from 'twind'
 import ProtectedRoute from './components/ProtectedRoute'
 import { commitSession, destroySession, getSession } from './session'
 
+import install from '@twind/with-remix'
+import config from '../twind.config'
+
+install(config)
+
 const isBrowser = typeof window !== 'undefined'
 
 if (isBrowser) {
@@ -79,9 +84,9 @@ const Content = () => {
   let navigate = useNavigate()
 
   return (
-    <div className={tw`container bg-yellow-800 py-2`}>
-      <div className={tw`flex justify-between items-center py-4`}>
-        <h1 className={tw`bg-pink-800 text-5xl`}>Xuatz Bookmark Manager</h1>
+    <div className="container bg-yellow-800 py-2">
+      <div className="flex justify-between items-center py-4">
+        <h1 className="bg-pink-800 text-5xl">Xuatz Bookmark Manager</h1>
         <button
           className={tw`rounded-full bg-purple-700 px-6 py-1`}
           onClick={async () => {

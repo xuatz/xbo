@@ -8,6 +8,10 @@ module.exports = {
     //   "@xbo/prisma-client"
     '@xbo/common',
     '../packages/common',
+    'twind',
+    '@twind/with-remix',
+    '@twind/preset-autoprefix',
+    '@twind/preset-tailwind',
   ],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
