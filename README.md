@@ -51,6 +51,22 @@ You know the drill
 
 ## Roadmap
 
+### 2023 
+
+as usual, i return to this project after long periods of time and completely abandon old plans.
+here is the new goals.
+
+- finish mvp1
+  - login, and then auth with pushbullet
+  - send pb oauth token to `server2`, and it will fetch the pushbullet pushes
+  - for now i will be happy to send a naive query and return like say just return first page
+  - store it in pocketbase
+  - query pocketbase in `remix2` and render it
+- mvp2: setup a bullmq queue job to fetch pushbullets in `/server2`
+- mvp3: improve Create/Login page design
+- mvp4: add filter function
+- mvp5: view by types (links, images, etc)
+
 ### 2022
 - revamp fetch pushbullet pushes and store it with hasura
 - add authentication for hasura graphql mutations at least

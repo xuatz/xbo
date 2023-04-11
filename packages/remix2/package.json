@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "name": "remix2",
+  "description": "",
+  "license": "",
+  "dependencies": {
+    "@remix-run/node": "~1.14.2",
+    "@remix-run/react": "~1.14.2",
+    "@remix-run/serve": "~1.14.2",
+    "isbot": "^3.6.5",
+    "pocketbase": "https://github.com/xuatz/pocketbase-js-sdk",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "twind": "^0.16.19"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "~1.14.2",
+    "@remix-run/eslint-config": "~1.14.2",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.27.0",
+    "typescript": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "postinstall": "remix setup node",
+    "build": "cross-env NODE_ENV=production remix build",
+    "dev": "cross-env NODE_ENV=development remix dev",
+    "start": "cross-env NODE_ENV=production remix-serve build"
+  }
+}
