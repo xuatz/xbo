@@ -1,7 +1,7 @@
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData } from '@remix-run/react'
-import PocketBase from '"pocketbase'
+import PocketBase from 'pocketbase'
 
 import { checkSessionCookie, signUp } from '~/server/auth.server'
 import { commitSession, getSession } from '~/sessions'
@@ -19,31 +19,50 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-  const pb = new PocketBase(
-    process.env.POCKETBASE_URL || 'http://localhost:8090',
-  )
-  const users = pb.collection('users')
-
-  const form = await request.formData()
-  const name = form.get('name')
-  const email = form.get('email')
-  const password = form.get('password')
-  const formError = json({ error: 'Please fill all fields!' }, { status: 400 })
-  if (typeof name !== 'string') return formError
-  if (typeof email !== 'string') return formError
-  if (typeof password !== 'string') return formError
+  // const form = await request.formData()
+  // const name = form.get('name')
+  // const email = form.get('email')
+  // const password = form.get('password')
+  // const formError = json({ error: 'Please fill all fields!' }, { status: 400 })
+  // if (typeof name !== 'string') return formError
+  // if (typeof email !== 'string') return formError
+  // if (typeof password !== 'string') return formError
   try {
-    const sessionCookie = await signUp(name, email, password)
-    const session = await getSession(request.headers.get('cookie'))
-    session.set('session', sessionCookie)
-    return redirect('/', {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
+    console.log('xz:process.env.POCKETBASE_URL', process.env.POCKETBASE_URL)
+
+    const pb = new PocketBase(
+      process.env.POCKETBASE_URL || 'http://localhost:8090',
+    )
+
+    // // you can also fetch all records at once via getFullList
+    // const records = await pb.collection('users').getFullList({
+    //   sort: '-created',
+    // })
+    // console.log('xz:records', records)
+
+    const newUser = await pb.collection('users').create({
+      email: 'test1@email.com',
+      password: '123',
     })
+
+    console.log('xz:newuser', newuser)
+    //   .getFirstListItem(`email != "${email}"`)
+
+    // console.log('xz:existingUserWithSameEmail', existingUserWithSameEmail)
+
+    return true
+
+    // const sessionCookie = await signUp(name, email, password)
+    // const session = await getSession(request.headers.get('cookie'))
+    // session.set('session', sessionCookie)
+    // return redirect('/', {
+    //   headers: {
+    //     'Set-Cookie': await commitSession(session),
+    //   },
+    // })
   } catch (error) {
     console.error(error)
-    return json({ error: String(error) }, { status: 401 })
+    return json({ error: error.response }, { status: 400 })
   }
 }
 
@@ -52,7 +71,7 @@ export default function Login() {
   return (
     <div>
       <h1>Join</h1>
-      {actionData?.error ? <p>{actionData.error}</p> : null}
+      {actionData?.error && <p style={{ color: 'red' }}>{actionData.error.message}</p>}
       <Form method="post">
         <input
           style={{ display: 'block' }}
@@ -60,20 +79,35 @@ export default function Login() {
           placeholder="Peter"
           type="text"
         />
+        {actionData?.error?.data?.name?.message && (
+          <span style={{ color: 'red' }}>
+            {actionData?.error?.data?.name?.message}
+          </span>
+        )}
         <input
           style={{ display: 'block' }}
           name="email"
           placeholder="you@example.com"
           type="email"
         />
+        {actionData?.error?.data?.email && (
+          <span style={{ color: 'red' }}>
+            {actionData?.error?.data?.email?.message}
+          </span>
+        )}
         <input
           style={{ display: 'block' }}
           name="password"
           placeholder="password"
           type="password"
         />
+        {actionData?.error?.data?.email && (
+          <span style={{ color: 'red' }}>
+            {actionData?.error?.data?.password?.message}
+          </span>
+        )}
         <button style={{ display: 'block' }} type="submit">
-          Join
+          Create
         </button>
       </Form>
       <p>
