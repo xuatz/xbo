@@ -19,14 +19,14 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-  // const form = await request.formData()
-  // const name = form.get('name')
-  // const email = form.get('email')
-  // const password = form.get('password')
-  // const formError = json({ error: 'Please fill all fields!' }, { status: 400 })
-  // if (typeof name !== 'string') return formError
-  // if (typeof email !== 'string') return formError
-  // if (typeof password !== 'string') return formError
+  const form = await request.formData()
+  const name = form.get('name')
+  const email = form.get('email')
+  const password = form.get('password')
+  const formError = json({ error: 'Please fill all fields!' }, { status: 400 })
+  if (typeof name !== 'string') return formError
+  if (typeof email !== 'string') return formError
+  if (typeof password !== 'string') return formError
   try {
     console.log('xz:process.env.POCKETBASE_URL', process.env.POCKETBASE_URL)
 
@@ -68,51 +68,50 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Login() {
   const actionData = useActionData<typeof action>()
+
   return (
-    <div>
+    <main>
       <h1>Join</h1>
-      {actionData?.error && <p style={{ color: 'red' }}>{actionData.error.message}</p>}
-      <Form method="post">
-        <input
-          style={{ display: 'block' }}
-          name="name"
-          placeholder="Peter"
-          type="text"
-        />
+      {actionData?.error && (
+        <p style={{ color: 'red' }}>{actionData.error?.message}</p>
+      )}
+      <form>
+        <label htmlFor="name">Name:</label>
+        <input id="name" name="name" type="text" placeholder="Peter" />
         {actionData?.error?.data?.name?.message && (
           <span style={{ color: 'red' }}>
-            {actionData?.error?.data?.name?.message}
+            {actionData.error?.data?.name?.message}
           </span>
         )}
+        <label htmlFor="email">Email:</label>
         <input
-          style={{ display: 'block' }}
+          id="email"
           name="email"
-          placeholder="you@example.com"
           type="email"
+          placeholder="you@example.com"
         />
-        {actionData?.error?.data?.email && (
+        {actionData?.error?.data?.email?.message && (
           <span style={{ color: 'red' }}>
-            {actionData?.error?.data?.email?.message}
+            {actionData.error?.data?.email?.message}
           </span>
         )}
+        <label htmlFor="password">Password:</label>
         <input
-          style={{ display: 'block' }}
+          id="password"
           name="password"
           placeholder="password"
           type="password"
         />
-        {actionData?.error?.data?.email && (
+        {actionData?.error?.data?.password?.message && (
           <span style={{ color: 'red' }}>
-            {actionData?.error?.data?.password?.message}
+            {actionData.error?.data?.password?.message}
           </span>
         )}
-        <button style={{ display: 'block' }} type="submit">
-          Create
-        </button>
-      </Form>
+        <button type="submit">Create</button>
+      </form>
       <p>
-        Do you want to <Link to="/login">login</Link>?
+        Already registered? <Link to="/login">Login</Link>
       </p>
-    </div>
+    </main>
   )
 }
