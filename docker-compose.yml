@@ -29,7 +29,7 @@ services:
       - ./packages/client/src:/client/src
     environment:
       - REACT_APP_API_URL=http://localhost:9000
-      - REACT_APP_PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
+      - REACT_APP_PUSHBULLET_APP_CLIENT_ID=
     ports:
       - 3000:3000
   server:
@@ -50,5 +50,5 @@ services:
       - DB_NAME=xbo_dev
       - DB_USER=xbo_user
       - DB_PASSWORD=secure-xbo-password
-      - PUSHBULLET_APP_CLIENT_ID=2TXDmPJN0tukzOqu19qvwNCju16SyMb7
-      - PUSHBULLET_APP_CLIENT_SECRET=IlQ1SBBY9fRnWLRVEFSQMxkB5UIS9Rxt
+      - PUSHBULLET_APP_CLIENT_ID=
+      - PUSHBULLET_APP_CLIENT_SECRET=

@@ -1,15 +1,8 @@
 {
   "name": "xbo-workspace",
-  "version": "1.0.1",
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
-  "scripts": {
-    "client": "pnpm start --filter ./packages/client",
-    "server": "pnpm start --filter ./packages/server",
-    "server:dev": "pnpm start:dev --filter ./packages/server"
+  "version": "3.0.0-alpha.1",
+  "engines": {
+    "node": "^16",
+    "pnpm": "^7"
   }
 }

@@ -1,12 +1,11 @@
 {
   "name": "server",
-  "version": "1.0.1",
+  "version": "3.0.0-alpha.1",
   "private": true,
   "license": "MIT",
   "main": "src.js",
   "scripts": {
-    "start": "ts-node src/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.js"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.js"
   },
   "dependencies": {
     "axios": "0.23.0",

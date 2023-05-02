@@ -290,9 +290,7 @@ router.get('/all', async (req, res, next) => {
 });
 
 router.get('/fetch', async (req, res, next) => {
-  let { pushbullet } = req.user.providers;
-
-  console.log('req.query.rebuild', req.query.rebuild);
+  const pushbullet = req?.user?.providers?.pushbullet;
 
   try {
     fetchFreshPushbullets({
