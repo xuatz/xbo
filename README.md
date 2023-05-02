@@ -1,4 +1,5 @@
-# Xuatz Bookmark Manager (also known as xuatz bookmark organiser)
+# Xuatz Bookmark Manager 
+> (also known as xuatz bookmark organiser)
 
 ## What do you need?
 
