@@ -34,15 +34,15 @@ const PB_API = axios.create({
 
 // ==============================
 
-const parseUrlFromBookmarks = () => {
+const _parseUrlFromBookmarks = () => {
   return Bookmark.find({
     provider: 'pushbullet',
     'data.url': { $exists: true },
     'stats.domain': { $exists: false },
   })
     .exec()
-    .then(bookmarks => {
-      return bookmarks.map(bk => {
+    .then((bookmarks) => {
+      return bookmarks.map((bk) => {
         let {
           stats,
           data: { url },
@@ -62,12 +62,12 @@ const parseUrlFromBookmarks = () => {
               multi: false,
               // upsert: true,
               // overwrite: true,
-            },
+            }
           ).exec();
         }
       });
     })
-    .then(bookmarks => {
+    .then((_bookmarks) => {
       return true;
     });
 };
@@ -92,7 +92,7 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
   let { userId } = params;
 
   // let recently be 6 days, for now
-  let recently = moment().format('X') - 24 * 60 * 60 * 10;
+  let _recently = moment().format('X') - 24 * 60 * 60 * 10;
 
   return (
     getPushbulletBookmarksQuery({
@@ -102,11 +102,11 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
       // .sort({ "stats.viewCount": -1 }) //SORT DESC
       .or([{ status: undefined }, { status: 'uncategorised' }])
       .exec()
-      .then(bookmarks => {
+      .then((bookmarks) => {
         let left = bookmarks.slice(0, Math.min(bookmarks.length, 4));
         let right = bookmarks.slice(
           Math.min(bookmarks.length, 4),
-          bookmarks.length,
+          bookmarks.length
         );
 
         return [].concat(
@@ -120,12 +120,12 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
                   return 0;
                 }
               })
-              .slice(10),
-          ).slice(0, Math.min(right.length, 6)),
+              .slice(10)
+          ).slice(0, Math.min(right.length, 6))
         );
       })
-      .then(bookmarks => {
-        Promise.map(bookmarks, bk => {
+      .then((bookmarks) => {
+        Promise.map(bookmarks, (bk) => {
           return bk
             .update(
               {
@@ -135,13 +135,13 @@ const getMagicUncategorisedBookmarks = (params = {}) => {
                 multi: false,
                 // upsert: true,
                 // overwrite: true,
-              },
+              }
             )
             .exec();
         });
         return bookmarks;
       })
-      .then(bookmarks => {
+      .then((bookmarks) => {
         // console.log(bookmarks);
         // console.log(bookmarks.length);
         return bookmarks;
@@ -203,7 +203,7 @@ const deletePushBullet = (bk, pushbullet) => {
       'Access-Token': pushbullet.access_token,
     },
   })
-    .then(pb_res => {
+    .then((pb_res) => {
       if (pb_res.status === 200) {
         return true;
       } else {
@@ -211,7 +211,7 @@ const deletePushBullet = (bk, pushbullet) => {
         return false;
       }
     })
-    .catch(err => {
+    .catch((err) => {
       switch (err.response.status) {
         case 404:
           // probably deleted elsewhere like on another client
@@ -256,13 +256,13 @@ router.put('/:id/tags', async (req, res) => {
   const tags = req.body.tags;
 
   try {
-    const result = await Bookmark.updateOne(
+    const _result = await Bookmark.updateOne(
       { _id: bookmarkId },
       {
         $set: {
           tags: tags,
         },
-      },
+      }
     );
     const updatedBookmark = await Bookmark.findById(bookmarkId).exec();
     res.status(200).json(updatedBookmark);
@@ -271,7 +271,7 @@ router.put('/:id/tags', async (req, res) => {
   }
 });
 
-router.get('/all', async (req, res, next) => {
+router.get('/all', async (req, res, _next) => {
   try {
     const bookmarks = await Bookmark.find({
       userId: new ObjectId(req.user.id),
@@ -289,7 +289,7 @@ router.get('/all', async (req, res, next) => {
   }
 });
 
-router.get('/fetch', async (req, res, next) => {
+router.get('/fetch', async (req, res, _next) => {
   const pushbullet = req?.user?.providers?.pushbullet;
 
   try {

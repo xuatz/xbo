@@ -16,23 +16,23 @@ dbConnectionString += '/' + (process.env.DB_NAME || 'placeholder_db');
 
 let options = {
   // useMongoClient: true
-  useNewUrlParser: true // @todo whats up with this?
+  useNewUrlParser: true, // @todo whats up with this?
   // useUnifiedTopology: true // @tod whats up with this?
 };
 
 mongoose.connect(dbConnectionString, options);
 
-mongoose.connection.on('error', function(error) {
+mongoose.connection.on('error', function (error) {
   console.log('mongoose err', error);
 });
-mongoose.connection.on('connected', function() {
+mongoose.connection.on('connected', function () {
   console.log('Connection established to MongoDB');
 });
-mongoose.connection.on('reconnected', function() {
+mongoose.connection.on('reconnected', function () {
   console.log('Reconnected to MongoDB');
 });
 
 module.exports = {
   mongoose,
-  uri: dbConnectionString
+  uri: dbConnectionString,
 };

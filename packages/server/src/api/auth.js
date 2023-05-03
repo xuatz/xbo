@@ -9,7 +9,7 @@ const User = require('../models/user');
 const loginTasks = (req, res) => {
   let providers = {};
   if (req.user && req.user.providers) {
-    Object.keys(req.user.providers).map(key => {
+    Object.keys(req.user.providers).map((key) => {
       if (req.user.providers[key]) {
         providers[key] = true;
       }
@@ -35,10 +35,10 @@ passport.use(
       {
         username: username,
       },
-      '-password',
+      '-password'
     )
       .exec()
-      .then(user => {
+      .then((user) => {
         if (user) {
           console.log('Username already taken');
           return done(null, false, {
@@ -51,19 +51,19 @@ passport.use(
           password,
         });
       })
-      .then(newUser => {
+      .then((newUser) => {
         // console.log('newUser', newUser)
         // console.log('newUser._id', newUser._id)
         // console.log('newUser.id', newUser.id)
         return User.findOne(newUser._id, '-password').exec();
       })
-      .then(newUser => {
+      .then((newUser) => {
         return done(null, newUser);
       })
-      .catch(err => {
+      .catch((err) => {
         return done(err);
       });
-  }),
+  })
 );
 
 passport.use(
@@ -81,7 +81,7 @@ passport.use(
       username: username,
     })
       .exec()
-      .then(user => {
+      .then((user) => {
         if (!user) {
           return done(null, false, {
             message: 'No user found',
@@ -102,10 +102,10 @@ passport.use(
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         return done(err);
       });
-  }),
+  })
 );
 
 router.get('/user', (req, res) => {

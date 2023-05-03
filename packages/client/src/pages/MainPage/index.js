@@ -7,7 +7,7 @@ const Wrapper = styled.section`
   background: papayawhip;
 `;
 
-const MainPage = props => {
+const MainPage = (props) => {
   return (
     <Wrapper>
       <Push />

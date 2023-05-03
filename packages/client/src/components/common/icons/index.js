@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ArrowLeftIcon = props => {
+export const ArrowLeftIcon = (props) => {
   const { style, onClick } = props;
   return (
     <svg
@@ -17,7 +17,7 @@ export const ArrowLeftIcon = props => {
   );
 };
 
-export const ArrowRightIcon = props => {
+export const ArrowRightIcon = (props) => {
   const { style, onClick } = props;
   return (
     <svg
@@ -34,7 +34,7 @@ export const ArrowRightIcon = props => {
   );
 };
 
-export const CheckmarkIcon = props => {
+export const CheckmarkIcon = (props) => {
   const { style, onClick } = props;
   return (
     <svg

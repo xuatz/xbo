@@ -5,16 +5,16 @@ import { Wrapper, ActionToolbar, Tag } from './styles';
 import Push from './Push';
 import InvisibleInput from '../common/InvisibleInput';
 
-const Tags = props => {
+const Tags = (props) => {
   let { tags, onTagAdded, onTagRemoved } = props;
   let [tagInput, setTagInput] = useState('');
   let [selectedTag, setSelectedTag] = useState(null);
 
-  const handleOnTagChange = e => {
+  const handleOnTagChange = (e) => {
     setTagInput(e.target.value);
   };
 
-  const handleOnKeyPress = e => {
+  const handleOnKeyPress = (e) => {
     if (e.key === 'Enter' && tagInput) {
       onTagAdded(tagInput);
       setTagInput('');
@@ -24,11 +24,11 @@ const Tags = props => {
     }
   };
 
-  const handleOnTagClick = tag => e => {
+  const handleOnTagClick = (tag) => (e) => {
     setSelectedTag(tag);
   };
 
-  const handleOnTagKeyPress = tag => e => {
+  const handleOnTagKeyPress = (tag) => (e) => {
     if (e.key === 'Backspace') {
       onTagRemoved(tag);
       setSelectedTag(null);
@@ -37,7 +37,7 @@ const Tags = props => {
 
   return (
     <div>
-      {tags.map(tag => (
+      {tags.map((tag) => (
         <Tag
           tabIndex={-1}
           onClick={handleOnTagClick(tag)}
@@ -62,19 +62,21 @@ const Tags = props => {
 Tags.propTypes = {
   tags: PropTypes.array,
   onTagAdded: PropTypes.func,
-  onTagRemoved: PropTypes.func
+  onTagRemoved: PropTypes.func,
 };
 
 Tags.defaultProps = {
   tags: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onTagAdded: () => {},
-  onTagRemoved: () => {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onTagRemoved: () => {},
 };
 
 // An unorganized bookmark
 export default class UnorganizedBookmark extends React.Component {
   state = {
-    tags: this.props.bk.tags || []
+    tags: this.props.bk.tags || [],
   };
 
   componentWillReceiveProps(nextProps) {
@@ -83,26 +85,26 @@ export default class UnorganizedBookmark extends React.Component {
     }
   }
 
-  handleOnTagAdded = newTag => {
-    this.setState(prevState => {
+  handleOnTagAdded = (newTag) => {
+    this.setState((prevState) => {
       let tags = !prevState.tags.includes(newTag)
         ? prevState.tags.concat(newTag)
         : prevState.tags;
       this.props.onTagsUpdated(tags);
       return {
-        tags
+        tags,
       };
     });
   };
 
-  handleOnTagRemoved = tagToRemove => {
-    this.setState(prevState => {
+  handleOnTagRemoved = (tagToRemove) => {
+    this.setState((prevState) => {
       let tags = tagToRemove
-        ? prevState.tags.filter(tag => tag !== tagToRemove)
+        ? prevState.tags.filter((tag) => tag !== tagToRemove)
         : prevState.tags.slice(0, -1);
       this.props.onTagsUpdated(tags);
       return {
-        tags
+        tags,
       };
     });
   };
@@ -121,7 +123,7 @@ export default class UnorganizedBookmark extends React.Component {
         <ActionToolbar>
           <button>Mark as read</button>
           <button
-            onClick={event => {
+            onClick={(event) => {
               this.props.actions.deleteBookmark(bk._id);
             }}
           >

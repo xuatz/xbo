@@ -5,14 +5,14 @@ const styles = {
   inputStyle: {
     borderRadius: '0.25rem',
     padding: '1rem',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
   },
   submitButton: {
     padding: '0.6rem',
     backgroundColor: '#00B9BC',
     color: '#eee',
     fontWeight: 'bold',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   mainContainer: {
     justifyContent: 'center',
@@ -20,29 +20,29 @@ const styles = {
     padding: '25px',
     // padding: '25px 25px 18px',
     margin: '20px',
-    borderRadius: '3px'
+    borderRadius: '3px',
   },
   form: {
     flexDirection: 'column',
     borderRadius: '5px',
-    width: '300px'
-  }
+    width: '300px',
+  },
 };
 
 class Signup extends Component {
   state = {
     username: '',
     password1: '',
-    password2: ''
+    password2: '',
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     let { username, password1, password2 } = this.state;
 
@@ -62,18 +62,18 @@ class Signup extends Component {
 
     if (errors.length > 0) {
       this.setState({
-        errors
+        errors,
       });
     } else {
       this.props
         .onSubmit({
           username: username,
-          password: password1
+          password: password1,
         })
-        .then(res => {
+        .then((res) => {
           if (res.error) {
             this.setState({
-              errors: [res.error]
+              errors: [res.error],
             });
           }
 
@@ -81,10 +81,10 @@ class Signup extends Component {
             console.log('signup success!');
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.setState({
-            errors: ['server error!!']
+            errors: ['server error!!'],
           });
         });
     }
@@ -135,7 +135,7 @@ class Signup extends Component {
         <Container
           style={{
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <span>Have an account?</span>

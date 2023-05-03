@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-const Push = props => {
+const Push = (props) => {
   let { data } = props;
   let { type, modified, title, url } = data;
   switch (type) {

@@ -5,23 +5,23 @@ import fromEntries from '../utils/fromEntries';
 const initialState = {
   bookmarks: {
     entities: {},
-    result: []
+    result: [],
   },
   categories: {
     groupByDomain: {},
-    groupByHashtag: {}
+    groupByHashtag: {},
   },
   uncategorised: [],
   sublists: {
     link: [],
     note: [],
     file: [],
-    gallery: []
+    gallery: [],
   },
   stats: {
     groupByDomain: {},
-    groupByHashtag: {}
-  }
+    groupByHashtag: {},
+  },
 };
 
 export default (state = initialState, action) => {
@@ -31,31 +31,31 @@ export default (state = initialState, action) => {
         ...state,
         bookmarks: {
           entities: state.bookmarks.entities,
-          result: state.bookmarks.result.filter(id => id !== action.id)
+          result: state.bookmarks.result.filter((id) => id !== action.id),
         },
-        uncategorised: state.uncategorised.filter(id => id !== action.id),
+        uncategorised: state.uncategorised.filter((id) => id !== action.id),
         sublists: {
-          link: state.sublists.link.filter(id => id !== action.id),
-          note: state.sublists.note.filter(id => id !== action.id),
-          file: state.sublists.file.filter(id => id !== action.id),
-          gallery: state.sublists.gallery.filter(id => id !== action.id)
+          link: state.sublists.link.filter((id) => id !== action.id),
+          note: state.sublists.note.filter((id) => id !== action.id),
+          file: state.sublists.file.filter((id) => id !== action.id),
+          gallery: state.sublists.gallery.filter((id) => id !== action.id),
         },
         categories: {
           groupByDomain: fromEntries(
             Object.entries(state.categories.groupByDomain).map(
               ([key, value]) => {
-                return [key, value.filter(id => id !== action.id)];
+                return [key, value.filter((id) => id !== action.id)];
               }
             )
           ),
           groupByHashtag: fromEntries(
             Object.entries(state.categories.groupByHashtag).map(
               ([key, value]) => {
-                return [key, value.filter(id => id !== action.id)];
+                return [key, value.filter((id) => id !== action.id)];
               }
             )
-          )
-        }
+          ),
+        },
       };
     }
     case 'BOOKMARKS_UNCATEGORISED_REPLACE': {
@@ -73,10 +73,10 @@ export default (state = initialState, action) => {
           ...state.bookmarks,
           entities: {
             ...state.bookmarks.entities,
-            ...entities
-          }
+            ...entities,
+          },
         },
-        uncategorised: result
+        uncategorised: result,
       };
     }
     case 'BOOKMARKS_REPLACE': {
@@ -98,9 +98,9 @@ export default (state = initialState, action) => {
         link: [],
         note: [],
         file: [],
-        gallery: []
+        gallery: [],
       };
-      all.forEach(bk => {
+      all.forEach((bk) => {
         if (!sublists[bk.data.type]) {
           sublists[bk.data.type] = [];
         }
@@ -109,7 +109,7 @@ export default (state = initialState, action) => {
       });
 
       if (sublists.file) {
-        sublists.gallery = sublists.file.filter(id => {
+        sublists.gallery = sublists.file.filter((id) => {
           return bookmarks.entities[id].data.image_url ? true : false;
         });
       }
@@ -121,8 +121,8 @@ export default (state = initialState, action) => {
         stats: {
           ...state.stats,
           groupByHashtag: groupByHashtag(all),
-          groupByDomain: groupByDomain(all)
-        }
+          groupByDomain: groupByDomain(all),
+        },
       };
     }
     case 'BOOKMARK_REPLACE': {
@@ -133,9 +133,9 @@ export default (state = initialState, action) => {
           ...state.bookmarks,
           entities: {
             ...state.bookmarks.entities,
-            [bookmark._id]: bookmark
-          }
-        }
+            [bookmark._id]: bookmark,
+          },
+        },
       };
     }
     default:
@@ -148,13 +148,13 @@ export default (state = initialState, action) => {
 //   uncategorised: []
 // };
 
-const groupByDomain = bookmarks => {
-  let tmp = _.groupBy(bookmarks, bk => bk.stats && bk.stats.domain);
+const groupByDomain = (bookmarks) => {
+  let tmp = _.groupBy(bookmarks, (bk) => bk.stats && bk.stats.domain);
 
   let domains = {};
   _.forIn(tmp, (value, key) => {
     if (key !== 'undefined') {
-      domains[key] = value.map(bk => {
+      domains[key] = value.map((bk) => {
         return bk._id;
       });
     }
@@ -163,7 +163,7 @@ const groupByDomain = bookmarks => {
   return domains;
 };
 
-const groupByHashtag = bookmarks => {
+const groupByHashtag = (bookmarks) => {
   const hashtags = ['guide', 'todo'];
 
   let tmp = {};
@@ -172,7 +172,7 @@ const groupByHashtag = bookmarks => {
     let { body } = bk.data;
 
     if (body) {
-      hashtags.map(hashtag => {
+      hashtags.map((hashtag) => {
         if (body.toLowerCase().indexOf('#' + hashtag) !== -1) {
           if (!tmp[hashtag]) {
             tmp[hashtag] = [];

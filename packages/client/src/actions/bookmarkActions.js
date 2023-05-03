@@ -3,23 +3,23 @@ import axios from 'axios';
 let API = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:9000',
   withCredentials: true,
-  timeout: 5000
+  timeout: 5000,
 });
 
-export const deleteBookmark = id => {
+export const deleteBookmark = (id) => {
   console.log('deleteBookmark', id);
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: 'BOOKMARKS_REMOVE_BY_ID',
-      id
+      id,
     });
     return API.delete('/bookmarks/' + id)
-      .then(res => {
+      .then((_res) => {
         // console.log(res);
         // if (res.status === 200) {
         // }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         throw err;
       });
@@ -27,12 +27,12 @@ export const deleteBookmark = id => {
 };
 
 export const getBookmarksUncategorised = () => {
-  return dispatch => {
-    return API.get('/bookmarks?type=magic').then(res => {
+  return (dispatch) => {
+    return API.get('/bookmarks?type=magic').then((res) => {
       if (res.status === 200) {
         dispatch({
           type: 'BOOKMARKS_UNCATEGORISED_REPLACE',
-          uncategorised: res.data || []
+          uncategorised: res.data || [],
         });
       }
     });
@@ -40,22 +40,22 @@ export const getBookmarksUncategorised = () => {
 };
 
 export const fetchBookmarks = () => {
-  return dispatch => {
+  return (dispatch) => {
     //'api.xbo.xuatz.com'
     return API.get('/bookmarks')
-      .then(res => {
+      .then((res) => {
         if (res.data !== 'OK') {
           dispatch({
             type: 'BOOKMARKS_REPLACE',
             bookmarks: res.data || [],
           });
         }
-          
+
         return API.get('/bookmarks/fetch', {
-          timeout: 0
+          timeout: 0,
         });
       })
-      .then(res => {
+      .then((res) => {
         if (res.data !== 'OK') {
           dispatch({
             type: 'BOOKMARKS_REPLACE',
@@ -67,12 +67,12 @@ export const fetchBookmarks = () => {
 };
 
 export const updateBookmarkTags = (id, tags) => {
-  return dispatch => {
-    return API.put(`/bookmarks/${id}/tags`, { tags }).then(res => {
+  return (dispatch) => {
+    return API.put(`/bookmarks/${id}/tags`, { tags }).then((res) => {
       if (res.status === 200) {
         dispatch({
           type: 'BOOKMARK_REPLACE',
-          uncategorised: res.data
+          uncategorised: res.data,
         });
       }
     });

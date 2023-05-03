@@ -8,7 +8,7 @@ const Wrapper = styled.section`
   background: papayawhip;
 `;
 
-const Organiser = props => {
+const Organiser = (props) => {
   return (
     <Wrapper>
       <UncategorisedBookmarks />

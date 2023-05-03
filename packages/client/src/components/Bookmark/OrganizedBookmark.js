@@ -3,7 +3,7 @@ import React from 'react';
 import { Wrapper, Title, Url, ActionToolbar } from './styles';
 
 // An organized bookmark
-const Bookmark = props => {
+const Bookmark = (props) => {
   const { title, url } = props.bookmark.data;
   return (
     <Wrapper>

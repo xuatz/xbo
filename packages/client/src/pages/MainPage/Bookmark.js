@@ -5,12 +5,12 @@ import Code from '../../components/common/Code';
 
 class UrlAndNoteItem extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   handleOnClick = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
+    this.setState((prevState) => ({
+      isOpen: !prevState.isOpen,
     }));
   };
 
@@ -67,14 +67,14 @@ const Button = styled.button`
   text-align: center;
 `;
 
-const Bookmark = props => {
+const Bookmark = (props) => {
   let { bk, onDelete } = props;
   return (
     <ListItemWrapper>
       <ListItem>
         <UrlAndNoteItem
           style={{
-            flex: '5'
+            flex: '5',
             // background: "green"
           }}
           item={bk}

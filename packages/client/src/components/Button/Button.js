@@ -18,13 +18,13 @@ const StyledButton = styled.button`
     transform: scale(1.05, 1.05);
   }
 
-  ${props =>
+  ${(props) =>
     props.fullWidth &&
     `
       width: fill-available;
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'default' &&
     `
     background-color: ${COLOR.PRIMARY.NORMAL};
@@ -36,7 +36,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'secondary' &&
     `
     background-color: ${COLOR.NEUTRAL.LIGHTERER};
@@ -48,7 +48,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.variant === 'text' &&
     `
     background-color: transparent;
@@ -60,7 +60,7 @@ const StyledButton = styled.button`
     }
   `}
 
-  ${props =>
+  ${(props) =>
     props.disabled &&
     `
       background-color: ${COLOR.NEUTRAL.LIGHTER};
@@ -74,7 +74,7 @@ const StyledButton = styled.button`
   `}
 `;
 
-const Button = props => {
+const Button = (props) => {
   const { children } = props;
   return <StyledButton {...props}>{children}</StyledButton>;
 };
@@ -84,14 +84,15 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
-  variant: PropTypes.oneOf(['default', 'text', 'secondary'])
+  variant: PropTypes.oneOf(['default', 'text', 'secondary']),
 };
 
 Button.defaultProps = {
   disabled: false,
   fullWidth: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClick: () => {},
-  variant: 'default'
+  variant: 'default',
 };
 
 export default Button;

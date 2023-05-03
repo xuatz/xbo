@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 
 const styles = {
   push: {
-    display: "block",
-    border: "1px solid #DDD",
-    padding: "10px"
+    display: 'block',
+    border: '1px solid #DDD',
+    padding: '10px',
   },
   url: {
-    wordWrap: "break-word"
-  }
+    wordWrap: 'break-word',
+  },
 };
 
-const PushUrl = props => {
+const PushUrl = (props) => {
   let {
     header = false,
     url,
-    displayText = url.substring(0, 30) + "..."
+    displayText = url.substring(0, 30) + '...',
   } = props;
 
   return (
@@ -31,7 +31,7 @@ const PushUrl = props => {
   );
 };
 
-const renderPushType = push => {
+const renderPushType = (push) => {
   let {
     type,
     title,
@@ -42,19 +42,19 @@ const renderPushType = push => {
     image_url,
     file_name,
     file_type,
-    file_url
+    file_url,
   } = push;
 
   switch (type) {
-    case "link":
+    case 'link':
       //TODO xz: dunno which part of the code, should make use of
       //push.body == '#guide'
       return <PushUrl url={url} displayText={title} header={true} />;
-    case "note":
+    case 'note':
       //TODO xz: dunno which part of the code, should make use of
       //push.body == '#guide' || '#todo'
-      return <p style={{ wordWrap: "break-word" }}>{body}</p>;
-    case "file":
+      return <p style={{ wordWrap: 'break-word' }}>{body}</p>;
+    case 'file':
       if (image_url) {
         return (
           <div>
@@ -63,13 +63,13 @@ const renderPushType = push => {
             </h3>
             <img
               style={{
-                maxWidth: "100%"
+                maxWidth: '100%',
               }}
               src={image_url}
             />
             <div
               style={{
-                padding: "10px 0px"
+                padding: '10px 0px',
               }}
             >
               <div>
@@ -83,7 +83,7 @@ const renderPushType = push => {
           <a href={file_url}>
             <p
               style={{
-                wordWrap: "break-word"
+                wordWrap: 'break-word',
               }}
             >
               {file_name}
@@ -92,7 +92,7 @@ const renderPushType = push => {
         );
       }
     default:
-      console.log("unhandled type:", type);
+      console.log('unhandled type:', type);
       console.log(push);
       return <p>type: {type}</p>;
   }
@@ -109,7 +109,7 @@ const Push = ({ data }) => {
     image_url,
     file_name,
     file_type,
-    file_url
+    file_url,
   } = data;
 
   return (

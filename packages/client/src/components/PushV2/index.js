@@ -7,16 +7,16 @@ import UrlAndNoteItem from './url-and-note';
 const useBookmarks = () => {
   let bookmarks = [];
 
-  const bookmarkSublists = useSelector(state => state.bookmarks.sublists);
+  const bookmarkSublists = useSelector((state) => state.bookmarks.sublists);
   const bookmarkEntities = useSelector(
-    state => state.bookmarks.bookmarks.entities,
+    (state) => state.bookmarks.bookmarks.entities
   );
 
   if (bookmarkSublists) {
     const { link, note } = bookmarkSublists;
     bookmarks = bookmarks.concat(link).concat(note);
     bookmarks = bookmarks
-      .map(bookmarkId => bookmarkEntities[bookmarkId])
+      .map((bookmarkId) => bookmarkEntities[bookmarkId])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
@@ -28,10 +28,11 @@ const PushV2 = () => {
   const [listSize, setListSize] = useState(10);
   const [lastLoadTime, setLastLoadTime] = useState(Date.now());
 
+  const [filter, setFilter] = useState('');
   const bookmarks = useBookmarks();
 
   const sublist = bookmarks
-    .filter(item => {
+    .filter((item) => {
       const pattern = filter;
       if (!pattern || pattern === '') {
         return true;
@@ -54,17 +55,16 @@ const PushV2 = () => {
       bookmarks.length &&
       now - lastLoadTime > 0.25 * 1000
     ) {
-      setLastLoadTime(now)
-      setListSize(listSize + 10)
+      setLastLoadTime(now);
+      setListSize(listSize + 10);
     }
   };
 
-  const handleOnDelete = id => {
+  const handleOnDelete = (id) => {
     dispatch(actions.deleteBookmark(id));
   };
 
-  const [filter, setFilter] = useState('');
-  const handleFilterOnChange = e => {
+  const handleFilterOnChange = (e) => {
     setFilter(e.target.value);
   };
 
@@ -79,10 +79,6 @@ const PushV2 = () => {
       window.removeEventListener('scroll', onScroll, false);
     };
   }, [onScroll]);
-
-  
-
-  
 
   return (
     <div>

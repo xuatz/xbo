@@ -23,7 +23,7 @@ stories.add('with props', () => {
   const props = {
     disabled: boolean('Disabled', false),
     variant: select('Variant', ['default', 'secondary', 'text']),
-    fullWidth: boolean('Full width', false)
+    fullWidth: boolean('Full width', false),
   };
 
   return <Button {...props}>{text('Label', 'Label')}</Button>;

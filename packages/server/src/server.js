@@ -26,12 +26,12 @@ let corsOptions = {
 
 //==============================================================
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   // console.log("serializeUser()");
   cb(null, user.id);
 });
 
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser(function (id, cb) {
   // console.log("deserializeUser()");
   User.findById(id, (err, user) => {
     if (err) {
@@ -95,7 +95,7 @@ app.use((req, res, next) => {
 app.use('/auth', require('./api/auth').router);
 app.use('/bookmarks', require('./api/bookmarks').router);
 
-app.listen(9000, function() {
+app.listen(9000, function () {
   console.log('Example app listening on port 9000!');
 });
 

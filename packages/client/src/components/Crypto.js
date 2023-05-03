@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-const Crypto = props => {
+const Crypto = (props) => {
   const [rows, setRows] = useState([{}]);
 
   useEffect(() => {

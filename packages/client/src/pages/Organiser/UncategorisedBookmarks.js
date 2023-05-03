@@ -8,18 +8,18 @@ import Bookmark from './Bookmark';
 
 const empty = [];
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bookmarks:
       state.bookmarks.uncategorised.map(
-        id => state.bookmarks.bookmarks.entities[id]
-      ) || empty
+        (id) => state.bookmarks.bookmarks.entities[id]
+      ) || empty,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 

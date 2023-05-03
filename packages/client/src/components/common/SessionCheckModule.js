@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect, useDispatch } from 'react-redux';
 
 import { Container } from './FlexContainer';

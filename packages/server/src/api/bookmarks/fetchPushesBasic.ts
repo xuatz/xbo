@@ -1,4 +1,4 @@
-const axios = require('axios')
+const axios = require('axios');
 
 const PB_API = axios.create({
   baseURL: 'https://api.pushbullet.com/v2/',
@@ -10,13 +10,13 @@ type IParams = {
   pushes?: unknown[];
   modified_after?: string;
   count?: number; // @todo rename to runCount
-  emptyCount?: number
+  emptyCount?: number;
 };
 
 export const fetchPushesBasic = (params: IParams) => {
-  const demoLimit = 2;
+  const _demoLimit = 2;
 
-  let {
+  const {
     access_token,
     cursor,
     pushes = [],
@@ -29,7 +29,7 @@ export const fetchPushesBasic = (params: IParams) => {
   console.log('cursor:', cursor);
   console.log('modified_after:', modified_after);
 
-  return PB_API.request<{ pushes: unknown[]; cursor: string}>({
+  return PB_API.request<{ pushes: unknown[]; cursor: string }>({
     url: '/pushes',
     headers: {
       'Access-Token': access_token,
@@ -42,14 +42,17 @@ export const fetchPushesBasic = (params: IParams) => {
     },
   })
     .then((res) => {
-      let { status, statusText, data } = res;
-      let newPushes = data.pushes;
-      let nextCursor = data.cursor;
+      const {
+        // status, statusText,
+        data,
+      } = res;
+      const newPushes = data.pushes;
+      const nextCursor = data.cursor;
 
       console.log('newPushes.length', newPushes.length);
-      const isCursorResultsEmpty = newPushes.length === 0
+      const isCursorResultsEmpty = newPushes.length === 0;
 
-      let mergedPushes = pushes.concat(newPushes);
+      const mergedPushes = pushes.concat(newPushes);
 
       // if (nextCursor && count < demoLimit) {
       if (nextCursor && emptyCount < 10) {

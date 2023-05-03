@@ -8,7 +8,7 @@ import {
   ImageBookmarkWrapper,
   ImageDetails,
   Link,
-  Padding
+  Padding,
 } from './styles';
 import React, { useEffect, useState } from 'react';
 
@@ -18,24 +18,24 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import throttle from 'lodash/throttle';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { bookmarks } = state;
   const gallery = bookmarks.sublists.gallery.map(
-    id => bookmarks.bookmarks.entities[id]
+    (id) => bookmarks.bookmarks.entities[id]
   );
 
   return {
-    bookmarks: gallery
+    bookmarks: gallery,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
-const ImageBookmark = props => {
+const ImageBookmark = (props) => {
   const { bookmark, onDelete } = props;
   const { image_url, file_url, file_name, created } = bookmark.data;
 
@@ -59,7 +59,7 @@ const ImageBookmark = props => {
   );
 };
 
-const GalleryPage = props => {
+const GalleryPage = (props) => {
   const [listSize, setListSize] = useState(10);
 
   const { actions, bookmarks } = props;
@@ -90,7 +90,7 @@ const GalleryPage = props => {
 
   return (
     <Page>
-      {sublist.map(bookmark => (
+      {sublist.map((bookmark) => (
         <ImageBookmark
           key={bookmark._id}
           bookmark={bookmark}
@@ -101,7 +101,4 @@ const GalleryPage = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GalleryPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GalleryPage);

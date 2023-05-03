@@ -90,16 +90,17 @@ InputText.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   style: PropTypes.object,
-  variant: PropTypes.oneOf(['default', 'invisible'])
+  variant: PropTypes.oneOf(['default', 'invisible']),
 };
 
 InputText.defaultProps = {
   disabled: false,
   id: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange: () => {},
   placeholder: '',
   style: undefined,
-  variant: 'default'
+  variant: 'default',
 };
 
 export default InputText;

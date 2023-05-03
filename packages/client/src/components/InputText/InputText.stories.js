@@ -12,7 +12,7 @@ stories.add('with props', () => {
     disabled: boolean('Disabled', false),
     label: text('Label', 'Field'),
     placeholder: text('Placeholder', 'Placeholder for field'),
-    variant: select('Variant', ['default', 'full-width'])
+    variant: select('Variant', ['default', 'full-width']),
   };
 
   return <InputText {...props} />;

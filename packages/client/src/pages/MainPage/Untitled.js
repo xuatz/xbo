@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/bookmarkActions';
 import Bookmark from './Bookmark';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   let bookmarks = [];
 
   if (state.bookmarks.sublists) {
@@ -13,29 +13,29 @@ const mapStateToProps = state => {
     bookmarks = []
       .concat(link)
       .concat(note)
-      .map(id => state.bookmarks.bookmarks.entities[id])
+      .map((id) => state.bookmarks.bookmarks.entities[id])
       .sort((a, b) => b.data.modified - a.data.modified);
   }
 
   return {
-    bookmarks
+    bookmarks,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
 class Untitled extends Component {
   state = {
     listSize: 10,
-    lastLoadTime: Date.now()
+    lastLoadTime: Date.now(),
   };
 
   componentDidMount() {
-    this.props.actions.fetchBookmarks().then(res => {
+    this.props.actions.fetchBookmarks().then((res) => {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
@@ -54,14 +54,14 @@ class Untitled extends Component {
       now - this.state.lastLoadTime > 0.25 * 1000
     ) {
       // console.log(now, this.state.lastLoadTime);
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         lastLoadTime: now,
-        listSize: prevState.listSize + 10
+        listSize: prevState.listSize + 10,
       }));
     }
   };
 
-  handleOnDelete = id => this.props.actions.deleteBookmark(id);
+  handleOnDelete = (id) => this.props.actions.deleteBookmark(id);
 
   render() {
     let sublist = this.props.bookmarks.slice(
@@ -85,7 +85,4 @@ class Untitled extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Untitled);
+export default connect(mapStateToProps, mapDispatchToProps)(Untitled);

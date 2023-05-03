@@ -1,17 +1,17 @@
 export const FONT = {
   TITLE: "'Pacifico', cursive",
-  DEFAULT: 'sans'
+  DEFAULT: 'sans',
 };
 
 export const FONT_SIZE = {
   SMALLER: '0.75rem',
   SMALL: '0.8rem',
-  NORMAL: '1rem'
+  NORMAL: '1rem',
 };
 
 const PRIMARY = {
   NORMAL: '#84b595',
-  DARKER: '#6b9c7c'
+  DARKER: '#6b9c7c',
 };
 
 const WHITE = '#fff';
@@ -23,12 +23,12 @@ const NEUTRAL = {
   LIGHTER: '#dcdcdc',
   LIGHT: '#c3c3c3',
   NORMAL: '#b6b6b6',
-  DARKER: '#838383'
+  DARKER: '#838383',
 };
 
 export const COLOR = {
   WHITE,
   BLACK,
   PRIMARY,
-  NEUTRAL
+  NEUTRAL,
 };

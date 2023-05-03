@@ -8,7 +8,7 @@ const Input = styled.input`
   width: 40%;
 `;
 
-const Bookmark = props => {
+const Bookmark = (props) => {
   let { bk } = props;
   return (
     <li>
@@ -20,7 +20,7 @@ const Bookmark = props => {
         />
         <button>Archive</button>
         <button
-          onClick={event => {
+          onClick={(event) => {
             this.props.actions.deleteBookmark(bk._id);
           }}
         >

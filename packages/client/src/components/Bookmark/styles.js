@@ -14,7 +14,7 @@ export const ActionToolbar = styled.div`
 `;
 
 export const Tag = styled.span`
-  background-color: ${props => (props.isSelected ? '#eee' : 'none')};
+  background-color: ${(props) => (props.isSelected ? '#eee' : 'none')};
   border-radius: 0.5rem;
   font-size: ${FONT_SIZE.SMALLER};
   margin: 0.3rem;

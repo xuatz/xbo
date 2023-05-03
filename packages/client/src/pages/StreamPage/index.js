@@ -6,7 +6,7 @@ import { Bookmark } from 'src/components/Bookmark';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-const Tabs = props => {
+const Tabs = (props) => {
   return (
     <ul>
       <li>All bookmarks</li>
@@ -40,21 +40,18 @@ class StreamPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bookmarks: state.bookmarks.bookmarks.result.map(
-      id => state.bookmarks.bookmarks.entities[id]
-    )
+      (id) => state.bookmarks.bookmarks.entities[id]
+    ),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StreamPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StreamPage);

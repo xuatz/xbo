@@ -1,7 +1,7 @@
 const Bookmark = require('../../models/bookmark');
 
 // only returns a mongoose query, pending exec
-const getPushbulletBookmarksQuery = queryParams => {
+const getPushbulletBookmarksQuery = (queryParams) => {
   let { singleRecord = false } = queryParams;
   let rest = queryParams;
   delete rest.singleRecord;
@@ -10,12 +10,12 @@ const getPushbulletBookmarksQuery = queryParams => {
     ? Bookmark.findOne(
         Object.assign({}, rest, {
           provider: 'pushbullet',
-        }),
+        })
       )
     : Bookmark.find(
         Object.assign({}, rest, {
           provider: 'pushbullet',
-        }),
+        })
       );
 };
 

@@ -25,13 +25,10 @@ class SummaryPage extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SummaryPage);
+export default connect(null, mapDispatchToProps)(SummaryPage);

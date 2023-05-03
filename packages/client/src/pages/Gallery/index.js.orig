@@ -7,31 +7,31 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { bookmarks } = state;
   const gallery = bookmarks.sublists.gallery.map(
-    id => bookmarks.bookmarks.entities[id]
+    (id) => bookmarks.bookmarks.entities[id]
   );
 
   return {
-    bookmarks: gallery
+    bookmarks: gallery,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
 class Gallery extends Component {
   state = {
     listSize: 10,
-    lastLoadTime: Date.now()
+    lastLoadTime: Date.now(),
   };
 
   componentDidMount() {
-    this.props.actions.fetchBookmarks().then(res => {
+    this.props.actions.fetchBookmarks().then((res) => {
       // console.log("fetch complete!"); // TODO:XZ: will use this for infinite scroll in future
     });
 
@@ -50,14 +50,14 @@ class Gallery extends Component {
       now - this.state.lastLoadTime > 0.25 * 1000
     ) {
       // console.log(now, this.state.lastLoadTime);
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         lastLoadTime: now,
-        listSize: prevState.listSize + 10
+        listSize: prevState.listSize + 10,
       }));
     }
   };
 
-  pushRenderer = data => {
+  pushRenderer = (data) => {
     let { type, modified, title, url } = data;
     switch (type) {
       case 'link': {
@@ -86,7 +86,7 @@ class Gallery extends Component {
     }
   };
 
-  handleOnDelete = id => this.props.actions.deleteBookmark(id);
+  handleOnDelete = (id) => this.props.actions.deleteBookmark(id);
 
   render() {
     let sublist = this.props.bookmarks.slice(
@@ -104,7 +104,7 @@ class Gallery extends Component {
                   <div
                     style={{
                       background: 'teal',
-                      padding: '20px'
+                      padding: '20px',
                       // width: "50%"
                     }}
                   >
@@ -114,7 +114,7 @@ class Gallery extends Component {
                         background: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        justifyContent: 'space-evenly'
+                        justifyContent: 'space-evenly',
                       }}
                     >
                       {/* <QuickActions
@@ -141,7 +141,4 @@ class Gallery extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Gallery);
+export default connect(mapStateToProps, mapDispatchToProps)(Gallery);

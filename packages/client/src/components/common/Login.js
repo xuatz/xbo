@@ -6,35 +6,35 @@ const styles = {
     background: 'orange',
     padding: '25px',
     margin: '20px',
-    borderRadius: '3px'
+    borderRadius: '3px',
   },
   inputStyle: {
     borderRadius: '0.25rem',
     padding: '1rem',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
   },
   submitButton: {
     padding: '0.6rem',
     backgroundColor: '#00B9BC',
     color: '#eee',
     fontWeight: 'bold',
-    textTransform: 'uppercase'
-  }
+    textTransform: 'uppercase',
+  },
 };
 
 class Login extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
 
     let { username, password } = this.state;
@@ -52,23 +52,23 @@ class Login extends Component {
     if (errors.length > 0) {
       console.log(errors);
       this.setState({
-        errors
+        errors,
       });
     } else {
       try {
         const res = await this.props.onSubmit({
           username: username,
-          password: this.state.password
+          password: this.state.password,
         });
 
         if (res.error) {
           this.setState({
-            errors: [res.error]
+            errors: [res.error],
           });
         }
       } catch (err) {
         this.setState({
-          error: ['server error!!']
+          error: ['server error!!'],
         });
       }
     }
@@ -89,7 +89,7 @@ class Login extends Component {
             style={{
               flexDirection: 'column',
               borderRadius: '5px',
-              width: '300px'
+              width: '300px',
             }}
           >
             <input
@@ -117,7 +117,7 @@ class Login extends Component {
         <Container
           style={{
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <span>Don't have an account?</span>

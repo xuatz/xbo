@@ -1,4 +1,4 @@
-const Promise = require('bluebird')
+const Promise = require('bluebird');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Bookmark = require('../../models/bookmark');
 const {
@@ -11,9 +11,8 @@ async function fetchFreshPushbullets(params) {
   console.log('fetchFreshPushbullets()');
   console.log('isFetchingFreshPushbullets', isFetchingFreshPushbullets);
   if (isFetchingFreshPushbullets) {
-    const error = new Error('fetchFreshPushbullets() is already running');
-    error.code = 1001;
-    throw error;
+    console.log('fetchFreshPushbullets() is already running! skipping!');
+    return;
   }
 
   try {
@@ -36,11 +35,11 @@ async function fetchFreshPushbullets(params) {
 
     console.log(
       'fetchPushesBasic is complete: newPushes.length:',
-      newPushes.length,
+      newPushes.length
     );
 
     if (newPushes && newPushes.length > 0) {
-      return Promise.map(newPushes, newPush => {
+      return Promise.map(newPushes, (newPush) => {
         //TODO xz: ideally should also check if modified is < newPush.modified
         return Bookmark.findOneAndUpdate(
           {
@@ -55,7 +54,7 @@ async function fetchFreshPushbullets(params) {
           },
           {
             upsert: true,
-          },
+          }
         ).exec();
       });
     }

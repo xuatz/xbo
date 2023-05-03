@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { fromUnixTime } from 'date-fns';
 
-const UrlAndNoteItem = props => {
+const UrlAndNoteItem = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { item, style } = props;

@@ -5,7 +5,7 @@ import {
   ProfileSettings,
   Provider,
   ProviderContainer,
-  ProviderLogo
+  ProviderLogo,
 } from './styles';
 import React, { Component } from 'react';
 
@@ -15,7 +15,7 @@ import PushbulletLogo from './PushbulletLogo.png';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   let providers = {};
   // TODO xz: im pretty sure this can be avoided with some better data model design
   if (state.session) {
@@ -25,12 +25,12 @@ const mapStateToProps = state => {
   }
 
   return {
-    providers
+    providers,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actions, dispatch)
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(actions, dispatch),
 });
 
 class Profile extends Component {
@@ -61,7 +61,4 @@ class Profile extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -35,7 +35,7 @@ export const Indicator = styled.div`
 
 export const IndicatorDot = styled.span`
   align-items: center;
-  background-color: ${props => (props.current ? '#eee' : '#fff')};
+  background-color: ${(props) => (props.current ? '#eee' : '#fff')};
   border-radius: 50%;
   border: 1px solid #555;
   display: flex;

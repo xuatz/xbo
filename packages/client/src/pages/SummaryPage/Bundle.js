@@ -18,7 +18,7 @@ class Bundle extends Component {
           return (
             <div key={domain}>
               <div>{domain}</div>
-              {bookmarks.map(bookmark => (
+              {bookmarks.map((bookmark) => (
                 <Bookmark key={bookmark._id} bookmark={bookmark} />
               ))}
             </div>
@@ -29,7 +29,7 @@ class Bundle extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     // TODO: denormalize at lower level to avoid performance issues
     groupByDomain: fromEntries(
@@ -38,20 +38,17 @@ const mapStateToProps = state => {
         .map(([domain, bookmarks]) => {
           return [
             domain,
-            bookmarks.map(id => state.bookmarks.bookmarks.entities[id])
+            bookmarks.map((id) => state.bookmarks.bookmarks.entities[id]),
           ];
         })
-    )
+    ),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bundle);
+export default connect(mapStateToProps, mapDispatchToProps)(Bundle);

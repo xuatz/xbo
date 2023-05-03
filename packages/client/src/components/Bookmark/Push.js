@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import Code from '../common/Code';
 
-const Push = props => {
+const Push = (props) => {
   let { data } = props;
   let { type, modified, title, url } = data;
   switch (type) {

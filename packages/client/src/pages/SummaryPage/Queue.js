@@ -5,12 +5,12 @@ import {
   CarouselContent,
   CarouselWrapper,
   Indicator,
-  IndicatorDot
+  IndicatorDot,
 } from './styles';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
-  CheckmarkIcon
+  CheckmarkIcon,
 } from 'src/components/common/icons';
 import React, { Component } from 'react';
 
@@ -18,7 +18,7 @@ import { UnorganizedBookmark } from 'src/components/Bookmark';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-const CarouselIndicator = props => {
+const CarouselIndicator = (props) => {
   let { index, progress } = props;
   return (
     <Indicator>
@@ -33,19 +33,19 @@ const CarouselIndicator = props => {
 
 class Carousel extends Component {
   state = {
-    index: 0
+    index: 0,
   };
 
   goLeft = () => {
-    this.setState(state => ({
+    this.setState((state) => ({
       index:
-        state.index === 0 ? this.props.bookmarks.length - 1 : state.index - 1
+        state.index === 0 ? this.props.bookmarks.length - 1 : state.index - 1,
     }));
   };
 
   goRight = () => {
     this.setState((state, props) => ({
-      index: Math.abs((state.index + 1) % this.props.bookmarks.length)
+      index: Math.abs((state.index + 1) % this.props.bookmarks.length),
     }));
   };
 
@@ -59,7 +59,7 @@ class Carousel extends Component {
     }
 
     let progress = bookmarks.map(
-      bookmark => bookmark && bookmark.tags && bookmark.tags.length > 0
+      (bookmark) => bookmark && bookmark.tags && bookmark.tags.length > 0
     );
 
     return (
@@ -85,7 +85,7 @@ class Carousel extends Component {
 
 class Queue extends Component {
   state = {
-    firstLoad: true // temporary - ideally would be something like a daily flag
+    firstLoad: true, // temporary - ideally would be something like a daily flag
   };
 
   componentDidMount() {
@@ -98,7 +98,7 @@ class Queue extends Component {
     }
   }
 
-  onTagsUpdated = id => tags => {
+  onTagsUpdated = (id) => (tags) => {
     this.props.actions.updateBookmarkTags(id, tags);
   };
 
@@ -108,7 +108,7 @@ class Queue extends Component {
     let isDone =
       bookmarks.length ===
       bookmarks.filter(
-        bookmark => bookmark && bookmark.tags && bookmark.tags.length
+        (bookmark) => bookmark && bookmark.tags && bookmark.tags.length
       ).length;
     if (!firstLoad && isDone) {
       return (
@@ -127,21 +127,18 @@ class Queue extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bookmarks: state.bookmarks.uncategorised.map(
-      id => state.bookmarks.bookmarks.entities[id]
-    )
+      (id) => state.bookmarks.bookmarks.entities[id]
+    ),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Queue);
+export default connect(mapStateToProps, mapDispatchToProps)(Queue);

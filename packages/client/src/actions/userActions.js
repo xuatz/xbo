@@ -11,65 +11,65 @@ const PUSHBULLET_URL = `https://www.pushbullet.com/authorize?client_id=${PUSHBUL
 let API = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  timeout: 5000
+  timeout: 5000,
 });
 
 export const checkUserSession = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
-      type: 'USER_CHECK_SESSION'
+      type: 'USER_CHECK_SESSION',
     });
 
     return API.get('/auth/user')
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           dispatch({ type: 'USER_LOGGED_IN', user: res.data });
         } else {
           dispatch({ type: 'USER_LOGGED_OUT' });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch({ type: 'USER_LOGGED_OUT' });
       });
   };
 };
 
-export const login = form => {
-  return async dispatch => {
+export const login = (form) => {
+  return async (dispatch) => {
     try {
       const res = await API.post('/auth/login', {}, { auth: form });
       if (res.data && res.data.error) {
         return {
-          error: res.data.error
+          error: res.data.error,
         };
       }
       if (res.status === 200) {
         dispatch({ type: 'USER_LOGGED_IN', user: res.data });
       }
       return {
-        status: res.status
+        status: res.status,
       };
     } catch (err) {
       console.error(err);
       return {
         status: 400,
-        error: err.message
+        error: err.message,
       };
     }
   };
 };
 
 export const logout = () => {
-  return dispatch => {
-    return API.get('/auth/logout').then(res => {
+  return (dispatch) => {
+    return API.get('/auth/logout').then((res) => {
       dispatch({ type: 'USER_LOGGED_OUT' });
     });
   };
 };
 
-export const signup = form => {
-  return async dispatch => {
+export const signup = (form) => {
+  return async (dispatch) => {
     try {
       const res = await API.post('/auth/signup', {}, { auth: form });
 
@@ -84,14 +84,14 @@ export const signup = form => {
       console.error(err);
       return {
         status: 400,
-        error: err.message
+        error: err.message,
       };
     }
   };
 };
 
 export const connectPushbulletProvider = () => {
-  return dispatch => {
+  return (dispatch) => {
     return (window.location.href = PUSHBULLET_URL);
   };
 };
