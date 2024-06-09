@@ -1,8 +1,12 @@
 {
-  "name": "xbo-workspace",
-  "version": "3.0.0-alpha.1",
-  "engines": {
-    "node": "^18",
-    "pnpm": "^7"
-  }
+  "name": "xbo",
+  "version": "3.0.0-alpha",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
