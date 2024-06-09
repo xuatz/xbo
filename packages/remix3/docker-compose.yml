@@ -1,0 +1,76 @@
+version: '2.4'
+
+volumes:
+  mongo-xbo:
+  pocketbase_data:
+  pocketbase_public:
+
+services:
+  pocketbase:
+    image: ghcr.io/muchobien/pocketbase:0.22
+    container_name: pocketbase
+    restart: unless-stopped
+    # command:
+    #   - --encryptionEnv #optional
+    #   - ENCRYPTION #optional
+    # environment:
+    #   ENCRYPTION: example #optional
+    ports:
+      - "8090:8090"
+    volumes:
+      - pocketbase_data:/pb_data
+      - pocketbase_public:/pb_public
+      - ./.pb/hooks:/pb_hooks #optional
+    healthcheck: #optional (recommended) since v0.10.0
+      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  mongo:
+    image: mongo:4.2.13
+    container_name: mongo-xbo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-xbo:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secure-admin-password
+  # client:
+  #   image: localhost:5000/xbo-client:local
+  #   build:
+  #     context: .
+  #     dockerfile: ./packages/client/Dockerfile
+  #   command: yarn start
+  #   stdin_open: true
+  #   container_name: xbo-client-dev
+  #   restart: always
+  #   volumes:
+  #     - ./packages/client/src:/client/src
+  #   environment:
+  #     - REACT_APP_API_URL=http://localhost:9000
+  #     - REACT_APP_PUSHBULLET_APP_CLIENT_ID=
+  #   ports:
+  #     - 3000:3000
+  # server:
+  #   image: localhost:5000/xbo-server:local
+  #   build:
+  #     context: .
+  #     dockerfile: ./packages/server/Dockerfile
+  #   command: yarn start # yarn run start:dev
+  #   container_name: xbo-server
+  #   restart: always
+  #   volumes:
+  #     - ./packages/server/src:/server/src
+  #   ports:
+  #     - 9000:9000
+  #   environment:
+  #     - DB_HOST=mongo
+  #     - DB_PORT=27017
+  #     - DB_NAME=xbo_dev
+  #     - DB_USER=xbo_user
+  #     - DB_PASSWORD=secure-xbo-password
+  #     - PUSHBULLET_APP_CLIENT_ID=
+  #     - PUSHBULLET_APP_CLIENT_SECRET=
