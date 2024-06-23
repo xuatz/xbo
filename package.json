@@ -2,7 +2,7 @@
   "name": "xbo-workspace",
   "version": "3.0.0-alpha.1",
   "engines": {
-    "node": "^18",
-    "pnpm": "^7"
+    "node": "^20",
+    "pnpm": "^9"
   }
 }
