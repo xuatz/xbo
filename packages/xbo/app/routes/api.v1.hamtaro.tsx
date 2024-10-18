@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json, type } from '@remix-run/node';
+import { ActionFunctionArgs, json } from '@remix-run/node';
 import { pb } from '../services/db.server';
 
 /**

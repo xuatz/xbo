@@ -1,27 +1,34 @@
 import { Authenticator } from 'remix-auth';
-import { GitHubStrategy } from 'remix-auth-github';
+import { GitHubProfile, GitHubStrategy } from 'remix-auth-github';
 import { pb } from './db.server';
 import { sessionStorage } from './session.server';
 
+type User = {
+  id: string;
+  providers: {
+    github: {
+      profile: GitHubProfile;
+    };
+  };
+};
+
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export const authenticator = new Authenticator(sessionStorage);
+export const authenticator = new Authenticator<User>(sessionStorage);
 
-const gitHubStrategy = new GitHubStrategy(
+const gitHubStrategy = new GitHubStrategy<User>(
   {
-    clientID: import.meta.env.VITE_GITHUB_CLIENT_ID,
+    clientId: import.meta.env.VITE_GITHUB_CLIENT_ID,
     clientSecret: import.meta.env.VITE_GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:5173/auth/github/callback',
+    redirectURI: 'http://localhost:5173/auth/github/callback',
   },
-  async ({ accessToken, extraParams, profile }) => {
-    console.log('xz:accessToken', accessToken);
-    console.log('xz:extraParams', extraParams);
+  async ({ profile, tokens, request, context }) => {
     console.log('xz:profile', profile);
-
-    // User.findOrCreate({ email: profile.emails[0].value });
+    console.log('xz:tokens', tokens);
+    console.log('xz:request', request);
+    console.log('xz:context', context);
 
     try {
-      // TODO might want to restrict this to an admin action
       const { totalItems, items } = await pb.collection('users').getList(1, 1, {
         filter: `providers.github.profile._json.email = "${profile._json.email}"`,
       });
@@ -31,13 +38,12 @@ const gitHubStrategy = new GitHubStrategy(
         const user = await pb.collection('users').create({
           providers: {
             github: {
-              accessToken,
-              extraParams,
               profile,
+              tokens,
             },
           },
         });
-        return user;
+        return user as unknown as User;
       }
 
       const user = items[0];
@@ -47,19 +53,16 @@ const gitHubStrategy = new GitHubStrategy(
         providers: {
           ...items[0].providers,
           github: {
-            accessToken,
-            extraParams,
             profile,
+            tokens,
           },
         },
       });
-      return updatedUser;
+      return updatedUser as unknown as User;
     } catch (err) {
       console.error(err);
+      throw err;
     }
-
-    // Get the user data from your DB or API using the tokens and profile
-    // return User.findOrCreate({ email: profile.emails[0].value });
   }
 );
 
