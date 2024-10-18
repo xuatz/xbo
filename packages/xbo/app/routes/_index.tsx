@@ -1,22 +1,21 @@
-export default function MyRouteComponent() {
+import { authenticator } from '~/services/auth.server';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { Link } from '@remix-run/react';
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  return await authenticator.isAuthenticated(request, {
+    failureRedirect: '/login',
+  });
+}
+
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
-      <div className="bg-white rounded-lg shadow-md w-full max-w-md p-6">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">
-          Welcome to SavedItems
-        </h1>
-        <p className="text-center text-gray-600 mb-6">
-          Access all your saved items in one place
-        </p>
-        <div className="space-y-4">
-          <button className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
-            Login with GitHub
-          </button>
-          <button className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
-            Login with Gmail
-          </button>
-        </div>
-      </div>
+      <h1 className="text-3xl font-bold mb-4">Welcome to xbo</h1>
+      <p className="text-xl mb-6">Your personal dashboard for saved items</p>
+      <Link to="/items" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        View Saved Items (not implemented yet)
+      </Link>
     </div>
   );
 }
