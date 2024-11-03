@@ -11,13 +11,5 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  try {
-    return await authenticator.authenticate('github', request, {
-      successRedirect: '/',
-      failureRedirect: '/login',
-    });
-  } catch (error) {
-    console.error('GitHub authentication error:', error);
-    return redirect('/login?error=github_auth_failed');
-  }
+  return authenticator.authenticate('github', request);
 }

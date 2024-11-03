@@ -25,7 +25,6 @@ const gitHubStrategy = new GitHubStrategy<User>(
   async ({ profile, tokens, request, context }) => {
     console.log('xz:profile', profile);
     console.log('xz:tokens', tokens);
-    console.log('xz:request', request);
     console.log('xz:context', context);
 
     try {
