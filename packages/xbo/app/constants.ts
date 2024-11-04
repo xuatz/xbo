@@ -1,0 +1,3 @@
+export const BULLMQ_QUEUES = {
+  PUSHBULLET_API_QUEUE: 'PUSHBULLET_API_QUEUE',
+} as const;

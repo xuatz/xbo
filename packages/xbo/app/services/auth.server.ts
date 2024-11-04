@@ -9,6 +9,11 @@ type User = {
     github: {
       profile: GitHubProfile;
     };
+    pushbullet: {
+      tokens: {
+        access_token: string;
+      }
+    }
   };
 };
 

@@ -1,6 +1,6 @@
 services:
   pocketbase:
-    image: ghcr.io/muchobien/pocketbase:0.22
+    image: ghcr.io/muchobien/pocketbase:0.22.22
     container_name: pocketbase
     restart: unless-stopped
     # command:
@@ -19,6 +19,22 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   # mongo:
   #   image: mongo:4.2.13
   #   container_name: mongo-xbo
@@ -67,3 +83,6 @@ services:
   #     - DB_PASSWORD=secure-xbo-password
   #     - PUSHBULLET_APP_CLIENT_ID=
   #     - PUSHBULLET_APP_CLIENT_SECRET=
+
+volumes:
+  redis-data:
